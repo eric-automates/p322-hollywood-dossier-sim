@@ -6,6 +6,7 @@
   <title>TM 9-1005-322-10 // SIG SAUER P322 (.22 LR) 3D ORDNANCE DOSSIER</title>
   <style>
 
+
 /* ==========================================================================
    TM 9-1005-322-10 // 1980s GOVERNMENT ORDNANCE REPORT STYLESHEET
    Zero external fonts or CDN assets — works 100% offline & on GitHub Pages
@@ -1527,9 +1528,602 @@ table.ord-table tr:nth-child(even) td {
   .sim-badge { max-width: 94%; font-size: 0.66rem; }
 }
 
+
+/* ==========================================================================
+   V4 TRUE 4-BORDER PERIMETER INSTRUMENT BEZEL + ILLUSTRATED GLOSSARY
+   Every camera, actuator, custom-shop & range control lines the outer
+   top / left / right / bottom borders on the SAME screen as the 3D gun.
+   ========================================================================== */
+
+.console-jump {
+  border-color: #f4be5e;
+  color: #f4be5e;
+  font-weight: 800;
+}
+.console-jump:hover { background: #f4be5e; color: #14120d; }
+
+/* Hide legacy tab bar — all 4 borders stay visible around the gun at all sizes */
+.rail-tabs { display: none !important; }
+
+.live-console {
+  --console-rail-bg: var(--paper-panel);
+  --stage-h: 448px;
+  display: grid;
+  grid-template-columns: 98px minmax(0, 1fr) 98px;
+  grid-template-areas:
+    "top    top    top"
+    "left   stage  right"
+    "bottom bottom bottom";
+  gap: 5px;
+  border: 2px solid var(--rule-heavy);
+  background: var(--paper-inset);
+  padding: 6px;
+  margin: 8px 0;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+}
+
+/* Fullscreen pinned MFD cockpit mode */
+.live-console.is-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  margin: 0;
+  height: 100vh;
+  height: 100dvh;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  overflow: hidden;
+  background: var(--paper-bg);
+  border: none;
+  padding: 6px;
+}
+.live-console.is-fullscreen .console-stage {
+  min-height: 0;
+  height: 100%;
+}
+.live-console.is-fullscreen .console-stage .viewport-frame {
+  height: 100%;
+  min-height: 220px;
+}
+
+.console-rail {
+  background: var(--console-rail-bg);
+  border: 1.5px solid var(--rule-heavy);
+  padding: 4px;
+  min-width: 0;
+}
+.rail-top    { grid-area: top; }
+.rail-left   { grid-area: left; display: flex; flex-direction: column; }
+.rail-right  { grid-area: right; display: flex; flex-direction: column; }
+.rail-bottom { grid-area: bottom; }
+
+.console-stage {
+  grid-area: stage;
+  position: relative;
+  min-width: 0;
+  height: var(--stage-h);
+}
+.console-stage .viewport-frame {
+  height: 100%;
+  margin: 0;
+}
+
+/* Top border cartridge strip */
+.bezel-ammo-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--rule-light);
+}
+.bezel-ammo-lbl {
+  font-family: var(--font-stencil);
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 2px 5px;
+  background: var(--rule-heavy);
+  color: var(--paper-bg);
+  flex-shrink: 0;
+}
+.bezel-select {
+  flex: 1;
+  min-width: 0;
+  padding: 3px 6px;
+  font-size: 0.70rem;
+  height: 26px;
+}
+.bezel-ammo-bar .sim-status {
+  font-size: 0.62rem;
+  padding: 2px 6px;
+  white-space: nowrap;
+  margin: 0;
+}
+
+/* Shoulder-to-shoulder perimeter strips */
+.bezel-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+}
+.bezel-col {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  align-content: space-between;
+  flex: 1;
+}
+/* Desktop 2-col balance: FIRE spans top of left bezel, LITE spans bottom of right bezel */
+.rail-left .bezel-col .btn-trigger { grid-column: 1 / -1; }
+.rail-right .bezel-col #btnRailLight { grid-column: 1 / -1; }
+
+/* Compact Tactile SVG-Icon + Micro-Code Pads (Square & Round) */
+.btn-ord.btn-pad {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 44px;
+  min-width: 40px;
+  height: 42px;
+  min-height: 36px;
+  padding: 3px 2px;
+  font-family: var(--font-stencil);
+  font-size: 0.56rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.03em;
+  border-width: 1.5px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+.rail-left .bezel-col .btn-ord.btn-pad,
+.rail-right .bezel-col .btn-ord.btn-pad {
+  width: 100%;
+  min-width: 0;
+}
+.btn-ord.btn-pad.pad-sq {
+  border-radius: 5px;
+}
+.btn-ord.btn-pad.pad-round {
+  border-radius: 999px;
+}
+.btn-ord.btn-pad .pad-ico {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  display: block;
+}
+.btn-ord.btn-pad .pad-lbl {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.54rem;
+  letter-spacing: 0.02em;
+}
+.btn-ord.btn-pad:active { transform: translateY(1px) scale(0.97); }
+.btn-ord.btn-pad:focus-visible {
+  outline: 2px solid var(--stamp-blue);
+  outline-offset: 1px;
+}
+.btn-ord.btn-pad.active,
+.btn-ord.btn-pad.is-on {
+  background: var(--btn-active);
+  color: var(--btn-active-ink);
+  border-color: var(--rule-heavy);
+}
+.btn-ord.btn-sim {
+  background: var(--stamp-red);
+  border-color: var(--stamp-red);
+  color: #fff5ea;
+}
+.btn-ord.btn-sim:hover { background: #771812; color: #fff; }
+.btn-ord.btn-sim.active {
+  background: #ff3b24;
+  border-color: #ffd0c4;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(255, 59, 36, 0.65);
+}
+.btn-ord.btn-hold:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+.btn-ord.btn-hold.is-holding {
+  background: #ff2e17;
+  color: #fff;
+  transform: scale(0.96);
+}
+.btn-close-only { display: none !important; }
+.live-console.is-fullscreen .btn-close-only { display: inline-flex !important; }
+
+/* Fix Viewport HUD & SIM-AUTO Badge so nothing ever overlaps! */
+.console-stage .sim-badge {
+  top: auto;
+  bottom: 6px;
+  left: 6px;
+  right: 6px;
+  transform: none;
+  max-width: none;
+  padding: 4px 8px;
+  gap: 5px;
+  font-size: 0.64rem;
+}
+.console-stage .sim-badge small {
+  font-size: 0.52rem;
+  line-height: 1.2;
+}
+.console-stage .sim-badge.is-live ~ .hud-bottom-hint {
+  display: none;
+}
+
+/* Telemetry Pop-up Drawer inside Center Stage */
+.telemetry-drawer {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  top: 8px;
+  z-index: 8;
+  overflow: auto;
+  background: var(--paper-bg);
+  border: 2px solid var(--rule-heavy);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55);
+  padding: 9px;
+  display: none;
+}
+.telemetry-drawer.is-open { display: block; }
+.drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-bottom: 1.5px solid var(--rule-heavy);
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+  font-family: var(--font-stencil);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+}
+.drawer-sub {
+  margin: 10px 0 6px;
+  font-family: var(--font-stencil);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--stamp-blue);
+}
+.preset-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+/* Compact Bottom Status & Legal Micro-Strip */
+.console-status {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 4px;
+  margin-top: 4px;
+  align-items: center;
+}
+.console-status .ord-log-bar {
+  margin: 0;
+  padding: 3px 6px;
+  font-size: 0.64rem;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+.ord-log-clip {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ord-log-time {
+  color: var(--ink-muted);
+  font-size: 0.58rem;
+  flex-shrink: 0;
+}
+.console-status .ball-footer-row {
+  margin: 0;
+  padding: 3px 6px;
+  font-size: 0.62rem;
+  min-height: 0;
+}
+.live-console .sim-legal {
+  margin-top: 3px;
+  padding: 2px 5px;
+  font-size: 0.54rem;
+  line-height: 1.2;
+  letter-spacing: 0.03em;
+}
+
+/* ==========================================================================
+   MOBILE & TABLET: KEEP ALL 4 BORDERS WRAPPED AROUND THE GUN ON ONE SCREEN!
+   ========================================================================== */
+@media (max-width: 860px) {
+  #sec-bench .section-body {
+    padding: 8px 6px;
+  }
+  .live-console {
+    --stage-h: 392px;
+    grid-template-columns: 42px minmax(0, 1fr) 42px;
+    grid-template-areas:
+      "top    top    top"
+      "left   stage  right"
+      "bottom bottom bottom";
+    gap: 3px;
+    padding: 4px;
+    margin: 4px 0;
+  }
+  .console-rail {
+    padding: 2px;
+  }
+  .bezel-ammo-bar {
+    gap: 4px;
+    margin-bottom: 3px;
+    padding-bottom: 3px;
+  }
+  .bezel-select {
+    height: 24px;
+    font-size: 0.64rem;
+    padding: 2px 4px;
+  }
+  .bezel-ammo-bar .sim-status {
+    display: none;
+  }
+
+  /* Top & Bottom borders: 9-across shoulder-to-shoulder grid (2 crisp rows!) */
+  .bezel-top,
+  .bezel-bottom {
+    display: grid;
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+    gap: 2px;
+  }
+  /* Bottom border has 17 buttons: let SHOT span 2 cells so 17 + 1 = 18 = 2 full rows of 9! */
+  .bezel-bottom .btn-fire {
+    grid-column: span 2;
+  }
+
+  /* Left & Right borders: single slim vertical column flanking the 3D gun! */
+  .rail-left .bezel-col,
+  .rail-right .bezel-col {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+  .rail-left .bezel-col .btn-ord.btn-pad {
+    height: 28px;
+    min-height: 27px;
+  }
+  .rail-right .bezel-col .btn-ord.btn-pad {
+    height: 33px;
+    min-height: 31px;
+  }
+
+  .btn-ord.btn-pad {
+    width: 100%;
+    min-width: 0;
+    height: 32px;
+    min-height: 30px;
+    padding: 2px 1px;
+    gap: 1px;
+    border-width: 1px;
+  }
+  .btn-ord.btn-pad.pad-round {
+    border-radius: 10px;
+  }
+  .btn-ord.btn-pad .pad-ico {
+    width: 13px;
+    height: 13px;
+  }
+  .btn-ord.btn-pad .pad-lbl {
+    font-size: 0.46rem;
+    letter-spacing: 0;
+  }
+
+  /* Clean non-overlapping HUD inside mobile center viewport */
+  .console-stage .hud-top-left {
+    top: 4px;
+    left: 4px;
+    padding: 3px 5px;
+    font-size: 0.50rem;
+    line-height: 1.25;
+    max-width: 62%;
+  }
+  .console-stage .hud-top-right {
+    top: 4px;
+    right: 4px;
+  }
+  .console-stage .hud-pill {
+    padding: 2px 5px;
+    font-size: 0.50rem;
+  }
+  .console-stage .hud-bottom-hint {
+    bottom: 4px;
+    left: 4px;
+    right: 4px;
+    padding: 2px 5px;
+    font-size: 0.48rem;
+  }
+  .console-stage .hud-bottom-hint span:last-child {
+    display: none;
+  }
+  .console-stage .sim-badge {
+    bottom: 4px;
+    left: 4px;
+    right: 4px;
+    padding: 3px 6px;
+    font-size: 0.54rem;
+  }
+  .console-stage .sim-badge small {
+    font-size: 0.46rem;
+  }
+
+  .console-status {
+    grid-template-columns: 1fr;
+    gap: 2px;
+    margin-top: 3px;
+  }
+  .ord-log-time { display: none; }
+  .live-console .sim-legal {
+    font-size: 0.48rem;
+    padding: 2px 3px;
+  }
+  .preset-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
+  .dossier-sheet { margin: 4px; }
+  .binder-margin { display: none; }
+  .dossier-content { padding: 10px 8px; }
+  #sec-bench .exec-summary {
+    font-size: 0.72rem;
+    padding: 6px 8px;
+    margin-bottom: 6px;
+  }
+}
+
+/* ==========================================================================
+   CLICKABLE ILLUSTRATED GLOSSARY — INLINE TERMS, MODAL CARD & APPENDIX G
+   ========================================================================== */
+.gloss-term {
+  appearance: none;
+  -webkit-appearance: none;
+  background: var(--stamp-blue-bg);
+  border: none;
+  border-bottom: 1.5px dotted var(--stamp-blue);
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  padding: 0 2px;
+  margin: 0;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+.gloss-term:hover,
+.gloss-term:focus-visible {
+  background: var(--stamp-blue);
+  color: #fff;
+  outline: none;
+}
+
+.glossary-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 220;
+  background: rgba(10, 12, 10, 0.72);
+  backdrop-filter: blur(2px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+}
+.glossary-modal.is-open {
+  display: flex;
+}
+.glossary-card {
+  width: min(500px, 100%);
+  max-height: 88vh;
+  max-height: 88dvh;
+  overflow-y: auto;
+  background: var(--paper-bg);
+  border: 2.5px solid var(--rule-heavy);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.6);
+  padding: 12px 14px;
+}
+.glossary-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  border-bottom: 2px solid var(--rule-heavy);
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+}
+.glossary-kicker {
+  display: block;
+  font-family: var(--font-stencil);
+  font-size: 0.60rem;
+  font-weight: 800;
+  letter-spacing: 0.10em;
+  color: var(--stamp-blue);
+}
+.glossary-head strong {
+  font-family: var(--font-stencil);
+  font-size: 1.02rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-primary);
+}
+.glossary-visual {
+  background: var(--paper-panel);
+  border: 1.5px solid var(--rule-heavy);
+  padding: 6px;
+  margin-bottom: 10px;
+}
+.glossary-visual svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 132px;
+}
+.glossary-def {
+  margin: 0 0 10px;
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: var(--ink-primary);
+}
+.glossary-sub {
+  font-family: var(--font-stencil);
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  color: var(--ink-muted);
+  margin: 8px 0 5px;
+  border-top: 1px dashed var(--rule-light);
+  padding-top: 6px;
+}
+.glossary-related,
+.glossary-sections {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.glossary-foot {
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1.5px solid var(--rule-heavy);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: space-between;
+}
+.glossary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 6px;
+}
+.glossary-term-btn {
+  justify-content: flex-start;
+  text-align: left;
+  font-size: 0.68rem;
+  padding: 7px 9px;
+}
+
+
   </style>
 </head>
 <body>
+
   <!-- Sticky Top Archival Control Strip -->
   <nav class="top-control-strip" aria-label="Document Controls">
     <div class="top-strip-inner">
@@ -1538,8 +2132,8 @@ table.ord-table tr:nth-child(even) td {
         <span>ORDNANCE EVALUATION DOSSIER // SIG SAUER P322 (.22 LR)</span>
       </div>
       <div class="strip-actions">
-        <button id="btnStock" class="strip-btn" onclick="cyclePaperStock()" title="Switch archival paper stock">PAPER: 1984 BOND</button>
-        <button id="btnAudio" class="strip-btn is-on" onclick="toggleAudioMute()" title="Toggle ballistic and mechanical audio">AUDIO: ON</button>
+        <button class="strip-btn console-jump" onclick="openLiveConsole()" title="Open the full-screen perimeter control console">⛶ OPEN LIVE CONSOLE</button>
+        <button class="strip-btn" onclick="openGlossaryIndex()" title="Open the clickable glossary">GLOSSARY</button>
         <button class="strip-btn" onclick="exportStandaloneHtml()" title="Download single-file index.html for GitHub Pages">EXPORT INDEX.HTML</button>
       </div>
     </div>
@@ -1676,6 +2270,11 @@ table.ord-table tr:nth-child(even) td {
             <span class="tab-title">MCD Legal Brief</span>
             <span class="tab-sub">Educational fact sheet only</span>
           </a>
+          <a class="index-tab" href="#sec-glossary">
+            <span class="tab-num">APPENDIX G</span>
+            <span class="tab-title">Glossary</span>
+            <span class="tab-sub">Clickable terms &amp; visuals</span>
+          </a>
         </div>
       </nav>
 
@@ -1690,263 +2289,239 @@ table.ord-table tr:nth-child(even) td {
 
         <div class="section-body">
           <p class="exec-summary">
-            <strong>BENCH BRIEF:</strong> Drag empty space around the pistol to <strong>spin 360&deg;</strong> (scroll/pinch to zoom). Touch directly on the <strong>slide</strong> to rack or press-check along its true recoil axis, drag the <strong>magazine</strong> out of the grip, or click the <strong>trigger, ambi safety, slide catch, takedown lever, mag release, or muzzle</strong>. Every mechanical combination follows the actual SIG P322 profile.
+            <strong>BENCH BRIEF:</strong> Every camera, mechanical actuator, custom-shop part, and downrange target control sits shoulder-to-shoulder around the four outer borders of the 3D viewport so the pistol and target stay in view on one screen. Dotted-underlined terms open illustrated glossary pop-ups with visual diagrams and section links.
           </p>
 
-          <!-- Live 6-Cell Telemetry Readout -->
-          <div class="bench-telemetry-grid">
-            <div class="tele-box">
-              <span class="tele-label">CHAMBER STATUS</span>
-              <div id="teleChamber" class="tele-val hot">CHAMBER HOT (.22)</div>
-            </div>
-            <div class="tele-box">
-              <span class="tele-label">20-RD MAGAZINE</span>
-              <div id="teleMag" class="tele-val">SEATED (20/20)</div>
-            </div>
-            <div class="tele-box">
-              <span class="tele-label">ACTION / INTERLOCK</span>
-              <div id="teleAction" class="tele-val hot">COCKED / BATTERY</div>
-            </div>
-            <div class="tele-box">
-              <span class="tele-label">EST. PEAK SPL</span>
-              <div id="teleDb" class="tele-val hot">154.5 dB</div>
-            </div>
-            <div class="tele-box">
-              <span class="tele-label">SIGHT PICTURE</span>
-              <div id="teleSight" class="tele-val safe">CLEAR (3-DOT FO)</div>
-            </div>
-            <div class="tele-box">
-              <span class="tele-label">BORE LEAD FOULING</span>
-              <div style="display:flex; align-items:center; gap:6px;">
-                <div class="fouling-track" style="flex:1;"><div id="teleFoulFill" class="fouling-fill"></div></div>
-                <span id="teleFoulText" class="tele-val" style="font-size:0.74rem; margin:0;">4%</span>
-              </div>
-            </div>
-          </div>
+          <!-- ==================================================================
+               LIVE PERIMETER CONTROL CONSOLE — ALL ACTUATORS ON THE FOUR EDGES
+               No page scrolling: the 3D pistol stays visible while any pad is used.
+               ================================================================== -->
+          <div id="liveConsole" class="live-console" data-rail="top">
 
-          <!-- WebGL 3D Interactive Viewport -->
-          <div class="viewport-frame">
-            <canvas id="glCanvas" aria-label="Interactive 3D SIG Sauer P322 Pistol Model"></canvas>
-            <canvas id="sightCanvas" class="sight-canvas" aria-label="Iron sight reticle overlay for downrange aiming"></canvas>
-
-            <div id="simAutoBadge" class="sim-badge">
-              <span class="sim-led"></span>
-              <strong>SIM-AUTO [TEST ONLY]</strong>
-              <small>HYPOTHETICAL CYCLIC DEMO &middot; NOT A REAL PART &middot; NOT FOR SALE &middot; NO HARDWARE EXISTS FOR THIS PISTOL</small>
+            <!-- Hidden legacy edge-tab hook (all 4 borders now stay visible simultaneously) -->
+            <div class="rail-tabs" role="tablist" aria-hidden="true">
+              <button class="rail-tab active" data-for="top" onclick="showRail('top')">TOP</button>
+              <button class="rail-tab" data-for="left" onclick="showRail('left')">LEFT</button>
+              <button class="rail-tab" data-for="right" onclick="showRail('right')">RIGHT</button>
+              <button class="rail-tab" data-for="bottom" onclick="showRail('bottom')">BOTTOM</button>
             </div>
 
-            <div id="hudSpecOverlay" class="hud-top-left">
-              <div>HAMMER: <strong>COCKED (SAO)</strong> | TRIG: <strong>FLAT</strong></div>
-              <div>LOAD: <strong>CCI MINI-MAG 40gr</strong> (1075 FPS / 4" BBL)</div>
-              <div>MUZZLE: <strong>FLUSH CAP (UNSUPPRESSED)</strong></div>
-            </div>
-
-            <div class="hud-top-right">
-              <div id="hudStatusPill" class="hud-pill status-hot">CONDITION: HOT / READY</div>
-            </div>
-
-            <div id="hudHoverTag" class="hud-hover-tag">ALUMINUM SLIDE &mdash; DRAG TO RACK</div>
-
-            <div class="hud-bottom-hint">
-              <span><strong>TOUCH PART:</strong> DRAG SLIDE / DRAG MAG / CLICK CONTROLS</span>
-              <span><strong>DRAG SPACE (OR SHIFT-DRAG):</strong> SPIN 360&deg; &nbsp;|&nbsp; <strong>SCROLL/PINCH:</strong> ZOOM</span>
-            </div>
-          </div>
-
-          <!-- Camera Angle & X-Ray Strip -->
-          <div class="cam-bar">
-            <div class="cam-group">
-              <span class="cam-label">CAMERA:</span>
-              <button class="btn-ord btn-sm" onclick="benchCamera('right34')">3/4 RIGHT</button>
-              <button class="btn-ord btn-sm" onclick="benchCamera('left')">LEFT CONTROLS</button>
-              <button class="btn-ord btn-sm" onclick="benchCamera('top')">TOP PORT</button>
-              <button class="btn-ord btn-sm btn-accent" onclick="benchCamera('sights')" title="Look down the iron sights and aim at the downrange target">SIGHT PICTURE</button>
-              <button class="btn-ord btn-sm" onclick="benchCamera('rear')">REAR / HAMMER</button>
-              <button class="btn-ord btn-sm" onclick="rangeView('range')">RANGE VIEW</button>
-            </div>
-            <div class="cam-group">
-              <button id="btnXray" class="btn-ord btn-sm btn-accent" onclick="benchToggleXray()">X-RAY: OFF</button>
-              <button id="btnOrbitMode" class="btn-ord btn-sm" onclick="benchToggleOrbitOnly()">MODE: TOUCH + SPIN</button>
-            </div>
-          </div>
-
-
-          <!-- ================================================================
-               V2 DOWNRANGE TARGET CARRIER / EXTERIOR BALLISTICS CONTROL BAR
-               ================================================================ -->
-          <div class="range-bar">
-            <div class="deck-title range-title">
-              <span>FIG. 1-2 // DOWNRANGE TARGET CARRIER &amp; EXTERIOR BALLISTICS LAB</span>
-              <span>25-YD ZERO &middot; TRUE-YARDAGE PHYSICS &middot; COMPRESSED 3D DISPLAY</span>
-            </div>
-
-            <div class="range-btn-row">
-              <button id="btnDeploy" class="btn-ord btn-range" onclick="rangeDeploy()">+ DEPLOY TARGET</button>
-              <button id="btnCycleTarget" class="btn-ord" onclick="rangeCycleTarget()">CYCLE TARGET: 1/4</button>
-              <button id="btnPushOut" class="btn-ord" onclick="rangePushOut()">PUSH TARGET OUT: 7 YD</button>
-              <button id="btnInspect" class="btn-ord btn-accent" onclick="rangeInspect()">INSPECT TARGET (PULL IN)</button>
-              <button id="btnClearTarget" class="btn-ord btn-sm" onclick="rangeClearTarget()">FRESH TARGET</button>
-              <button class="btn-ord btn-fire" onclick="rangeFire()">FIRE AT TARGET</button>
-            </div>
-
-            <div class="range-btn-row">
-              <span class="cam-label">VIEW:</span>
-              <button id="btnViewRange" class="btn-ord btn-sm" onclick="rangeView('range')">RANGE DIORAMA</button>
-              <button id="btnViewSights" class="btn-ord btn-sm btn-accent" onclick="rangeView('sights')">SIGHT PICTURE / AIM</button>
-              <button id="btnViewBench" class="btn-ord btn-sm" onclick="rangeView('bench')">BENCH ONLY</button>
-              <span class="cam-label">HOLD:</span>
-              <button id="btnAutoHold" class="btn-ord btn-sm" onclick="rangeAutoHold()">AUTO HOLDOVER</button>
-              <button class="btn-ord btn-sm" onclick="rangeAimElev(-1)">ELEV &darr;</button>
-              <button class="btn-ord btn-sm" onclick="rangeAimElev(1)">ELEV &uarr;</button>
-              <button class="btn-ord btn-sm" onclick="rangeAimWind(-1)">WIND &larr;</button>
-              <button class="btn-ord btn-sm" onclick="rangeAimWind(1)">WIND &rarr;</button>
-              <button class="btn-ord btn-sm" onclick="rangeResetAim()">RESET AIM</button>
-              <button id="btnWind" class="btn-ord btn-sm" onclick="rangeWind()">WIND: 0 MPH</button>
-            </div>
-
-            <div class="ball-hud">
-              <div class="ball-cell"><span class="ball-k">RANGE</span><span id="ballRange" class="ball-v">7 YD</span></div>
-              <div class="ball-cell"><span class="ball-k">TARGET FACE</span><span id="ballTarget" class="ball-v">NRA B-8 BULLSEYE</span></div>
-              <div class="ball-cell"><span class="ball-k">CARTRIDGE / MUZZLE</span><span id="ballLoad" class="ball-v">CCI MINI-MAG 40gr / 1075 FPS</span></div>
-              <div class="ball-cell"><span class="ball-k">TIME OF FLIGHT</span><span id="ballTof" class="ball-v">0.020 s</span></div>
-              <div class="ball-cell"><span class="ball-k">GRAVITY DROP FROM BORE</span><span id="ballDrop" class="ball-v">0.1" bore drop</span></div>
-              <div class="ball-cell"><span class="ball-k">PATH VS 25-YD ZERO</span><span id="ballPoI" class="ball-v">-0.2" vs zero</span></div>
-              <div class="ball-cell"><span class="ball-k">REQUIRED HOLDOVER</span><span id="ballHold" class="ball-v">+0.0 MOA / +0.0"</span></div>
-              <div class="ball-cell"><span class="ball-k">CURRENT SIGHT HOLD</span><span id="ballAim" class="ball-v">+0.0 E / +0.0 W MOA</span></div>
-              <div class="ball-cell"><span class="ball-k">NOMINAL GROUP</span><span id="ballGroup" class="ball-v">2.2 MOA nominal</span></div>
-              <div class="ball-cell"><span class="ball-k">CROSSWIND</span><span id="ballWind" class="ball-v">0 MPH</span></div>
-              <div class="ball-cell"><span class="ball-k">TERMINAL VELOCITY</span><span id="ballVelocity" class="ball-v">1050 FPS / 95 FT-LB</span></div>
-              <div class="ball-cell"><span class="ball-k">SHOTS / ON FACE</span><span id="ballShots" class="ball-v">0 / 0 ON FACE</span></div>
-            </div>
-
-            <div class="ball-footer-row">
-              <div id="ballSight" class="ball-sight-ok">CLEAR</div>
-              <div id="ballLast" class="ball-last">NO SHOTS RECORDED</div>
-            </div>
-            <div id="ballObstruct" class="ball-warn">SIGHT PICTURE BLOCKED &mdash; THE MUZZLE DEVICE SITS ABOVE THIS SIGHT LINE. SWAP TO SUPPRESSOR-HEIGHT IRONS.</div>
-            <div id="ballNotice" class="ball-notice">3D RANGE IS COMPRESSED / DISPLAY-SCALED. ALL DROP, TIME OF FLIGHT, WIND &amp; DISPERSION ARE COMPUTED AT TRUE YARDAGE.</div>
-          </div>
-
-          <!-- Bench Control Deck (Left: Operations, Right: Ammo & Muzzle Config) -->
-          <div class="control-deck">
-            <div class="deck-panel">
-              <div class="deck-title">
-                <span>MECHANICAL OPERATIONS</span>
-                <span>OR CLICK PARTS DIRECTLY IN 3D</span>
-              </div>
-              <div class="btn-grid">
-                <button class="btn-ord btn-fire" onclick="benchFire()">PULL TRIGGER</button>
-                <button class="btn-ord" onclick="benchRack()">RACK SLIDE</button>
-                <button id="btnCatch" class="btn-ord" onclick="benchCatch()">LOCK SLIDE OPEN</button>
-                <button id="btnSafety" class="btn-ord" onclick="benchSafety()">SAFETY: FIRE (DN)</button>
-                <button id="btnMagToggle" class="btn-ord" onclick="benchMagToggle()">EJECT MAG</button>
-                <button class="btn-ord btn-sm" onclick="benchLoadMag(5)">LOAD +5</button>
-                <button class="btn-ord btn-sm" onclick="benchLoadMag(20)">FULL MAG (20)</button>
-                <button class="btn-ord btn-sm" onclick="benchEmptyMag()">EMPTY MAG (0)</button>
-                <button id="btnStrip" class="btn-ord btn-accent" onclick="benchStrip()">FIELD STRIP</button>
-                <button id="btnFlag" class="btn-ord btn-sm" onclick="benchFlag()">DRY-FIRE FLAG</button>
-                <button id="btnTrigShoe" class="btn-ord btn-sm" onclick="benchTrigShoe()">TRIGGER: FLAT</button>
-                <button class="btn-ord btn-sm" onclick="benchCleanBore()">RUN BORE BRUSH</button>
-              </div>
-            </div>
-
-            <div class="deck-panel">
-              <div class="deck-title">
-                <span>AMMUNITION &amp; MUZZLE ACOUSTICS LAB</span>
-                <span>4-INCH BARREL CHRONO</span>
-              </div>
-
-              <div class="config-row">
-                <label class="config-label" for="ammoSelect">CARTRIDGE PROFILE (.22 LONG RIFLE):</label>
-                <select id="ammoSelect" class="ord-select" onchange="benchSetAmmo(this.value)">
-                  <option value="cci_minimag">CCI Mini-Mag 40gr CPRN &mdash; 1,075 fps (Clean / Reliable)</option>
-                  <option value="cci_stinger">CCI Stinger 32gr CPHP &mdash; 1,260 fps (Supersonic Crack!)</option>
-                  <option value="cci_sv">CCI Standard Velocity 40gr LRN &mdash; 925 fps (Subsonic)</option>
-                  <option value="cci_sup">CCI Suppressor 45gr HP &mdash; 895 fps (Heavy Subsonic)</option>
-                  <option value="cci_quiet">CCI Quiet-22 40gr LRN &mdash; 660 fps (Short-Strokes / Manual!)</option>
-                  <option value="bulk_lead">Bulk Unplated Soft Lead 36gr &mdash; 1,020 fps (Heavy Leading!)</option>
+            <!-- ============================ TOP BORDER ============================ -->
+            <div class="console-rail rail-top">
+              <div class="bezel-ammo-bar">
+                <label class="bezel-ammo-lbl" for="ammoSelect">LOAD</label>
+                <select id="ammoSelect" class="ord-select bezel-select" onchange="benchSetAmmo(this.value)" title="Select .22 LR cartridge profile">
+                  <option value="cci_minimag">CCI Mini-Mag 40gr &mdash; 1,075 fps (Clean)</option>
+                  <option value="cci_stinger">CCI Stinger 32gr &mdash; 1,260 fps (Crack)</option>
+                  <option value="cci_sv">CCI Std Vel 40gr &mdash; 925 fps (Subsonic)</option>
+                  <option value="cci_sup">CCI Suppressor 45gr &mdash; 895 fps (Sub)</option>
+                  <option value="cci_quiet">CCI Quiet-22 40gr &mdash; 660 fps (Short-Stroke)</option>
+                  <option value="bulk_lead">Bulk Soft Lead 36gr &mdash; 1,020 fps (Fouls)</option>
                 </select>
+                <span id="simPanelStatus" class="sim-status">SEMI-AUTO</span>
+              </div>
+              <div class="rail-btns bezel-strip bezel-top">
+                <button class="btn-ord btn-pad pad-round" onclick="benchCamera('right34')" title="3/4 Right Bench View" aria-label="3/4 Right Bench View"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 10l5-3h6l1 3-4 2H5z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5 10l-1 4h2l1-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><span class="pad-lbl">3/4</span></button>
+                <button class="btn-ord btn-pad pad-round" onclick="benchCamera('left')" title="Left Controls View" aria-label="Left Controls View"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M14 7H4l-2 2 2 2h10z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="9" r="1.3" fill="currentColor"/></svg><span class="pad-lbl">LEFT</span></button>
+                <button class="btn-ord btn-pad pad-round" onclick="benchCamera('top')" title="Top Ejection Port View" aria-label="Top Ejection Port View"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="6" width="10" height="4" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 2v3M6 3.5L8 5.5l2-2" fill="none" stroke="currentColor" stroke-width="1.4"/></svg><span class="pad-lbl">PORT</span></button>
+                <button class="btn-ord btn-pad pad-round" onclick="benchCamera('muzzle')" title="Muzzle Crown View" aria-label="Muzzle Crown View"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="8" r="2.2" fill="currentColor"/></svg><span class="pad-lbl">MUZ</span></button>
+                <button class="btn-ord btn-pad pad-round" onclick="benchCamera('rear')" title="Rear / Enclosed Hammer View" aria-label="Rear / Enclosed Hammer View"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 12V6h3v3h4V6h3v6z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="7.5" r="1.2" fill="currentColor"/></svg><span class="pad-lbl">REAR</span></button>
+                <button class="btn-ord btn-pad pad-round btn-accent" onclick="benchCamera('sights')" title="Look Down Iron Sights" aria-label="Look Down Iron Sights"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 12V7h3v3h6V7h3v5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4v6" stroke="currentColor" stroke-width="1.8"/></svg><span class="pad-lbl">IRNS</span></button>
+                <button id="btnViewRange" class="btn-ord btn-pad pad-round" onclick="rangeView('range')" title="Range Diorama Camera" aria-label="Range Diorama Camera"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 13L6 4h4l4 9" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M4.5 10h7M6 7h4" stroke="currentColor" stroke-width="1.2"/></svg><span class="pad-lbl">RNG</span></button>
+                <button id="btnViewSights" class="btn-ord btn-pad pad-round btn-accent" onclick="rangeView('sights')" title="Sight Picture / Aim Mode" aria-label="Sight Picture / Aim Mode"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 1.5v4M8 10.5v4M1.5 8h4M10.5 8h4" stroke="currentColor" stroke-width="1.4"/></svg><span class="pad-lbl">AIM</span></button>
+                <button id="btnViewBench" class="btn-ord btn-pad pad-round" onclick="rangeView('bench')" title="Bench-Only Inspection View" aria-label="Bench-Only Inspection View"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 11l6-3 6 3-6 3zM2 7l6-3 6 3" fill="none" stroke="currentColor" stroke-width="1.4"/></svg><span class="pad-lbl">BNCH</span></button>
+                <button id="btnXray" class="btn-ord btn-pad pad-round btn-accent" onclick="benchToggleXray()" title="Toggle X-Ray Cutaway" aria-label="Toggle X-Ray Cutaway"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><rect x="2.5" y="4.5" width="11" height="7" rx="1" fill="none" stroke="currentColor" stroke-width="1.3" stroke-dasharray="2 1.5"/><path d="M4.5 8h7M6 6.2v3.6M8.5 6.2v3.6" stroke="currentColor" stroke-width="1.3"/></svg><span class="pad-lbl">XRAY</span></button>
+                <button id="btnOrbitMode" class="btn-ord btn-pad pad-round" onclick="benchToggleOrbitOnly()" title="Toggle Touch Parts vs Spin-Only" aria-label="Toggle Touch Parts vs Spin-Only"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M13 8a5 5 0 1 1-1.5-3.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M13 2.5v3h-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><span class="pad-lbl">SPIN</span></button>
+                <button id="btnStock" class="btn-ord btn-pad pad-round" onclick="cyclePaperStock()" title="Cycle Archival Paper Stock" aria-label="Cycle Archival Paper Stock"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5h5.5L12.5 5.5v8H4z" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M9 2.5v3h3.5M5.8 8h4.5M5.8 10.5h4.5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg><span class="pad-lbl">BOND</span></button>
+                <button id="btnAudio" class="btn-ord btn-pad pad-round is-on" onclick="toggleAudioMute()" title="Toggle Simulated Audio" aria-label="Toggle Simulated Audio"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 6.5h2.5L8.5 3.5v9L5 9.5H2.5z" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M11 5.5a3.5 3.5 0 0 1 0 5M12.8 4a6 6 0 0 1 0 8" fill="none" stroke="currentColor" stroke-width="1.3"/></svg><span class="pad-lbl">SND</span></button>
+                <button id="btnSimAuto" class="btn-ord btn-pad pad-sq btn-sim" onclick="shopToggleSimAuto()" title="SIM-AUTO [TEST ONLY] Conceptual Cyclic Toggle" aria-label="SIM-AUTO [TEST ONLY] Conceptual Cyclic Toggle"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2L1.8 13h12.4z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 6.2v3.3" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="11.3" r="0.9" fill="currentColor"/></svg><span class="pad-lbl">AUTO</span></button>
+                <button id="btnHoldFire" class="btn-ord btn-pad pad-sq btn-fire btn-hold" title="Hold to Run Simulated Cyclic Burst (Arm AUTO first)" aria-label="Hold to Run Simulated Cyclic Burst (Arm AUTO first)" disabled><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 5l3 3-3 3M7 5l3 3-3 3M11 5l3 3-3 3" fill="none" stroke="currentColor" stroke-width="1.7"/></svg><span class="pad-lbl">BRST</span></button>
+                <button id="btnTelemetry" class="btn-ord btn-pad pad-sq" onclick="toggleTelemetryDrawer()" title="Open Live Telemetry, Ballistics & Presets" aria-label="Open Live Telemetry, Ballistics & Presets"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13V8M6.5 13V4M10 13V6.5M13.5 13V3" stroke="currentColor" stroke-width="1.8"/><path d="M2 13.5h12.5" stroke="currentColor" stroke-width="1.3"/></svg><span class="pad-lbl">DATA</span></button>
+                <button class="btn-ord btn-pad pad-sq" onclick="openGlossaryIndex()" title="Open Illustrated Glossary Popup" aria-label="Open Illustrated Glossary Popup"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M6.3 6.2a1.8 1.8 0 1 1 2.4 1.7c-.6.3-.7.7-.7 1.3" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="11.5" r="0.9" fill="currentColor"/></svg><span class="pad-lbl">GLOS</span></button>
+                <button id="btnConsoleExpand" class="btn-ord btn-pad pad-sq btn-accent" onclick="toggleConsoleFullscreen()" title="Pin / Fullscreen Live Console" aria-label="Pin / Fullscreen Live Console"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 6V2.5H6M10 2.5h3.5V6M13.5 10v3.5H10M6 13.5H2.5V10" fill="none" stroke="currentColor" stroke-width="1.6"/></svg><span class="pad-lbl">FULL</span></button>
+                <button id="btnConsoleClose" class="btn-ord btn-pad pad-sq btn-close-only" onclick="toggleConsoleFullscreen(false)" title="Exit Fullscreen Console" aria-label="Exit Fullscreen Console"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9" stroke="currentColor" stroke-width="1.8"/></svg><span class="pad-lbl">EXIT</span></button>
+              </div>
+            </div>
+
+            <!-- ============================ LEFT BORDER =========================== -->
+            <div class="console-rail rail-left">
+              <div class="rail-btns bezel-col">
+                <button class="btn-ord btn-pad pad-sq btn-fire btn-trigger" onclick="benchFire()" title="Pull Trigger (Fire / Dry-Fire)" aria-label="Pull Trigger (Fire / Dry-Fire)"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="8" r="2" fill="currentColor"/><path d="M8 1v2.5M8 12.5V15M1 8h2.5M12.5 8H15" stroke="currentColor" stroke-width="1.4"/></svg><span class="pad-lbl">FIRE</span></button>
+                <button class="btn-ord btn-pad pad-sq" onclick="benchRack()" title="Rack Slide Full Travel" aria-label="Rack Slide Full Travel"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="4.5" width="10" height="3.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M12 11.5H4M6.5 9.5L4 11.5l2.5 2" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><span class="pad-lbl">RACK</span></button>
+                <button id="btnCatch" class="btn-ord btn-pad pad-sq" onclick="benchCatch()" title="Lock / Release Slide Catch" aria-label="Lock / Release Slide Catch"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 6h7v3h4" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M7.5 12V8.5" stroke="currentColor" stroke-width="1.8"/><circle cx="7.5" cy="12.5" r="1.2" fill="currentColor"/></svg><span class="pad-lbl">LOCK</span></button>
+                <button id="btnSafety" class="btn-ord btn-pad pad-sq" onclick="benchSafety()" title="Toggle Ambi Manual Safety" aria-label="Toggle Ambi Manual Safety"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2l5 2.2v3.6c0 3.2-2.2 5.3-5 6.4-2.8-1.1-5-3.2-5-6.4V4.2z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6 8l1.5 1.5L10.5 6.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><span class="pad-lbl">SAFE</span></button>
+                <button id="btnMagToggle" class="btn-ord btn-pad pad-sq" onclick="benchMagToggle()" title="Eject / Insert Magazine" aria-label="Eject / Insert Magazine"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 2.5h5l-1 11h-5z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12.5 6v5M10.8 9.2l1.7 1.8 1.7-1.8" fill="none" stroke="currentColor" stroke-width="1.3"/></svg><span class="pad-lbl">MAG</span></button>
+                <button class="btn-ord btn-pad pad-sq" onclick="benchLoadMag(5)" title="Load +5 Rounds into Magazine" aria-label="Load +5 Rounds into Magazine"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="4" width="5" height="9" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M11.5 5.5v5M9 8h5" stroke="currentColor" stroke-width="1.6"/></svg><span class="pad-lbl">+5</span></button>
+                <button class="btn-ord btn-pad pad-sq" onclick="benchLoadMag(25)" title="Fill Magazine to Capacity" aria-label="Fill Magazine to Capacity"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><rect x="4" y="2.5" width="8" height="11" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 5h5M5.5 7.5h5M5.5 10h5" stroke="currentColor" stroke-width="1.4"/></svg><span class="pad-lbl">FILL</span></button>
+                <button class="btn-ord btn-pad pad-sq" onclick="benchEmptyMag()" title="Empty Magazine (0 Rounds)" aria-label="Empty Magazine (0 Rounds)"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><rect x="4" y="2.5" width="8" height="11" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M5.5 5.5l5 5M10.5 5.5l-5 5" stroke="currentColor" stroke-width="1.4"/></svg><span class="pad-lbl">CLR</span></button>
+                <button id="btnStrip" class="btn-ord btn-pad pad-sq btn-accent" onclick="benchStrip()" title="Field-Strip / Reassemble Slide" aria-label="Field-Strip / Reassemble Slide"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><rect x="2.5" y="3" width="11" height="3.2" fill="none" stroke="currentColor" stroke-width="1.4"/><rect x="2.5" y="9.8" width="9" height="3.2" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 6.8v2.4" stroke="currentColor" stroke-width="1.4" stroke-dasharray="1.2 1.2"/></svg><span class="pad-lbl">STRP</span></button>
+                <button id="btnFlag" class="btn-ord btn-pad pad-sq" onclick="benchFlag()" title="Insert / Remove Dry-Fire Chamber Flag" aria-label="Insert / Remove Dry-Fire Chamber Flag"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 14V2.5l8.5 3L4 8.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><span class="pad-lbl">FLAG</span></button>
+                <button id="btnTrigShoe" class="btn-ord btn-pad pad-sq" onclick="benchTrigShoe()" title="Swap Flat vs Curved Trigger Shoe" aria-label="Swap Flat vs Curved Trigger Shoe"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3h6v2.5H8.5c0 3 1 5.2 2.5 7" fill="none" stroke="currentColor" stroke-width="1.6"/></svg><span class="pad-lbl">FLAT</span></button>
+                <button class="btn-ord btn-pad pad-sq" onclick="benchCleanBore()" title="Run Bronze Bore Brush (Clean Lead Fouling)" aria-label="Run Bronze Bore Brush (Clean Lead Fouling)"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h12M8 5v6M10.5 5.5v5M13 6v4" stroke="currentColor" stroke-width="1.5"/></svg><span class="pad-lbl">BRSH</span></button>
+                <button class="btn-ord btn-pad pad-sq" onclick="benchCycleMuzzle()" title="Cycle Muzzle Device" aria-label="Cycle Muzzle Device"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="6" width="8" height="4" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M11.5 5a3.2 3.2 0 1 1 0 6" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M11 3.5l1.5 1.8-2 .4" fill="none" stroke="currentColor" stroke-width="1.3"/></svg><span class="pad-lbl">MUZ</span></button>
+              </div>
+            </div>
+
+            <!-- ============================ CENTER STAGE ========================== -->
+            <div class="console-stage">
+              <div class="viewport-frame">
+                <canvas id="glCanvas" aria-label="Interactive 3D SIG Sauer P322 Pistol Model"></canvas>
+                <canvas id="sightCanvas" class="sight-canvas" aria-label="Iron sight reticle overlay for downrange aiming"></canvas>
+
+                <div id="hudSpecOverlay" class="hud-top-left">
+                  <div>HAMMER: <strong>COCKED (SAO)</strong> | TRIG: <strong>FLAT</strong></div>
+                  <div>LOAD: <strong>CCI MINI-MAG 40gr</strong> (1075 FPS / 4" BBL)</div>
+                  <div>MUZZLE: <strong>FLUSH CAP (UNSUPPRESSED)</strong></div>
+                </div>
+
+                <div class="hud-top-right">
+                  <div id="hudStatusPill" class="hud-pill status-hot">CONDITION: HOT / READY</div>
+                </div>
+
+                <div id="hudHoverTag" class="hud-hover-tag">ALUMINUM SLIDE &mdash; DRAG TO RACK</div>
+
+                <div id="simAutoBadge" class="sim-badge">
+                  <span class="sim-led"></span>
+                  <strong>SIM-AUTO [TEST ONLY]</strong>
+                  <small>HYPOTHETICAL CYCLIC DEMO &middot; NOT A REAL PART &middot; NOT FOR SALE &middot; NO HARDWARE EXISTS FOR THIS PISTOL</small>
+                </div>
+
+                <div class="hud-bottom-hint">
+                  <span><strong>DRAG PART:</strong> SLIDE / MAG / CONTROLS</span>
+                  <span><strong>DRAG SPACE:</strong> SPIN 360&deg; &middot; <strong>PINCH:</strong> ZOOM</span>
+                </div>
               </div>
 
-              <div class="config-row">
-                <span class="config-label">MUZZLE CONFIGURATION (COMPARE SIGHTS &amp; SOUND!):</span>
-                <div class="muzzle-pills">
-                  <button id="btnMuzNone" class="btn-ord btn-sm active" onclick="benchSetMuzzle('none')">FLUSH CAP</button>
-                  <button id="btnMuzComp" class="btn-ord btn-sm" onclick="benchSetMuzzle('comp')">PORTED COMP</button>
-                  <button id="btnMuzComm" class="btn-ord btn-sm" onclick="benchSetMuzzle('commercial')">1/2x28 RIMFIRE CAN</button>
-                  <button id="btnMuzOil" class="btn-ord btn-sm" onclick="benchSetMuzzle('oilcan')">SIM. OIL CANISTER</button>
+              <!-- POP-UP DATA DRAWER: telemetry + ballistics + sight readout + presets -->
+              <div id="telemetryDrawer" class="telemetry-drawer" aria-label="Live telemetry and bench presets">
+                <div class="drawer-head">
+                  <strong>&#9707; LIVE TELEMETRY / BALLISTICS / PRESETS</strong>
+                  <button class="btn-ord btn-sm" onclick="toggleTelemetryDrawer()">&#10005; CLOSE</button>
+                </div>
+                <div class="drawer-scroll">
+                  <div class="shop-readout" style="margin-bottom:8px;">
+                    <strong id="shopSightLabel">FACTORY 3-DOT GREEN FO  //  SIG SAUER</strong>
+                    <span id="shopSightBlurb">Standard P322 high-visibility green fiber-optic front with adjustable rear.</span>
+                  </div>
+
+                  <div class="drawer-sub">MECHANICAL TELEMETRY</div>
+                  <div class="bench-telemetry-grid">
+                    <div class="tele-cell">
+                      <span class="tele-label">CHAMBER</span>
+                      <span id="teleChamber" class="tele-val hot">CHAMBER HOT (.22)</span>
+                    </div>
+                    <div class="tele-cell">
+                      <span class="tele-label">MAGAZINE</span>
+                      <span id="teleMag" class="tele-val">SEATED (20/20)</span>
+                    </div>
+                    <div class="tele-cell">
+                      <span class="tele-label">ACTION / INTERLOCK</span>
+                      <span id="teleAction" class="tele-val hot">COCKED / BATTERY</span>
+                    </div>
+                    <div class="tele-cell">
+                      <span class="tele-label">SHOOTER EAR PEAK</span>
+                      <span id="teleDb" class="tele-val hot">155.4 dB</span>
+                    </div>
+                    <div class="tele-cell">
+                      <span class="tele-label">SIGHT LINE</span>
+                      <span id="teleSight" class="tele-val safe">CLEAR / FACTORY</span>
+                    </div>
+                    <div class="tele-cell">
+                      <span class="tele-label">BORE LEADING</span>
+                      <div style="display:flex; align-items:center; gap:6px;">
+                        <div class="fouling-track" style="flex:1;"><div id="teleFoulFill" class="fouling-fill"></div></div>
+                        <span id="teleFoulText" class="tele-val" style="font-size:0.74rem; margin:0;">4%</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="drawer-sub">EXTERIOR BALLISTICS HUD</div>
+                  <div class="ball-hud">
+                    <div class="ball-cell"><span class="ball-k">RANGE</span><span id="ballRange" class="ball-v">7 YD</span></div>
+                    <div class="ball-cell"><span class="ball-k">TARGET FACE</span><span id="ballTarget" class="ball-v">NRA B-8 BULLSEYE</span></div>
+                    <div class="ball-cell"><span class="ball-k">CARTRIDGE / MUZZLE</span><span id="ballLoad" class="ball-v">CCI MINI-MAG 40gr / 1075 FPS</span></div>
+                    <div class="ball-cell"><span class="ball-k">TIME OF FLIGHT</span><span id="ballTof" class="ball-v">0.020 s</span></div>
+                    <div class="ball-cell"><span class="ball-k">GRAVITY DROP</span><span id="ballDrop" class="ball-v">0.1" bore drop</span></div>
+                    <div class="ball-cell"><span class="ball-k">PATH VS 25-YD ZERO</span><span id="ballPoI" class="ball-v">-0.2" vs zero</span></div>
+                    <div class="ball-cell"><span class="ball-k">REQUIRED HOLDOVER</span><span id="ballHold" class="ball-v">+0.0 MOA / +0.0"</span></div>
+                    <div class="ball-cell"><span class="ball-k">CURRENT SIGHT HOLD</span><span id="ballAim" class="ball-v">+0.0 E / +0.0 W MOA</span></div>
+                    <div class="ball-cell"><span class="ball-k">NOMINAL GROUP</span><span id="ballGroup" class="ball-v">2.2 MOA nominal</span></div>
+                    <div class="ball-cell"><span class="ball-k">CROSSWIND</span><span id="ballWind" class="ball-v">0 MPH</span></div>
+                    <div class="ball-cell"><span class="ball-k">TERMINAL VELOCITY</span><span id="ballVelocity" class="ball-v">1050 FPS / 95 FT-LB</span></div>
+                    <div class="ball-cell"><span class="ball-k">SHOTS / ON FACE</span><span id="ballShots" class="ball-v">0 / 0 ON FACE</span></div>
+                  </div>
+                  <div id="ballObstruct" class="ball-warn">SIGHT PICTURE BLOCKED &mdash; THE MUZZLE DEVICE SITS ABOVE THIS SIGHT LINE. SWAP TO SUPPRESSOR-HEIGHT IRONS.</div>
+                  <div id="ballNotice" class="ball-notice">3D RANGE IS COMPRESSED / DISPLAY-SCALED. ALL DROP, TIME OF FLIGHT, WIND &amp; DISPERSION ARE COMPUTED AT TRUE YARDAGE.</div>
+
+                  <div class="drawer-sub">BENCH PRESETS (SECTIONS II &amp; III)</div>
+                  <div class="preset-grid">
+                    <button class="btn-ord btn-sm" onclick="testPresetInBench('cci_minimag', null)">TEST IN 3D</button>
+                    <button class="btn-ord btn-sm" onclick="testPresetInBench('cci_stinger', 'commercial')">HEAR CRACK</button>
+                    <button class="btn-ord btn-sm" onclick="testPresetInBench('cci_sv', 'commercial')">TEST QUIET</button>
+                    <button class="btn-ord btn-sm" onclick="testPresetInBench('cci_sup', 'commercial')">TEST CAN</button>
+                    <button class="btn-ord btn-sm" onclick="testPresetInBench('cci_quiet', 'commercial')">TEST JAM</button>
+                    <button class="btn-ord btn-sm" onclick="testPresetInBench('bulk_lead', 'none')">TEST FOUL</button>
+                    <button class="btn-ord btn-sm" onclick="testPresetInBench('cci_minimag', 'none', 'sights')">VIEW SIGHTS</button>
+                    <button class="btn-ord btn-sm" onclick="testPresetInBench('cci_sup', 'commercial', 'sights')">VIEW &amp; HEAR CAN</button>
+                    <button class="btn-ord btn-sm" onclick="testPresetInBench('cci_sv', 'oilcan', 'sights')">BLOCKED SIGHTS</button>
+                  </div>
                 </div>
               </div>
             </div>
+
+            <!-- ============================ RIGHT BORDER =========================== -->
+            <div class="console-rail rail-right">
+              <div class="rail-btns bezel-col">
+                <button id="btnMuzNone" class="btn-ord btn-pad pad-sq active" onclick="benchSetMuzzle('none')" title="Flush 1/2x28 Thread Cap (Unsuppressed)" aria-label="Flush 1/2x28 Thread Cap (Unsuppressed)"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6h8v4H2z" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="5.5" width="2.5" height="5" fill="currentColor"/></svg><span class="pad-lbl">CAP</span></button>
+                <button id="btnMuzComp" class="btn-ord btn-pad pad-sq" onclick="benchSetMuzzle('comp')" title="1/2x28 Ported Rimfire Compensator" aria-label="1/2x28 Ported Rimfire Compensator"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6h11v4H2z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M7 6V3M9.5 6V3M12 6V3" stroke="currentColor" stroke-width="1.4"/></svg><span class="pad-lbl">COMP</span></button>
+                <button id="btnMuzComm" class="btn-ord btn-pad pad-sq" onclick="benchSetMuzzle('commercial')" title="1/2x28 Commercial 7-Baffle Rimfire Can" aria-label="1/2x28 Commercial 7-Baffle Rimfire Can"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="5" width="12" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5 5v6M8 5v6M11 5v6" stroke="currentColor" stroke-width="1.2"/></svg><span class="pad-lbl">CAN</span></button>
+                <button id="btnMuzOil" class="btn-ord btn-pad pad-sq" onclick="benchSetMuzzle('oilcan')" title="Simulated Oversized 3-Inch Canister" aria-label="Simulated Oversized 3-Inch Canister"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="3" width="10.5" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 5.5h5.5M5.5 8h5.5M5.5 10.5h5.5" stroke="currentColor" stroke-width="1.2"/></svg><span class="pad-lbl">OIL</span></button>
+                <button id="btnSight_factory" class="btn-ord btn-pad pad-sq active" onclick="shopSetSight('factory')" title="Factory 3-Dot Green Fiber-Optic Sights" aria-label="Factory 3-Dot Green Fiber-Optic Sights"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 11h12" stroke="currentColor" stroke-width="1.5"/><circle cx="4.5" cy="8" r="1.4" fill="currentColor"/><circle cx="8" cy="7.5" r="1.6" fill="currentColor"/><circle cx="11.5" cy="8" r="1.4" fill="currentColor"/></svg><span class="pad-lbl">FACT</span></button>
+                <button id="btnSight_suppressor" class="btn-ord btn-pad pad-sq" onclick="shopSetSight('suppressor')" title="Suppressor-Height Steel Sights (Clears 3" Can)" aria-label="Suppressor-Height Steel Sights (Clears 3" Can)"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 13h12" stroke="currentColor" stroke-width="1.5"/><rect x="3.5" y="4" width="2.2" height="9" fill="currentColor"/><rect x="10.3" y="3.5" width="2.2" height="9.5" fill="currentColor"/></svg><span class="pad-lbl">TALL</span></button>
+                <button id="btnSight_target_orange" class="btn-ord btn-pad pad-sq" onclick="shopSetSight('target_orange')" title="Target Blackout Rear + Orange Front Post" aria-label="Target Blackout Rear + Orange Front Post"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 12V7h4v3h4V7h4v5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="6.2" r="1.8" fill="currentColor"/></svg><span class="pad-lbl">TGT</span></button>
+                <button id="btnSight_tritium" class="btn-ord btn-pad pad-sq" onclick="shopSetSight('tritium')" title="Tritium Self-Luminous Night Sights" aria-label="Tritium Self-Luminous Night Sights"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 11.5h12" stroke="currentColor" stroke-width="1.4"/><circle cx="5" cy="8" r="1.7" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="11" cy="8" r="1.7" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 3v2M5 4l1 1.5M11 4l-1 1.5" stroke="currentColor" stroke-width="1.2"/></svg><span class="pad-lbl">TRIT</span></button>
+                <button id="btnMag25" class="btn-ord btn-pad pad-sq" onclick="shopToggleMag25()" title="Toggle 25-Round Extended Magazine" aria-label="Toggle 25-Round Extended Magazine"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 2h5l-1 9H4z" fill="none" stroke="currentColor" stroke-width="1.4"/><rect x="3.2" y="11" width="6.3" height="3" fill="currentColor"/></svg><span class="pad-lbl">20RD</span></button>
+                <button id="btnTrigRed" class="btn-ord btn-pad pad-sq" onclick="shopToggleTrigger()" title="Toggle Red Anodized Billet Trigger" aria-label="Toggle Red Anodized Billet Trigger"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 3.5h8v2H9L7.5 13" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="9.5" cy="9.5" r="1.3" fill="currentColor"/></svg><span class="pad-lbl">TRIG</span></button>
+                <button id="btnRailLight" class="btn-ord btn-pad pad-sq" onclick="shopToggleLight()" title="Toggle M1913 Picatinny Rail Light" aria-label="Toggle M1913 Picatinny Rail Light"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><rect x="2.5" y="5.5" width="6.5" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M9.5 6.5l4.5-2.2v7.4L9.5 9.5" fill="none" stroke="currentColor" stroke-width="1.3"/></svg><span class="pad-lbl">LITE</span></button>
+              </div>
+            </div>
+
+            <!-- ============================ BOTTOM BORDER ========================== -->
+            <div class="console-rail rail-bottom">
+              <div class="rail-btns bezel-strip bezel-bottom">
+                <button id="btnDeploy" class="btn-ord btn-pad pad-sq btn-range" onclick="rangeDeploy()" title="Deploy / Stow Overhead Target Carrier" aria-label="Deploy / Stow Overhead Target Carrier"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h12M8 3v3" stroke="currentColor" stroke-width="1.5"/><rect x="4" y="6" width="8" height="7.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="9.8" r="1.8" fill="currentColor"/></svg><span class="pad-lbl">DPLY</span></button>
+                <button id="btnCycleTarget" class="btn-ord btn-pad pad-sq" onclick="rangeCycleTarget()" title="Cycle Target Type (B-8 / AR500 Gong / B-27 / Grid)" aria-label="Cycle Target Type (B-8 / AR500 Gong / B-27 / Grid)"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><rect x="2.5" y="4.5" width="8" height="8" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M6 2.5h7.5V10" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="6.5" cy="8.5" r="1.6" fill="currentColor"/></svg><span class="pad-lbl">T1/4</span></button>
+                <button id="btnPushOut" class="btn-ord btn-pad pad-sq" onclick="rangePushOut()" title="Push Target Out (7 / 15 / 25 / 50 / 75 / 100 yd)" aria-label="Push Target Out (7 / 15 / 25 / 50 / 75 / 100 yd)"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 12.5L7 4.5M13.5 12.5L9 4.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 12V5.5M6 7.5L8 5.2l2 2.3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><span class="pad-lbl">7YD</span></button>
+                <button id="btnInspect" class="btn-ord btn-pad pad-sq btn-accent" onclick="rangeInspect()" title="Inspect Target Up Close (View Hits & Rings)" aria-label="Inspect Target Up Close (View Hits & Rings)"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="7" cy="7" r="1.5" fill="currentColor"/><path d="M10.3 10.3L14 14" stroke="currentColor" stroke-width="1.8"/></svg><span class="pad-lbl">INSP</span></button>
+                <button id="btnClearTarget" class="btn-ord btn-pad pad-sq" onclick="rangeClearTarget()" title="Install Fresh Target (Clear Hit Holes)" aria-label="Install Fresh Target (Clear Hit Holes)"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="3" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M5.5 8l2 2 3.5-4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg><span class="pad-lbl">FRSH</span></button>
+                <button class="btn-ord btn-pad pad-sq btn-fire" onclick="rangeFire()" title="Fire at Downrange Target" aria-label="Fire at Downrange Target"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="8" r="2" fill="currentColor"/><path d="M8 1v2.5M8 12.5V15M1 8h2.5M12.5 8H15" stroke="currentColor" stroke-width="1.4"/></svg><span class="pad-lbl">SHOT</span></button>
+                <button id="btnAutoHold" class="btn-ord btn-pad pad-round" onclick="rangeAutoHold()" title="Auto-Dial Ballistic Holdover for Current Yardage" aria-label="Auto-Dial Ballistic Holdover for Current Yardage"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 11.5Q8 3 14 11.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M2 11.5h12" stroke="currentColor" stroke-width="1.1" stroke-dasharray="2 1.5"/><circle cx="13.5" cy="11.5" r="1.4" fill="currentColor"/></svg><span class="pad-lbl">HOLD</span></button>
+                <button class="btn-ord btn-pad pad-round" onclick="rangeAimElev(-1)" title="Adjust Sight Elevation Down (-2 MOA)" aria-label="Adjust Sight Elevation Down (-2 MOA)"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v9.5M4.5 9L8 12.8 11.5 9" fill="none" stroke="currentColor" stroke-width="1.7"/></svg><span class="pad-lbl">EL-</span></button>
+                <button class="btn-ord btn-pad pad-round" onclick="rangeAimElev(1)" title="Adjust Sight Elevation Up (+2 MOA)" aria-label="Adjust Sight Elevation Up (+2 MOA)"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 13V3.5M4.5 7L8 3.2 11.5 7" fill="none" stroke="currentColor" stroke-width="1.7"/></svg><span class="pad-lbl">EL+</span></button>
+                <button class="btn-ord btn-pad pad-round" onclick="rangeAimWind(-1)" title="Adjust Sight Windage Left (-2 MOA)" aria-label="Adjust Sight Windage Left (-2 MOA)"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M13 8H3.5M7 4.5L3.2 8 7 11.5" fill="none" stroke="currentColor" stroke-width="1.7"/></svg><span class="pad-lbl">WN-</span></button>
+                <button class="btn-ord btn-pad pad-round" onclick="rangeAimWind(1)" title="Adjust Sight Windage Right (+2 MOA)" aria-label="Adjust Sight Windage Right (+2 MOA)"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9.5M9 4.5L12.8 8 9 11.5" fill="none" stroke="currentColor" stroke-width="1.7"/></svg><span class="pad-lbl">WN+</span></button>
+                <button class="btn-ord btn-pad pad-round" onclick="rangeResetAim()" title="Reset Sight Hold to 25-Yard Zero" aria-label="Reset Sight Hold to 25-Yard Zero"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="4.5" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="1.3" fill="currentColor"/><path d="M8 2v2M8 12v2M2 8h2M12 8h2" stroke="currentColor" stroke-width="1.3"/></svg><span class="pad-lbl">ZERO</span></button>
+                <button id="btnWind" class="btn-ord btn-pad pad-round" onclick="rangeWind()" title="Cycle Range Crosswind (0 / 5 / 10 / -10 mph)" aria-label="Cycle Range Crosswind (0 / 5 / 10 / -10 mph)"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13.5V2.5M3 3.5l9 2-9 2.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 4.3v3" stroke="currentColor" stroke-width="1.2"/></svg><span class="pad-lbl">0MPH</span></button>
+                <button class="btn-ord btn-pad pad-sq" onclick="demoFieldStripInBench()" title="Guided Demo 1: Field-Strip Sequence" aria-label="Guided Demo 1: Field-Strip Sequence"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,3 13,8 5,13" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><span class="pad-lbl">DM1</span></button>
+                <button class="btn-ord btn-pad pad-sq" onclick="demoRangeSetup('factory','oilcan',4)" title="Guided Demo 2: Blocked Sights @ 75 yd" aria-label="Guided Demo 2: Blocked Sights @ 75 yd"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,3 13,8 5,13" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><span class="pad-lbl">DM2</span></button>
+                <button class="btn-ord btn-pad pad-sq" onclick="demoRangeSetup('suppressor','oilcan',4)" title="Guided Demo 3: Suppressor-Height Fix" aria-label="Guided Demo 3: Suppressor-Height Fix"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,3 13,8 5,13" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><span class="pad-lbl">DM3</span></button>
+                <button class="btn-ord btn-pad pad-sq" onclick="demoRangeSetup('target_orange','comp',2)" title="Guided Demo 4: Target Irons + Comp @ 25 yd" aria-label="Guided Demo 4: Target Irons + Comp @ 25 yd"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><polygon points="5,3 13,8 5,13" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><span class="pad-lbl">DM4</span></button>
+              </div>
+
+              <div class="console-status">
+                <div class="ord-log-bar" role="status" aria-live="polite">
+                  <div class="ord-log-clip"><strong>[LOG]</strong> <span id="ordLogMsg" class="ord-log-msg is-info">INITIALIZING 3D TEST BENCH...</span></div>
+                  <span id="ordLogTime" class="ord-log-time">00:00:00Z</span>
+                </div>
+                <div class="ball-footer-row">
+                  <div id="ballSight" class="ball-sight-ok">CLEAR</div>
+                  <div id="ballLast" class="ball-last">NO SHOTS RECORDED</div>
+                </div>
+              </div>
+              <div class="sim-legal">CONCEPTUAL SIM ONLY &mdash; NOT A PART, NOT FOR SALE, NO HARDWARE EXISTS FOR P322. REAL CONVERSION DEVICES = FEDERAL FELONY (UP TO 10 YRS / $250K, SEC. VIII).</div>
+            </div>
           </div>
 
-
-          <!-- ================================================================
-               V2 CUSTOM SHOP: REAL, BUYABLE P322 PARTS + CONCEPTUAL SIM-AUTO
-               ================================================================ -->
-          <div class="shop-deck">
-            <div class="deck-panel">
-              <div class="deck-title">
-                <span>IRON SIGHTS &mdash; SWAPPABLE SETS</span>
-                <span>CLICK TO INSTALL</span>
-              </div>
-              <div class="sight-btn-grid">
-                <button id="btnSight_factory" class="btn-ord btn-sm active" onclick="shopSetSight('factory')">FACTORY 3-DOT GREEN FO</button>
-                <button id="btnSight_suppressor" class="btn-ord btn-sm" onclick="shopSetSight('suppressor')">SUPPRESSOR-HEIGHT STEEL</button>
-                <button id="btnSight_target_orange" class="btn-ord btn-sm" onclick="shopSetSight('target_orange')">TARGET BLACKOUT / ORANGE FO</button>
-                <button id="btnSight_tritium" class="btn-ord btn-sm" onclick="shopSetSight('tritium')">TRITIUM NIGHT SIGHTS</button>
-              </div>
-              <div class="shop-readout">
-                <strong id="shopSightLabel">FACTORY 3-DOT GREEN FO  //  SIG SAUER (FACTORY)</strong>
-                <span id="shopSightBlurb">Standard P322 high-visibility green fiber-optic front with adjustable rear.</span>
-              </div>
-              <p class="shop-tip"><strong>SIGHT OBSTRUCTION TEST:</strong> fit the <em>SIM. OIL CANISTER</em> (or any tall device) with the low factory irons, then open <em>SIGHT PICTURE</em>. The canister body sits above the 3-dot line. Swap to <em>SUPPRESSOR-HEIGHT STEEL</em> and the sight line clears it. A normal 1-inch rimfire can clears the factory sights out of the box.</p>
-            </div>
-
-            <div class="deck-panel">
-              <div class="deck-title">
-                <span>BUYABLE BOLT-ON / DROP-IN UPGRADES</span>
-                <span>COMMERCIAL PARTS ONLY</span>
-              </div>
-              <div class="btn-grid">
-                <button id="btnMag25" class="btn-ord btn-sm" onclick="shopToggleMag25()">20-RD MAG: ON</button>
-                <button id="btnTrigRed" class="btn-ord btn-sm" onclick="shopToggleTrigger()">FACTORY TRIGGER: ON</button>
-                <button id="btnRailLight" class="btn-ord btn-sm" onclick="shopToggleLight()">M1913 RAIL LIGHT: OFF</button>
-                <button class="btn-ord btn-sm" onclick="benchSetMuzzle('comp')">1/2x28 PORTED COMP</button>
-              </div>
-              <ul class="shop-list">
-                <li><strong>SIG factory 25-rd extended magazine</strong> &mdash; 25+1 vs the shipped 20+1; same anti-rimlock loading drill.</li>
-                <li><strong>Billet skeletonized flat trigger</strong> &mdash; Tandemkross "Victory" / Armory Craft style drop-in red shoe.</li>
-                <li><strong>Ported compensator</strong> &mdash; Tandemkross "Game Changer Pro" style 1/2&times;28; cuts muzzle flip ~35% in this model, sharpens the bark.</li>
-                <li><strong>Compact rail weapon light</strong> &mdash; SIG Foxtrot2 style on the 3-slot M1913 dustcover.</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="sim-panel" id="simPanel">
-            <div class="sim-panel-head">
-              <span class="sim-tag">CONCEPTUAL / SIMULATION ONLY</span>
-              <strong>SIM-AUTO CYCLIC TEST DEMO</strong>
-              <span class="sim-tag">NOT A PART &middot; NOT FOR SALE</span>
-            </div>
-            <p>
-              This toggle is a <strong>purely hypothetical software demonstration</strong> of what a ~1,050 RPM cyclic burst would do to muzzle climb and group dispersion. It adds <strong>no mechanism, no geometry, no purchasable hardware and no instructions</strong> to the 3D model &mdash; only a red indicator badge and a synthetic rapid-fire timing loop. It exists so a reader who has never heard of a "switch" can understand the term <em>as a news/legal concept</em> without any real device being depicted. See <a href="#sec-mcd">SECTION VIII</a>: real machinegun conversion devices are federally prohibited, and no such device exists for the P322.
-            </p>
-            <div class="sim-control-row">
-              <button id="btnSimAuto" class="btn-ord" onclick="shopToggleSimAuto()">SIM-AUTO [TEST ONLY]: OFF</button>
-              <button id="btnHoldFire" class="btn-ord btn-fire" disabled>HOLD TO RUN CYCLIC BURST</button>
-              <span id="simPanelStatus" class="sim-status">DISARMED &mdash; STOCK SEMI-AUTOMATIC BEHAVIOR.</span>
-            </div>
-            <div class="sim-legal">NOTHING HERE IS A BUILD, A FILE, A PRINT, A PART NUMBER OR AN INSTALLATION GUIDE. POSSESSING A REAL CONVERSION DEVICE IS A FEDERAL FELONY (UP TO 10 YEARS / $250,000). EDUCATIONAL SIMULATION ONLY.</div>
-          </div>
-
-          <!-- Live Mechanical Telemetry Log -->
-          <div class="ord-log-bar" role="status" aria-live="polite">
-            <div>
-              <strong>[ORDNANCE LOG]</strong> <span id="ordLogMsg" class="ord-log-msg is-info">INITIALIZING 3D TEST BENCH...</span>
-            </div>
-            <span id="ordLogTime" style="color:var(--ink-muted); font-size:0.7rem; flex-shrink:0;">00:00:00Z</span>
-          </div>
         </div>
       </section>
 
@@ -2226,11 +2801,11 @@ table.ord-table tr:nth-child(even) td {
       </section>
 
       <!-- ==================================================================
-           SECTION V: MAINTENANCE, BORE LEADING & FIELD STRIP
+           SECTION V: MAINTENANCE, BORE LEADING & STRIP
            ================================================================== -->
       <section id="sec-maint" class="report-section">
         <div class="section-bar">
-          <h2 class="section-heading">SECTION V &mdash; FIELD STRIP, BORE LEADING &amp; CUSTOMIZATION</h2>
+          <h2 class="section-heading">SECTION V &mdash; STRIP, BORE LEADING &amp; CUSTOMIZATION</h2>
           <span class="section-ref">PARAGRAPHS 5-1 THROUGH 5-3 // ZERO TOOLS REQUIRED</span>
         </div>
 
@@ -2241,7 +2816,7 @@ table.ord-table tr:nth-child(even) td {
 
           <div class="two-col">
             <div class="info-card">
-              <h3>5-1. OFFICIAL 5-STEP FIELD STRIP PROCEDURE</h3>
+              <h3>5-1. OFFICIAL 5-STEP STRIP PROCEDURE</h3>
               <ol style="margin:0 0 10px; padding-left:18px;">
                 <li>Point muzzle in a safe direction; press magazine catch and <strong>remove magazine</strong>.</li>
                 <li>Retract slide and visually &amp; physically <strong>verify chamber is completely clear</strong>.</li>
@@ -2249,7 +2824,7 @@ table.ord-table tr:nth-child(even) td {
                 <li>With slide closed, rotate left-side <strong>takedown lever 90&deg; counterclockwise</strong> (up/left).</li>
                 <li>Retract slide fully rearward, <strong>lift rear of slide UP</strong> off chassis rails, and guide forward off the fixed barrel.</li>
               </ol>
-              <button class="btn-ord btn-accent" onclick="demoFieldStripInBench()">DEMONSTRATE FIELD STRIP IN 3D BENCH</button>
+              <button class="btn-ord btn-accent" onclick="demoFieldStripInBench()">DEMONSTRATE STRIP IN 3D BENCH</button>
             </div>
 
             <div class="info-card">
@@ -2435,9 +3010,9 @@ table.ord-table tr:nth-child(even) td {
             </div>
           </div>
           <div class="demo-row">
-            <button class="btn-ord btn-accent" onclick="demoRangeSetup('factory','oilcan',4)">DEMO: BLOCKED SIGHTS @ 75 YD</button>
-            <button class="btn-ord btn-accent" onclick="demoRangeSetup('suppressor','oilcan',4)">DEMO: SUPPRESSOR-HEIGHT FIX</button>
-            <button class="btn-ord" onclick="demoRangeSetup('target_orange','comp',2)">DEMO: TARGET IRONS + COMP @ 25 YD</button>
+            <button class="btn-ord btn-accent" onclick="demoRangeSetup('factory','oilcan',4)">DEMO BLOCKED</button>
+            <button class="btn-ord btn-accent" onclick="demoRangeSetup('suppressor','oilcan',4)">DEMO SUPP FIX</button>
+            <button class="btn-ord" onclick="demoRangeSetup('target_orange','comp',2)">DEMO TGT+COMP</button>
           </div>
 
           <h3 class="subhead">7-5. REAL, COMMERCIALLY AVAILABLE P322 UPGRADES</h3>
@@ -2484,7 +3059,7 @@ table.ord-table tr:nth-child(even) td {
         <div class="section-body">
           <div class="mcd-disclaimer">
             <div class="mcd-stamp">EDUCATIONAL FACT SHEET &mdash; READ FIRST</div>
-            <p><strong>THIS SECTION IS PURELY INFORMATIONAL AND DOES NOT CONDONE, RECOMMEND, ENCOURAGE OR ENABLE ANY UNLAWFUL ACT.</strong> It exists because many lawful gun owners and curious readers have simply never heard the term "switch" and encounter it in news reports without context. It explains <em>what the term means in public discourse</em>, <em>why it does not apply to the SIG P322</em>, and <em>what federal law says</em>.</p>
+            <p><strong>THIS SECTION IS FOR SIMULATED EDUCATIONAL &amp; FORMATIVE CONTEXT ONLY AND DOES NOT CONDONE, RECOMMEND, ENCOURAGE OR ENABLE ANY UNLAWFUL ACT.</strong> It exists because many lawful gun owners and curious readers have simply never heard the term "switch" and encounter it in news reports without context. It explains <em>what the term means in public discourse</em>, <em>why it does not apply to the SIG P322</em>, and <em>what federal law says</em>.</p>
             <p><strong>CONTAINED HERE:</strong> high-level terminology, platform-level architectural differences, public-record law-enforcement context, and federal statutory citations.</p>
             <p><strong>DELIBERATELY OMITTED:</strong> any mechanical description of how such a device operates, any dimensions, diagrams, blueprints, materials, part names, 3D-printable files, printer settings, sourcing, acquisition, assembly, fitting or installation instructions. <strong>Nothing in this dossier is a build guide.</strong> This is not legal advice; consult a licensed attorney or ATF for case-specific questions.</p>
           </div>
@@ -2541,7 +3116,93 @@ table.ord-table tr:nth-child(even) td {
           <p>ATF public advisories advise contacting a <strong>local ATF field office</strong> to arrange a safe, lawful surrender, and caution against attempting to destroy it oneself. Do not handle, transport, modify or experiment with such an item. Again: this dossier contains no instructions for making, fitting, testing or using one.</p>
 
           <div class="mcd-footer-note">
-            <strong>CLOSING NOTE &mdash;</strong> Understanding a headline is not the same as owning a prohibited device. Everything in Sections I&ndash;VII concerns lawful, commercially available equipment and a software simulation. Section VIII is a vocabulary and civic-law explainer for readers who had simply never heard the term. <strong>Informational only. Non-condoning. No actionable content.</strong>
+            <strong>CLOSING NOTE &mdash;</strong> Understanding a headline is not the same as owning a prohibited device. Everything in Sections I&ndash;VII concerns lawful, commercially available equipment and a software simulation. Section VIII is a vocabulary and civic-law explainer for readers who had simply never heard the term. <strong>Educational &amp; formative context only. Non-condoning. No actionable content.</strong>
+          </div>
+        </div>
+      </section>
+
+
+          <!-- Clickable glossary popup -->
+          <div id="glossaryModal" class="glossary-modal" aria-hidden="true" role="dialog" aria-label="Glossary term">
+            <div class="glossary-card">
+              <div class="glossary-head">
+                <div>
+                  <span class="glossary-kicker">ILLUSTRATED TECHNICAL GLOSSARY</span>
+                  <strong id="glossaryTitle">GLOSSARY</strong>
+                </div>
+                <button class="btn-ord btn-sm" onclick="closeGlossary()">&#10005; CLOSE</button>
+              </div>
+              <div id="glossaryVisual" class="glossary-visual" aria-hidden="true"></div>
+              <p id="glossaryDef" class="glossary-def"></p>
+              <div class="glossary-sub">RELATED TERMS</div>
+              <div id="glossaryRelated" class="glossary-related"></div>
+              <div class="glossary-sub">JUMP TO DETAILED SECTIONS &amp; 3D BENCH</div>
+              <div id="glossarySections" class="glossary-sections"></div>
+              <div class="glossary-foot">
+                <button class="btn-ord btn-sm" onclick="openGlossaryIndex()">&#9776; BROWSE ALL 47 TERMS</button>
+                <a class="btn-ord btn-sm" href="#sec-glossary" onclick="closeGlossary()">APPENDIX G FULL INDEX &rarr;</a>
+              </div>
+            </div>
+          </div>
+
+      <!-- ==================================================================
+           APPENDIX G: CLICKABLE GLOSSARY
+           ================================================================== -->
+      <section id="sec-glossary" class="report-section">
+        <div class="section-bar">
+          <h2 class="section-heading">APPENDIX G &mdash; ILLUSTRATED GLOSSARY (47 CLICKABLE TERMS)</h2>
+          <span class="section-ref">POP-UP DEFINITIONS &middot; VISUAL TOOLS &middot; RELATED WORDS &middot; SECTION LINKS</span>
+        </div>
+        <div class="section-body">
+          <p class="exec-summary"><strong>HOW TO USE:</strong> Technical terms across every section of this simulated dossier are highlighted with a dotted underline &mdash; tap or click any underlined word right in the text to open a pop-up card with a schematic visual aid, plain-language explanation, clickable related terms, and direct links to deeper sections. You can also browse all 47 terms below or via the top <strong>GLOSSARY</strong> button.</p>
+          <div class="glossary-grid">
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('rimfire')">RIMFIRE</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('bore')">BORE</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('chamber')">CHAMBER</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('slide')">SLIDE</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('hammer')">HAMMER</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('striker')">STRIKER</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('sao')">SAO / SINGLE-ACTION</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('blowback')">BLOWBACK</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('fixed barrel')">FIXED BARREL</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('safety')">SAFETY</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('slide catch')">SLIDE CATCH</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('takedown')">TAKEDOWN</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('magazine')">MAGAZINE</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('rimlock')">RIMLOCK</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('short-stroke')">SHORT-STROKE</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('leading')">LEADING</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('1/2x28')">1/2x28 THREAD</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('suppressor')">SUPPRESSOR</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('baffle')">BAFFLE</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('first-round pop')">FIRST-ROUND POP</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('subsonic')">SUBSONIC</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('supersonic')">SUPERSONIC</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('compensator')">COMPENSATOR</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('muzzle flip')">MUZZLE FLIP</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('m1913')">M1913 / PICATINNY</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('iron sights')">IRON SIGHTS</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('fiber-optic')">FIBER-OPTIC</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('tritium')">TRITIUM</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('suppressor-height sights')">SUPPRESSOR-HEIGHT SIGHTS</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('heel bullet')">HEEL BULLET</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('moa')">MOA</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('zero')">ZERO</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('holdover')">HOLDOVER</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('elevation')">ELEVATION</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('windage')">WINDAGE</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('time of flight')">TIME OF FLIGHT</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('terminal velocity')">TERMINAL VELOCITY</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('ballistic coefficient')">BALLISTIC COEFFICIENT</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('wind drift')">WIND DRIFT</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('dispersion')">DISPERSION</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('b-8')">B-8 BULLSEYE</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('ar500')">AR500 STEEL</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('b-27')">B-27 SILHOUETTE</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('cyclic')">CYCLIC RATE</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('machinegun conversion device')">MACHINEGUN CONVERSION DEVICE</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('nfa')">NFA</button>
+            <button class="btn-ord glossary-term-btn" onclick="openGlossary('fopa')">FOPA (1986)</button>
           </div>
         </div>
       </section>
@@ -2558,7 +3219,9 @@ table.ord-table tr:nth-child(even) td {
     </div>
   </div>
 
-    <script>
+    
+  <script>
+
 /* ==========================================================================
    MODULE 2: PHYSICAL-MODELING BALLISTIC & MECHANICAL ACOUSTICS ENGINE
    Simulates 4-inch barrel .22 LR ballistics (trajectory BC + MOA accuracy),
@@ -3179,6 +3842,8 @@ function triggerHapticPulse(ms) {
     try { navigator.vibrate(ms); } catch (_) {}
   }
 }
+
+
 
 /* --------------------------------------------------------------------------
    1. LIGHTWEIGHT 3D MATH UTILITIES (Vec3, Mat4)
@@ -4618,7 +5283,7 @@ class P322Mechanics {
       this.wasPastStrip = true;
     }
 
-    // Build informative status message
+    // Build status readout message
     let note = `FIRED ${ammo.shortName} (${peakDb.toFixed(1)} dB)`;
     if (isFrp) note += ' [FIRST-ROUND POP +3.8 dB]';
     else if (this.muzzleMode === 'commercial' && ammo.supersonic) note += ' [SUPERSONIC FLIGHT CRACK!]';
@@ -5320,9 +5985,16 @@ class P322Renderer3D {
     }
     if (this.viewMode === 'inspect') {
       const X = R.currentX;
+      const H = R.target.faceIn * 0.85;
+      const W = H * (R.target.wideIn / R.target.faceIn);
+      const cw = (this.canvas && this.canvas.clientWidth) || 320;
+      const ch = (this.canvas && this.canvas.clientHeight) || 380;
+      const aspect = Math.max(0.55, cw / Math.max(1, ch));
+      const halfTan = Math.tan(0.68 * 0.5);
+      const d = Math.max(12.0, (H * 0.66) / halfTan, (W * 0.66) / (halfTan * aspect));
       return {
         mode: 'inspect',
-        eye: [X - 13, R.sightY() + 1.1, 6.2],
+        eye: [X - d * 0.985, R.sightY() + 0.35, d * 0.16],
         look: [X, R.sightY(), 0],
         fov: 0.68
       };
@@ -5839,7 +6511,7 @@ class P322Renderer3D {
   }
 
   renderFrame(now) {
-    const dt = (now - this.lastTime) / 1000;
+    const dt = Math.max(0, Math.min(0.05, (now - this.lastTime) / 1000));
     this.lastTime = now;
     this.mech.step(dt);
     if (this.range) this.range.step(dt);
@@ -5886,6 +6558,9 @@ class P322Renderer3D {
       for (let i = 0; i < 3; i++) {
         this.poseEye[i] += (pose.eye[i] - this.poseEye[i]) * pk;
         this.poseLook[i] += (pose.look[i] - this.poseLook[i]) * pk;
+      }
+      if (pose.mode === 'inspect' && this.range) {
+        this.poseEye[0] = Math.min(this.poseEye[0], this.range.currentX - 4.0);
       }
       this.poseFov += (pose.fov - this.poseFov) * pk;
       eye = this.poseEye.slice();
@@ -6106,6 +6781,8 @@ class P322Renderer3D {
     this.drawSightOverlay();
   }
 }
+
+
 
 
 /* ==========================================================================
@@ -6349,17 +7026,22 @@ function paintTargetFace(c2d, target, hits) {
         c2d.lineTo(px + Math.cos(a) * r, py + Math.sin(a) * r); c2d.stroke();
       }
     } else {
-      c2d.fillStyle = 'rgba(220,208,178,0.92)';
-      c2d.beginPath(); c2d.arc(px, py, 9, 0, Math.PI * 2); c2d.fill();
-      c2d.fillStyle = '#1b1915';
+      c2d.fillStyle = '#efe5c8';
+      c2d.beginPath(); c2d.arc(px, py, 10.5, 0, Math.PI * 2); c2d.fill();
+      c2d.fillStyle = '#d98a2b';
+      c2d.beginPath(); c2d.arc(px, py, 7.8, 0, Math.PI * 2); c2d.fill();
+      c2d.fillStyle = '#0d0c0a';
       c2d.beginPath(); c2d.arc(px, py, 5.5, 0, Math.PI * 2); c2d.fill();
-      c2d.strokeStyle = 'rgba(60,52,40,0.65)'; c2d.lineWidth = 1.5;
-      c2d.beginPath(); c2d.arc(px, py, 9, 0, Math.PI * 2); c2d.stroke();
+      c2d.strokeStyle = '#3b3222'; c2d.lineWidth = 1.6;
+      c2d.beginPath(); c2d.arc(px, py, 10.5, 0, Math.PI * 2); c2d.stroke();
     }
-    if (i >= hits.length - 12) {
-      c2d.fillStyle = '#9c241c';
-      c2d.font = 'bold 13px monospace'; c2d.textAlign = 'left';
-      c2d.fillText(String(i + 1), px + 11, py - 9);
+    if (i >= hits.length - 16) {
+      const numTxt = '#' + String(i + 1);
+      c2d.font = 'bold 15px monospace'; c2d.textAlign = 'left';
+      c2d.lineWidth = 4; c2d.strokeStyle = 'rgba(18,16,12,0.92)';
+      c2d.strokeText(numTxt, px + 12, py - 8);
+      c2d.fillStyle = '#ff6b4a';
+      c2d.fillText(numTxt, px + 12, py - 8);
     }
   }
 }
@@ -6751,7 +7433,7 @@ class P322RangeGL {
     };
 
     // Textured quad in the YZ plane, front face normal -X (toward the shooter)
-    const A = [0, -0.5, -0.5], B = [0, -0.5, 0.5], C = [0, 0.5, 0.5], D = [0, 0.5, -0.5];
+    const A = [-0.08, -0.5, -0.5], B = [-0.08, -0.5, 0.5], C = [-0.08, 0.5, 0.5], D = [-0.08, 0.5, -0.5];
     const uvA = [0, 0], uvB = [1, 0], uvC = [1, 1], uvD = [0, 1];
     const pos = [], nor = [], uv = [];
     const push = (p, t) => {
@@ -6822,12 +7504,12 @@ class P322RangeGL {
 
     // Unit backer board behind the target face (scaled to face size)
     const backer = new MeshBuilder();
-    backer.addBox(-0.16, -0.54, -0.54, 0, 0.54, 0.54, [0.30, 0.27, 0.21]);
+    backer.addBox(0.18, -0.54, -0.54, 0.42, 0.54, 0.54, [0.30, 0.27, 0.21]);
     host.buffers.rangeBacker = host._uploadMesh(backer.toData());
 
     // Top hanging clamp bar
     const clampBar = new MeshBuilder();
-    clampBar.addBox(-0.16, -0.10, -0.62, 0.16, 0.12, 0.62, steel);
+    clampBar.addBox(0.14, -0.10, -0.62, 0.42, 0.12, 0.62, steel);
     host.buffers.rangeClamp = host._uploadMesh(clampBar.toData());
 
     // Empty dynamic tracer buffer (pos/nor/col), refreshed per frame
@@ -6912,7 +7594,7 @@ class P322RangeGL {
     const swingPivot = M3D.translate(X, cy + H / 2 + 0.3, 0);
     const rot = M3D.rotZ(R.swing);
     const faceBase = M3D.mul(swingPivot, M3D.mul(rot, M3D.translate(0, -H / 2 - 0.3, 0)));
-    if (showCarrier) {
+    if (showCarrier && R.target.kind !== 'steel') {
       const backerMat = M3D.mul(faceBase, M3D.scaleMat(1, H, W));
       host._draw('rangeBacker', backerMat, { metal: 0.10 });
     }
@@ -6937,9 +7619,12 @@ class P322RangeGL {
     gl.vertexAttribPointer(this.loc.aUV, 2, gl.FLOAT, false, 0, 0);
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    gl.enable(gl.POLYGON_OFFSET_FILL);
+    gl.polygonOffset(-2.0, -2.0);
     gl.depthMask(false);
     gl.drawArrays(gl.TRIANGLES, 0, this.quad.count);
     gl.depthMask(true);
+    gl.disable(gl.POLYGON_OFFSET_FILL);
     gl.disable(gl.BLEND);
 
     // ---- 4. Parabolic tracer streaks (back to studio shader) ----
@@ -6956,6 +7641,8 @@ class P322RangeGL {
     }
   }
 }
+
+
 
 /* ==========================================================================
    MODULE 4: DOSSIER CONTROLLER, TELEMETRY HUD & BENCH WIRING (V2)
@@ -6982,6 +7669,17 @@ function setLog(msg, level = 'normal') {
 }
 
 function R() { return (p322View && p322View.range) ? p322View.range : null; }
+
+function setPadLabel(elOrId, text) {
+  const b = typeof elOrId === 'string' ? document.getElementById(elOrId) : elOrId;
+  if (!b || text === undefined) return;
+  const lbl = b.querySelector('.pad-lbl');
+  if (lbl) {
+    if (lbl.textContent !== text) lbl.textContent = text;
+  } else if (b.textContent !== text) {
+    b.textContent = text;
+  }
+}
 
 function syncUI(m) {
   const ammo = m.getAmmo();
@@ -7093,20 +7791,20 @@ function syncUI(m) {
       `<div>IRONS: <strong>${sightSetById(m.sightSet).label}</strong>${blocked ? ' <strong>[BLOCKED]</strong>' : ''}</div>`;
   }
 
-  // Sync button toggle states
+  // Sync button toggle states (preserving SVG icons via .pad-lbl)
   const setAct = (id, on, text) => {
     const b = document.getElementById(id);
     if (!b) return;
     b.classList.toggle('active', !!on);
-    if (text !== undefined) b.textContent = text;
+    if (text !== undefined) setPadLabel(b, text);
   };
-  setAct('btnSafety', m.safetyOn, m.safetyOn ? 'SAFETY: ON (UP)' : 'SAFETY: FIRE (DN)');
-  setAct('btnCatch', m.slideLocked, m.slideLocked ? 'RELEASE SLIDE' : 'LOCK SLIDE OPEN');
-  setAct('btnMagToggle', !m.isMagSeated(), m.isMagSeated() ? 'EJECT MAG' : 'INSERT MAG');
-  setAct('btnStrip', m.fieldStripped, m.fieldStripped ? 'REASSEMBLE' : 'FIELD STRIP');
-  setAct('btnFlag', m.chamberFlag, m.chamberFlag ? 'REMOVE FLAG' : 'DRY-FIRE FLAG');
-  setAct('btnXray', m.xray, m.xray ? 'X-RAY: ON' : 'X-RAY: OFF');
-  setAct('btnTrigShoe', m.triggerStyle === 'curved', `TRIGGER: ${m.triggerStyle.toUpperCase()}`);
+  setAct('btnSafety', m.safetyOn, m.safetyOn ? 'SAFE' : 'FIRE');
+  setAct('btnCatch', m.slideLocked, m.slideLocked ? 'REL' : 'LOCK');
+  setAct('btnMagToggle', !m.isMagSeated(), m.isMagSeated() ? 'MAG' : 'IN');
+  setAct('btnStrip', m.fieldStripped, m.fieldStripped ? 'JOIN' : 'STRP');
+  setAct('btnFlag', m.chamberFlag, m.chamberFlag ? 'OUT' : 'FLAG');
+  setAct('btnXray', m.xray, 'XRAY');
+  setAct('btnTrigShoe', m.triggerStyle === 'curved', m.triggerStyle === 'curved' ? 'CURV' : 'FLAT');
 
   setAct('btnMuzNone', m.muzzleMode === 'none');
   setAct('btnMuzComp', m.muzzleMode === 'comp');
@@ -7129,7 +7827,7 @@ function syncShopUI() {
     const b = document.getElementById(id);
     if (!b) return;
     b.classList.toggle('active', !!on);
-    if (text !== undefined) b.textContent = text;
+    if (text !== undefined) setPadLabel(b, text);
   };
   ['factory', 'suppressor', 'target_orange', 'tritium'].forEach(function (id) {
     setAct('btnSight_' + id, m.sightSet === id);
@@ -7139,10 +7837,10 @@ function syncShopUI() {
   const blurb = document.getElementById('shopSightBlurb');
   if (blurb) blurb.textContent = set.blurb;
 
-  setAct('btnMag25', m.mag25, m.mag25 ? '25-RD EXT MAG: ON' : '20-RD MAG: ON');
-  setAct('btnTrigRed', m.triggerRed, m.triggerRed ? 'BILLET RED TRIGGER: ON' : 'FACTORY TRIGGER: ON');
-  setAct('btnRailLight', m.railLight, m.railLight ? 'M1913 RAIL LIGHT: ON' : 'M1913 RAIL LIGHT: OFF');
-  setAct('btnSimAuto', m.simAuto, m.simAuto ? 'SIM-AUTO [TEST ONLY]: ARMED' : 'SIM-AUTO [TEST ONLY]: OFF');
+  setAct('btnMag25', m.mag25, m.mag25 ? '25RD' : '20RD');
+  setAct('btnTrigRed', m.triggerRed, m.triggerRed ? 'RED' : 'TRIG');
+  setAct('btnRailLight', m.railLight, 'LITE');
+  setAct('btnSimAuto', m.simAuto, m.simAuto ? 'ARMD' : 'AUTO');
 
   const badge = document.getElementById('simAutoBadge');
   if (badge) badge.classList.toggle('is-live', m.simAuto);
@@ -7185,15 +7883,11 @@ function syncRangeUI() {
   const warn = document.getElementById('ballObstruct');
   if (warn) warn.style.display = d.blocked ? '' : 'none';
 
-  const setTxt = (id, txt) => {
-    const b = document.getElementById(id);
-    if (b) b.textContent = txt;
-  };
-  setTxt('btnDeploy', d.deployed ? 'RETRACT TARGET' : '+ DEPLOY TARGET');
-  setTxt('btnCycleTarget', 'CYCLE TARGET: ' + (rg.targetIdx + 1) + '/4');
-  setTxt('btnPushOut', 'PUSH TARGET OUT: ' + d.distYd + ' YD');
-  setTxt('btnInspect', d.inspect ? 'SEND TARGET BACK OUT' : 'INSPECT TARGET (PULL IN)');
-  setTxt('btnWind', 'WIND: ' + d.windMph + ' MPH');
+  setPadLabel('btnDeploy', d.deployed ? 'STOW' : 'DPLY');
+  setPadLabel('btnCycleTarget', 'T' + (rg.targetIdx + 1) + '/4');
+  setPadLabel('btnPushOut', d.distYd >= 100 ? '100Y' : (d.distYd + 'YD'));
+  setPadLabel('btnInspect', d.inspect ? 'BACK' : 'INSP');
+  setPadLabel('btnWind', (d.windMph < 0 ? d.windMph : d.windMph + 'M'));
 
   const de = document.getElementById('btnDeploy');
   if (de) de.classList.toggle('active', d.deployed);
@@ -7227,6 +7921,11 @@ function benchStrip() { p322Mech.toggleTakedown(); }
 function benchFlag() { p322Mech.toggleChamberFlag(); }
 function benchTrigShoe() { p322Mech.toggleTriggerShoe(); }
 function benchCleanBore() { p322Mech.runBoreBrush(); }
+function benchCycleMuzzle() {
+  const order = ['none', 'comp', 'commercial', 'oilcan'];
+  const next = order[(order.indexOf(p322Mech.muzzleMode) + 1) % order.length];
+  benchSetMuzzle(next);
+}
 
 function benchSetMuzzle(mode) {
   p322Mech.setMuzzleMode(mode);
@@ -7258,7 +7957,7 @@ function benchToggleOrbitOnly() {
   const b = document.getElementById('btnOrbitMode');
   if (b) {
     b.classList.toggle('active', p322View.orbitOnly);
-    b.textContent = p322View.orbitOnly ? 'MODE: SPIN ONLY' : 'MODE: TOUCH + SPIN';
+    setPadLabel(b, p322View.orbitOnly ? 'SPIN' : 'TCH');
   }
   setLog(p322View.orbitOnly
     ? 'ORBIT-ONLY MODE: DRAG ANYWHERE TO SPIN 3D PISTOL 360°.'
@@ -7291,7 +7990,14 @@ function rangeDeploy() {
   syncRangeUI();
 }
 
-function rangeCycleTarget() { const rg = R(); if (rg) { rg.cycleTarget(); syncRangeUI(); } }
+function rangeCycleTarget() {
+  const rg = R();
+  if (!rg || !p322View) return;
+  if (!rg.deployed) rangeDeploy();
+  rg.cycleTarget();
+  if (p322View.viewMode === 'bench') p322View.setViewMode('range');
+  syncRangeUI();
+}
 function rangePushOut() {
   const rg = R();
   if (!rg || !p322View) return;
@@ -7343,6 +8049,569 @@ function shopToggleSimAuto() { p322Mech.setSimAuto(!p322Mech.simAuto); syncUI(p3
 function shopHoldSimAuto(on) {
   if (!p322Mech.simAuto) return;
   p322Mech.setSimAutoHolding(on);
+}
+
+/* --- PERIMETER LIVE CONSOLE HELPERS --- */
+function showRail(rail) {
+  const con = document.getElementById('liveConsole');
+  if (!con) return;
+  con.dataset.rail = rail;
+  con.querySelectorAll('.rail-tab').forEach((tab) => {
+    tab.classList.toggle('active', tab.dataset.for === rail);
+  });
+}
+
+function toggleTelemetryDrawer(force) {
+  const drawer = document.getElementById('telemetryDrawer');
+  const btn = document.getElementById('btnTelemetry');
+  if (!drawer) return;
+  const open = force !== undefined ? !!force : !drawer.classList.contains('is-open');
+  drawer.classList.toggle('is-open', open);
+  if (btn) btn.classList.toggle('active', open);
+  if (open) syncUI(p322Mech);
+}
+
+function toggleConsoleFullscreen(force) {
+  const con = document.getElementById('liveConsole');
+  if (!con) return;
+  const on = force !== undefined ? !!force : !con.classList.contains('is-fullscreen');
+  con.classList.toggle('is-fullscreen', on);
+  document.body.classList.toggle('console-fullscreen-open', on);
+  const btn = document.getElementById('btnConsoleExpand');
+  if (btn) {
+    btn.classList.toggle('active', on);
+    setPadLabel(btn, on ? 'PIN' : 'FULL');
+  }
+  if (on) {
+    con.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (document.documentElement.requestFullscreen && !document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    }
+  } else if (document.fullscreenElement) {
+    document.exitFullscreen().catch(() => {});
+  }
+}
+
+function openLiveConsole() {
+  toggleConsoleFullscreen(true);
+  showRail('top');
+  toggleTelemetryDrawer(false);
+}
+
+document.addEventListener('fullscreenchange', () => {
+  const con = document.getElementById('liveConsole');
+  if (!con) return;
+  const native = !!document.fullscreenElement;
+  con.classList.toggle('is-fullscreen', native || con.classList.contains('is-fullscreen'));
+  if (!native) document.body.classList.remove('console-fullscreen-open');
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+  closeGlossary();
+  const con = document.getElementById('liveConsole');
+  if (con && con.classList.contains('is-fullscreen')) toggleConsoleFullscreen(false);
+  toggleTelemetryDrawer(false);
+});
+
+/* ==========================================================================
+   ILLUSTRATED CLICKABLE GLOSSARY (47 TERMS + SCHEMATIC VISUALS + LINKS)
+   ========================================================================== */
+const GLOSSARY = {
+  'rimfire': {
+    title: 'RIMFIRE (.22 LR)',
+    def: 'A cartridge whose priming compound is spun inside the hollow rim of the brass case rather than in a center primer cup. The firing pin pinches the rim against the breech face to ignite the powder.',
+    icon: 'rimfire',
+    related: ['chamber', 'rimlock', 'heel bullet', 'bore'],
+    sections: [['#sec-acoustics', 'Section III — Loads'], ['#sec-mag', 'Section IV — Magazine']]
+  },
+  'bore': {
+    title: 'BORE',
+    def: 'The rifled interior channel of the barrel through which the .22 bullet travels. In this simulation soft-lead rounds leave visible bore fouling that widens groups until brushed clean.',
+    icon: 'barrel',
+    related: ['chamber', 'leading', 'fixed barrel', '1/2x28'],
+    sections: [['#sec-controls', 'Section II — Controls'], ['#sec-maint', 'Section V — Maintenance']]
+  },
+  'chamber': {
+    title: 'CHAMBER',
+    def: 'The precision pocket at the rear of the barrel that supports the cartridge before ignition. Press-checking or inserting the orange safety flag verifies whether the chamber is clear.',
+    icon: 'chamber',
+    related: ['bore', 'rimfire', 'magazine', 'safety'],
+    sections: [['#sec-controls', 'Section II — Controls'], ['#sec-mag', 'Section IV — Magazine']]
+  },
+  'slide': {
+    title: 'SLIDE',
+    def: 'The reciprocating upper assembly machined from anodized alloy on the P322. Recoil energy drives it rearward to extract, eject, cock the enclosed hammer, and strip the next round.',
+    icon: 'slide',
+    related: ['blowback', 'hammer', 'slide catch', 'short-stroke'],
+    sections: [['#sec-controls', 'Section II — Controls'], ['#sec-maint', 'Section V — Maintenance']]
+  },
+  'hammer': {
+    title: 'ENCLOSED HAMMER',
+    def: 'A pivoting internal arm driven by a mainspring to strike the firing pin. Unlike an exposed spur hammer or a linear striker, the P322 encloses its hammer completely inside the rear of the frame.',
+    icon: 'hammer',
+    related: ['sao', 'striker', 'safety', 'slide'],
+    sections: [['#sec-controls', 'Section II — Controls'], ['#sec-mcd', 'Section VIII — Architecture']]
+  },
+  'striker': {
+    title: 'STRIKER-FIRED SYSTEM',
+    def: 'A linear spring-loaded firing pin tensioned directly by slide movement rather than struck by a pivoting hammer. Used on Glock-pattern pistols, whereas the P322 uses an enclosed SAO hammer.',
+    icon: 'striker',
+    related: ['hammer', 'sao', 'machinegun conversion device'],
+    sections: [['#sec-controls', 'Section II — Controls'], ['#sec-mcd', 'Section VIII — MCD Brief']]
+  },
+  'sao': {
+    title: 'SAO (SINGLE-ACTION ONLY)',
+    def: 'A trigger system in which the trigger performs one job only: releasing an already-cocked hammer. If the hammer is down, pulling the trigger will not cock it — the slide must be racked first.',
+    icon: 'hammer',
+    related: ['hammer', 'safety', 'slide'],
+    sections: [['#sec-controls', 'Section II — Controls'], ['#sec-specs', 'Section VI — Specs']]
+  },
+  'blowback': {
+    title: 'STRAIGHT BLOWBACK',
+    def: 'An operating system with no mechanical breech lock: slide mass and recoil-spring tension keep the action closed briefly while chamber pressure pushes the case and slide straight rearward.',
+    icon: 'blowback',
+    related: ['fixed barrel', 'slide', 'short-stroke'],
+    sections: [['#sec-controls', 'Section II — Controls'], ['#sec-specs', 'Section VI — Specs']]
+  },
+  'fixed barrel': {
+    title: 'FIXED BARREL',
+    def: 'A barrel pinned rigidly to the chassis so it neither tilts nor recoils during firing. Fixed barrels aid mechanical sight alignment and simplify mounting 1/2x28 muzzle accessories without a booster.',
+    icon: 'fixed',
+    related: ['blowback', 'bore', '1/2x28', 'suppressor'],
+    sections: [['#sec-controls', 'Section II — Controls'], ['#sec-specs', 'Section VI — Specs']]
+  },
+  'safety': {
+    title: 'MANUAL THUMB SAFETY',
+    def: 'Ambidextrous frame-mounted levers that mechanically block sear/trigger release. On the P322, an internal interlock prevents flipping the safety UP unless the enclosed hammer is cocked.',
+    icon: 'safety',
+    related: ['hammer', 'sao', 'chamber'],
+    sections: [['#sec-controls', 'Section II — Controls']]
+  },
+  'slide catch': {
+    title: 'SLIDE CATCH / STOP',
+    def: 'Ambidextrous lever lifted by the magazine follower after the final round so the slide locks open, signaling an empty magazine and allowing visual chamber inspection.',
+    icon: 'catch',
+    related: ['slide', 'magazine', 'takedown'],
+    sections: [['#sec-controls', 'Section II — Controls'], ['#sec-maint', 'Section V — Maintenance']]
+  },
+  'takedown': {
+    title: 'TAKEDOWN / FIELD-STRIP',
+    def: 'Rotating the frame takedown lever with the magazine removed and chamber clear allows the slide to lift off the fixed barrel for routine inspection and bore brushing.',
+    icon: 'takedown',
+    related: ['slide', 'fixed barrel', 'leading'],
+    sections: [['#sec-maint', 'Section V — Maintenance'], ['#sec-controls', 'Section II — Controls']]
+  },
+  'magazine': {
+    title: 'POLYMER MAGAZINE (20 / 25 RD)',
+    def: 'Detachable double-stack .22 LR box magazine with side loader tabs. Ships in 20-round flush form with a factory 25-round extended option simulated in the Custom Shop.',
+    icon: 'mag',
+    related: ['rimlock', 'slide catch', 'chamber'],
+    sections: [['#sec-mag', 'Section IV — Magazine'], ['#sec-range', 'Section VII — Upgrades']]
+  },
+  'rimlock': {
+    title: 'RIMLOCK',
+    def: 'A rimfire feeding stoppage where the protruding rim of an upper .22 LR cartridge slips behind the rim below it, jamming the stack inside the magazine body.',
+    icon: 'rim',
+    related: ['rimfire', 'magazine', 'short-stroke'],
+    sections: [['#sec-mag', 'Section IV — Magazine']]
+  },
+  'short-stroke': {
+    title: 'SHORT-STROKE STOPPAGE',
+    def: 'Incomplete rearward slide travel caused by low-impulse ammunition (such as 660 fps Quiet-22). The spent case stays in the chamber or fails to feed until racked manually.',
+    icon: 'short',
+    related: ['blowback', 'subsonic', 'slide'],
+    sections: [['#sec-acoustics', 'Section III — Acoustics'], ['#sec-controls', 'Section II — Controls']]
+  },
+  'leading': {
+    title: 'BORE LEADING & FOULING',
+    def: 'Soft unplated lead and rimfire wax smeared into the rifling grooves over repeated strings, progressively opening group dispersion until scrubbed with a bronze bore brush.',
+    icon: 'foul',
+    related: ['bore', 'dispersion', 'takedown'],
+    sections: [['#sec-maint', 'Section V — Maintenance'], ['#sec-range', 'Section VII — Ballistics']]
+  },
+  '1/2x28': {
+    title: '1/2x28 UNEF MUZZLE THREAD',
+    def: 'Standard North American rimfire/small-bore muzzle thread: 1/2-inch outer diameter with 28 threads per inch. Accepts thread caps, rimfire compensators, and .22 suppressors.',
+    icon: 'thread',
+    related: ['fixed barrel', 'suppressor', 'compensator'],
+    sections: [['#sec-acoustics', 'Section III — Acoustics'], ['#sec-specs', 'Section VI — Specs']]
+  },
+  'suppressor': {
+    title: 'RIMFIRE SUPPRESSOR',
+    def: 'A regulated muzzle device containing internal baffles that let high-pressure propellant gas expand and cool before exiting, lowering muzzle blast decibels (though supersonic bullets still crack).',
+    icon: 'suppressor',
+    related: ['baffle', 'first-round pop', 'subsonic', 'suppressor-height sights'],
+    sections: [['#sec-acoustics', 'Section III — Acoustics'], ['#sec-range', 'Section VII — Sights']]
+  },
+  'baffle': {
+    title: 'SUPPRESSOR BAFFLE STACK',
+    def: 'Cones or partitions inside a suppressor tube that strip turbulent gas away from the bore axis into expansion chambers. Toggle X-RAY in the 3D bench to inspect the 7-baffle stack.',
+    icon: 'suppressor',
+    related: ['suppressor', 'first-round pop', '1/2x28'],
+    sections: [['#sec-acoustics', 'Section III — Acoustics'], ['#sec-bench', 'Section I — 3D Bench']]
+  },
+  'first-round pop': {
+    title: 'FIRST-ROUND POP (FRP)',
+    def: 'A measurably louder report (+3 to +5 dB) on shot #1 through an oxygen-filled suppressor, caused by residual oxygen igniting unburned powder gas before inert exhaust purges the tube.',
+    icon: 'pop',
+    related: ['suppressor', 'baffle', 'subsonic'],
+    sections: [['#sec-acoustics', 'Section III — Acoustics']]
+  },
+  'subsonic': {
+    title: 'SUBSONIC VELOCITY (<1,125 FPS)',
+    def: 'A bullet traveling slower than the speed of sound in air (~1,125 fps at sea level), avoiding a ballistic shockwave crack. Out of a short 4-inch pistol barrel, many .22 LR loads stay subsonic.',
+    icon: 'subsonic',
+    related: ['supersonic', 'suppressor', 'terminal velocity'],
+    sections: [['#sec-acoustics', 'Section III — Acoustics'], ['#sec-range', 'Section VII — Ballistics']]
+  },
+  'supersonic': {
+    title: 'SUPERSONIC BALLISTIC CRACK',
+    def: 'Above ~1,125 fps (such as hyper-velocity CCI Stinger at 1,260 fps from a 4-inch barrel), the bullet creates a sharp Mach cone shockwave downrange even with a suppressor fitted.',
+    icon: 'supersonic',
+    related: ['subsonic', 'suppressor', 'terminal velocity'],
+    sections: [['#sec-acoustics', 'Section III — Acoustics']]
+  },
+  'compensator': {
+    title: 'PORTED COMPENSATOR',
+    def: 'A non-NFA 1/2x28 muzzle brake with upward/angled ports that redirect propellant jetting to counter muzzle rise (~35% flip reduction) at the cost of slightly louder side blast.',
+    icon: 'comp',
+    related: ['muzzle flip', '1/2x28', 'suppressor'],
+    sections: [['#sec-acoustics', 'Section III — Acoustics'], ['#sec-range', 'Section VII — Upgrades']]
+  },
+  'muzzle flip': {
+    title: 'MUZZLE FLIP / CLIMB',
+    def: 'Upward torque of the barrel above the shooter’s grip pivot during recoil. Rapid strings stack climb unless countered by sight recovery or a ported compensator.',
+    icon: 'flip',
+    related: ['compensator', 'cyclic', 'dispersion'],
+    sections: [['#sec-range', 'Section VII — Ballistics'], ['#sec-acoustics', 'Section III — Acoustics']]
+  },
+  'm1913': {
+    title: 'M1913 PICATINNY DUST-COVER RAIL',
+    def: 'Standardized cross-slotted accessory rail molded under the front of the frame ahead of the trigger guard for clamp-on compact weapon lights or training lasers.',
+    icon: 'rail',
+    related: ['fixed barrel', 'iron sights'],
+    sections: [['#sec-specs', 'Section VI — Specs'], ['#sec-range', 'Section VII — Upgrades']]
+  },
+  'iron sights': {
+    title: 'METALLIC / IRON SIGHTS',
+    def: 'Non-magnifying mechanical rear notch and front post aligned along the top of the slide. Sight height over the bore determines where the bullet crosses the line of sight.',
+    icon: 'iron',
+    related: ['fiber-optic', 'tritium', 'suppressor-height sights', 'zero'],
+    sections: [['#sec-range', 'Section VII — Sights'], ['#sec-controls', 'Section II — Controls']]
+  },
+  'fiber-optic': {
+    title: 'FIBER-OPTIC SIGHT RODS',
+    def: 'Translucent light-gathering rods set into sight blades that concentrate ambient daylight into bright green or orange aiming dots without batteries.',
+    icon: 'fiber',
+    related: ['iron sights', 'tritium', 'suppressor-height sights'],
+    sections: [['#sec-range', 'Section VII — Sights']]
+  },
+  'tritium': {
+    title: 'TRITIUM NIGHT SIGHTS',
+    def: 'Sealed phosphor-coated glass lamps energized by tritium gas that glow continuously in low light without external charging or batteries.',
+    icon: 'tritium',
+    related: ['iron sights', 'fiber-optic'],
+    sections: [['#sec-range', 'Section VII — Sights']]
+  },
+  'suppressor-height sights': {
+    title: 'SUPPRESSOR-HEIGHT SIGHTS',
+    def: 'Tall steel front and rear posts (~0.98" sight-over-bore) engineered to clear large-diameter muzzle cans that otherwise block standard low-profile pistol sights.',
+    icon: 'tall',
+    related: ['iron sights', 'suppressor', 'zero'],
+    sections: [['#sec-range', 'Section VII — Sights']]
+  },
+  'heel bullet': {
+    title: '.22 LR HEEL-BASE BULLET',
+    def: 'Unlike modern centerfire bullets seated inside a larger case neck, a .22 LR bullet has the same outer diameter as the brass case, with a stepped "heel" crimped into the case mouth.',
+    icon: 'rimfire',
+    related: ['rimfire', 'ballistic coefficient', 'leading'],
+    sections: [['#sec-range', 'Section VII — Ballistics'], ['#sec-acoustics', 'Section III — Loads']]
+  },
+  'moa': {
+    title: 'MOA (MINUTE OF ANGLE)',
+    def: 'An angular unit equal to 1/60th of one degree. Because the cone widens linearly with distance, 1 MOA subtends 1.047 inches at 100 yd (~0.26" at 25 yd, ~0.52" at 50 yd).',
+    icon: 'moa',
+    related: ['holdover', 'elevation', 'windage', 'dispersion'],
+    sections: [['#sec-range', 'Section VII — Ballistics']]
+  },
+  'zero': {
+    title: '25-YARD SIGHT ZERO',
+    def: 'The reference yardage where the upward-angled bore trajectory intersects the straight line of sight. Closer than 25 yd impacts slightly low due to sight height; beyond 25 yd gravity drop dominates.',
+    icon: 'zero',
+    related: ['holdover', 'iron sights', 'moa'],
+    sections: [['#sec-range', 'Section VII — Ballistics']]
+  },
+  'holdover': {
+    title: 'BALLISTIC HOLDOVER',
+    def: 'Raising the aiming point above the target center to compensate for gravity drop at longer yardages (e.g., ~13.6 inches / +13 MOA at 100 yd for Mini-Mag).',
+    icon: 'hold',
+    related: ['zero', 'elevation', 'moa', 'time of flight'],
+    sections: [['#sec-range', 'Section VII — Ballistics']]
+  },
+  'elevation': {
+    title: 'ELEVATION ADJUSTMENT',
+    def: 'Vertical angular sight correction (measured in MOA here) used to counter bullet drop downrange. Use EL+ / EL- or AUTO HOLDOVER on the bottom border.',
+    icon: 'hold',
+    related: ['holdover', 'windage', 'moa', 'zero'],
+    sections: [['#sec-range', 'Section VII — Ballistics']]
+  },
+  'windage': {
+    title: 'WINDAGE ADJUSTMENT',
+    def: 'Horizontal angular sight correction (left/right MOA) used to center point of impact or hold into a crosswind.',
+    icon: 'wind',
+    related: ['wind drift', 'elevation', 'moa'],
+    sections: [['#sec-range', 'Section VII — Ballistics']]
+  },
+  'time of flight': {
+    title: 'TIME OF FLIGHT (TOF)',
+    def: 'Elapsed seconds from muzzle exit to target impact. At 100 yd a .22 LR Mini-Mag takes ~0.318 s — both gravity drop (½gt²) and delayed steel-gong ring depend directly on TOF.',
+    icon: 'tof',
+    related: ['terminal velocity', 'ballistic coefficient', 'ar500'],
+    sections: [['#sec-range', 'Section VII — Ballistics']]
+  },
+  'terminal velocity': {
+    title: 'TERMINAL IMPACT VELOCITY',
+    def: 'Remaining bullet speed upon reaching the target after aerodynamic drag. A 1,075 fps Mini-Mag slows to ~833 fps by 100 yd.',
+    icon: 'velocity',
+    related: ['ballistic coefficient', 'time of flight', 'subsonic'],
+    sections: [['#sec-range', 'Section VII — Ballistics']]
+  },
+  'ballistic coefficient': {
+    title: 'BALLISTIC COEFFICIENT (G1 BC)',
+    def: 'Ratio measuring how efficiently a projectile overcomes air drag. Round-nose .22 LR heel bullets have low BCs (~0.088–0.132), shedding velocity faster than sleek rifle spitzers.',
+    icon: 'bc',
+    related: ['heel bullet', 'terminal velocity', 'wind drift'],
+    sections: [['#sec-range', 'Section VII — Ballistics']]
+  },
+  'wind drift': {
+    title: 'CROSSWIND DRIFT',
+    def: 'Lateral deflection caused by crosswind acting over the bullet’s lag time (actual flight time minus vacuum flight time). Low-BC .22 bullets drift several inches at 100 yd in a 10 mph wind.',
+    icon: 'wind',
+    related: ['windage', 'ballistic coefficient', 'time of flight'],
+    sections: [['#sec-range', 'Section VII — Ballistics']]
+  },
+  'dispersion': {
+    title: 'GROUP DISPERSION',
+    def: 'Statistical shot-to-shot scatter around the mean point of impact, modeled with a Gaussian distribution scaled by ammo quality, bore leading, sight obstruction, and firing cadence.',
+    icon: 'dispersion',
+    related: ['moa', 'leading', 'muzzle flip'],
+    sections: [['#sec-range', 'Section VII — Ballistics']]
+  },
+  'ar500': {
+    title: 'AR500 REACTIVE STEEL GONG',
+    def: 'Through-hardened (~500 Brinell) steel target plate suspended on chains so impacts swing the plate and ring audibly after the bullet’s true flight time.',
+    icon: 'steel',
+    related: ['b-8', 'b-27', 'time of flight'],
+    sections: [['#sec-range', 'Section VII — Targets']]
+  },
+  'b-8': {
+    title: 'NRA B-8 25-YARD BULLSEYE',
+    def: 'Standard slow-fire paper repair center featuring a 5.54-inch black aiming bull (8, 9, 10, and X rings) used to evaluate pistol sight alignment and group size.',
+    icon: 'bullseye',
+    related: ['b-27', 'ar500', 'zero'],
+    sections: [['#sec-range', 'Section VII — Targets']]
+  },
+  'b-27': {
+    title: 'B-27 SILHOUETTE TARGET',
+    def: '24-inch-tall qualification paper silhouette whose tall scoring area makes 75–100 yd .22 LR drop and holdover easy to visualize and inspect.',
+    icon: 'silhouette',
+    related: ['b-8', 'ar500', 'holdover'],
+    sections: [['#sec-range', 'Section VII — Targets']]
+  },
+  'cyclic': {
+    title: 'CYCLIC RATE (RPM)',
+    def: 'Theoretical rounds-per-minute cadence of continuous automatic fire. In this app SIM-AUTO is strictly a software timing loop (~1,050 RPM) showing rapid recoil climb and dispersion.',
+    icon: 'cyclic',
+    related: ['muzzle flip', 'dispersion', 'machinegun conversion device'],
+    sections: [['#sec-range', 'Section VII — Sim-Auto'], ['#sec-mcd', 'Section VIII — MCD Brief']]
+  },
+  'machinegun conversion device': {
+    title: 'MACHINEGUN CONVERSION DEVICE (MCD)',
+    def: 'Legal classification under 26 U.S.C. § 5845(b) for any part designed and intended solely and exclusively to convert a weapon into a machinegun. Possessing the part itself is a federal felony; no such part exists for the P322 and none is modeled here.',
+    icon: 'mcd',
+    related: ['nfa', 'fopa', 'striker', 'hammer'],
+    sections: [['#sec-mcd', 'Section VIII — MCD Brief']]
+  },
+  'nfa': {
+    title: 'NATIONAL FIREARMS ACT (26 U.S.C. CH. 53)',
+    def: 'Federal statute governing suppressors, short-barreled firearms, and machineguns (including conversion parts defined in § 5845(b)), carrying severe criminal penalties for unregistered possession.',
+    icon: 'nfa',
+    related: ['fopa', 'machinegun conversion device', 'suppressor'],
+    sections: [['#sec-mcd', 'Section VIII — MCD Brief'], ['#sec-acoustics', 'Section III — Acoustics']]
+  },
+  'fopa': {
+    title: 'FOPA / 18 U.S.C. § 922(o) (1986 CUTOFF)',
+    def: 'Federal provision barring private civilian transfer or possession of any machinegun not lawfully registered before 19 May 1986, leaving zero civilian registration path for modern conversion devices.',
+    icon: 'fopa',
+    related: ['nfa', 'machinegun conversion device'],
+    sections: [['#sec-mcd', 'Section VIII — MCD Brief']]
+  }
+};
+
+const GLOSSARY_ALIASES = {
+  'single-action': 'sao',
+  'picatinny': 'm1913',
+  'baffles': 'baffle',
+  'field-strip': 'takedown',
+  'field strip': 'takedown'
+};
+
+function resolveGlossaryKey(term) {
+  const k = String(term || '').toLowerCase().trim();
+  return GLOSSARY[k] ? k : (GLOSSARY_ALIASES[k] || k);
+}
+
+function glossVisual(icon) {
+  const wrap = (body) => `<svg viewBox="0 0 200 84" role="img" aria-hidden="true"><rect x="2" y="2" width="196" height="80" fill="var(--paper-bg)" stroke="var(--rule-heavy)" stroke-width="2"/>${body}</svg>`;
+  const lbl = (x, y, t, col) => `<text x="${x}" y="${y}" font-size="9" font-weight="bold" font-family="monospace" fill="${col || 'var(--ink-primary)'}">${t}</text>`;
+  const map = {
+    rimfire: `<rect x="28" y="30" width="76" height="24" fill="#d4a43c" stroke="#222" stroke-width="2"/><rect x="22" y="26" width="8" height="32" fill="#e6b84c" stroke="#222" stroke-width="2"/><path d="M104 32h34c14 0 22 5 22 10s-8 10-22 10h-34z" fill="#70767c" stroke="#222" stroke-width="2"/><path d="M8 30h12" stroke="#9c241c" stroke-width="4"/>${lbl(8,20,'PIN PINCHES RIM','#9c241c')}${lbl(106,22,'HEEL BULLET')}`,
+    barrel: `<rect x="16" y="28" width="168" height="28" fill="#464c52"/><rect x="16" y="37" width="168" height="10" fill="#141618"/><path d="M30 37l14 10M62 37l14 10M94 37l14 10M126 37l14 10M158 37l14 10" stroke="#9aa2aa" stroke-width="1.5"/>${lbl(18,21,'RIFLED .22 BORE CHANNEL')}`,
+    chamber: `<rect x="18" y="24" width="164" height="36" fill="#464c52"/><rect x="24" y="32" width="54" height="20" fill="#e0b044"/><path d="M78 35h22c8 0 12 3 12 7s-4 7-12 7H78z" fill="#b87333"/><rect x="112" y="38" width="70" height="8" fill="#111"/>${lbl(24,18,'CHAMBER POCKET','#9c241c')}${lbl(116,18,'BORE')}`,
+    slide: `<rect x="24" y="24" width="152" height="24" fill="#525860" stroke="#222" stroke-width="2"/><path d="M36 30v12M44 30v12M52 30v12M140 30v12M148 30v12" stroke="#ddd" stroke-width="2"/><path d="M140 64H60M74 58l-14 6 14 6" fill="none" stroke="#9c241c" stroke-width="2.5"/>${lbl(64,18,'RECIPROCATING SLIDE')}`,
+    hammer: `<rect x="24" y="20" width="152" height="46" fill="none" stroke="#666" stroke-dasharray="4 3" stroke-width="1.5"/><circle cx="78" cy="54" r="7" fill="#222"/><path d="M78 54L112 26l10 8-32 24z" fill="#9c241c"/><path d="M122 36h40" stroke="#222" stroke-width="4"/>${lbl(28,15,'ENCLOSED FRAME SHROUD')}${lbl(92,76,'PIVOTING SAO HAMMER','#9c241c')}`,
+    striker: `<rect x="20" y="28" width="160" height="24" fill="#4b5158"/><path d="M34 40c4-6 8 6 12 0s8 6 12 0 8 6 12 0 8 6 12 0" fill="none" stroke="#f4be5e" stroke-width="2.5"/><rect x="86" y="37" width="78" height="6" fill="#9c241c"/>${lbl(24,21,'COIL SPRING + LINEAR STRIKER PIN')}`,
+    blowback: `<rect x="26" y="28" width="106" height="22" fill="#50565e"/><rect x="132" y="34" width="52" height="10" fill="#2b3035"/><path d="M96 62H38M50 56l-12 6 12 6" fill="none" stroke="#9c241c" stroke-width="2.5"/>${lbl(30,21,'GAS IMPULSE DRIVES SLIDE REARWARD','#9c241c')}`,
+    fixed: `<rect x="24" y="32" width="152" height="14" fill="#32373d"/><rect x="52" y="46" width="16" height="20" fill="#9c241c"/><rect x="122" y="46" width="16" height="20" fill="#9c241c"/>${lbl(28,22,'RIGID FRAME-PINNED BARREL (NO TILT)')}`,
+    safety: `<rect x="30" y="34" width="140" height="22" fill="#4b5158"/><rect x="82" y="16" width="34" height="22" rx="4" fill="#9c241c"/><circle cx="92" cy="27" r="4" fill="#fff"/>${lbl(42,72,'SAFETY UP = SEAR BLOCKED','#9c241c')}`,
+    catch: `<rect x="24" y="24" width="110" height="20" fill="#525860"/><rect x="96" y="42" width="24" height="14" fill="#d98a2b"/><path d="M108 70V48" stroke="#9c241c" stroke-width="3"/>${lbl(26,74,'FOLLOWER LIFTS CATCH ON EMPTY MAG')}`,
+    takedown: `<rect x="30" y="16" width="136" height="18" fill="#525860"/><rect x="30" y="48" width="120" height="18" fill="#2c3035"/><path d="M98 44V34M92 39l6-6 6 6" fill="none" stroke="#1e4268" stroke-width="2.5"/>${lbl(34,77,'ROTATE LEVER -> LIFT SLIDE OFF','#1e4268')}`,
+    mag: `<path d="M78 12h44l-10 60H68z" fill="#32363b" stroke="#111" stroke-width="2"/><ellipse cx="94" cy="22" rx="12" ry="4" fill="#e0b044"/><ellipse cx="90" cy="32" rx="12" ry="4" fill="#e0b044"/><ellipse cx="92" cy="42" rx="12" ry="4" fill="#e0b044"/>${lbl(124,38,'20 / 25 RD')}${lbl(124,52,'LOAD TABS')}`,
+    rim: `<ellipse cx="86" cy="32" rx="34" ry="8" fill="#e0b044" stroke="#222" stroke-width="2"/><rect x="48" y="22" width="8" height="18" fill="#9c241c"/><ellipse cx="94" cy="48" rx="34" ry="8" fill="#d4a43c" stroke="#222" stroke-width="2"/><rect x="56" y="38" width="8" height="18" fill="#222"/>${lbl(18,72,'UPPER RIM TRAPPED BEHIND LOWER RIM','#9c241c')}`,
+    short: `<rect x="24" y="30" width="90" height="20" fill="#525860"/><rect x="74" y="34" width="28" height="10" fill="#e0b044"/><path d="M122 40h40" stroke="#9c241c" stroke-width="2.5" stroke-dasharray="4 3"/>${lbl(22,68,'LOW IMPULSE -> INCOMPLETE CYCLE','#9c241c')}`,
+    foul: `<rect x="18" y="28" width="164" height="26" fill="#3d4349"/><rect x="18" y="36" width="164" height="10" fill="#151719"/><path d="M28 37c12 4 22-2 36 4s26-3 42 3 30-4 54 3" stroke="#b8923a" stroke-width="4" fill="none"/>${lbl(24,20,'SOFT LEAD DEPOSIT IN GROOVES','#8c4f0a')}`,
+    thread: `<rect x="22" y="30" width="96" height="24" fill="#464c52"/><rect x="118" y="33" width="46" height="18" fill="#767e86"/><path d="M122 33v18M128 33v18M134 33v18M140 33v18M146 33v18M152 33v18M158 33v18" stroke="#222" stroke-width="1.5"/>${lbl(112,23,'1/2"-28 UNEF')}`,
+    suppressor: `<rect x="18" y="35" width="38" height="14" fill="#464c52"/><rect x="56" y="24" width="122" height="36" rx="3" fill="#2a2f35" stroke="#111" stroke-width="2"/><path d="M74 24l10 14v8l-10 14M96 24l10 14v8l-10 14M118 24l10 14v8l-10 14M140 24l10 14v8l-10 14" fill="none" stroke="#cbd2d9" stroke-width="2"/>${lbl(58,18,'7-BAFFLE GAS EXPANSION STACK')}`,
+    pop: `<rect x="20" y="28" width="106" height="28" fill="#2a2f35"/><path d="M130 42l32-18M130 42h42M130 42l32 18" stroke="#e0522f" stroke-width="3.5"/>${lbl(22,20,'SHOT #1 O2 FLASH (+4 dB FRP)','#9c241c')}`,
+    subsonic: `<circle cx="70" cy="42" r="14" fill="none" stroke="#1e4268" stroke-width="1.5"/><circle cx="78" cy="42" r="26" fill="none" stroke="#1e4268" stroke-width="1.5"/><path d="M78 38h20l8 4-8 4H78z" fill="#215732"/>${lbl(114,38,'< 1,125 FPS','#215732')}${lbl(114,52,'NO MACH CONE')}`,
+    supersonic: `<path d="M138 42L42 14M138 42L42 70" stroke="#9c241c" stroke-width="2.5"/><path d="M116 38h20l10 4-10 4h-20z" fill="#9c241c"/>${lbl(22,45,'MACH SHOCK CONE (>1,125 FPS)','#9c241c')}`,
+    comp: `<rect x="22" y="36" width="126" height="18" fill="#4b5158"/><path d="M96 36V14M114 36V14M132 36V14" stroke="#9c241c" stroke-width="3.5"/><path d="M90 20l6-7 6 7M126 20l6-7 6 7" fill="none" stroke="#9c241c" stroke-width="2"/>${lbl(22,26,'UPWARD GAS JETS COUNTER CLIMB','#9c241c')}`,
+    flip: `<rect x="30" y="46" width="98" height="14" transform="rotate(-14 40 52)" fill="#4b5158"/><path d="M138 48A36 36 0 0 0 124 18" fill="none" stroke="#9c241c" stroke-width="3"/><path d="M120 25l3-8 8 4" fill="none" stroke="#9c241c" stroke-width="2.5"/>${lbl(24,74,'RECOIL TORQUE LIFTS MUZZLE','#9c241c')}`,
+    rail: `<rect x="24" y="24" width="152" height="16" fill="#32363b"/><path d="M40 40v8h14v-8h12v8h14v-8h12v8h14v-8h12v8h14v-8" fill="#32363b"/><rect x="74" y="48" width="56" height="18" rx="3" fill="#1e4268"/>${lbl(30,20,'M1913 CROSS-SLOTTED ACCESSORY RAIL')}`,
+    iron: `<rect x="24" y="54" width="152" height="10" fill="#464c52"/><path d="M42 54V28h24v16h20V28h24v26" fill="#222"/><rect x="92" y="30" width="8" height="24" fill="#9c241c"/>${lbl(38,20,'REAR NOTCH + FRONT POST ALIGNED')}`,
+    fiber: `<rect x="44" y="50" width="112" height="12" fill="#3a3f45"/><rect x="88" y="24" width="24" height="26" fill="#222"/><circle cx="100" cy="36" r="7" fill="#2ee86c"/>${lbl(38,18,'AMBIENT LIGHT-GATHERING ROD','#215732')}`,
+    tritium: `<rect x="20" y="14" width="160" height="56" fill="#141c24"/><circle cx="62" cy="44" r="7" fill="#5cff95"/><circle cx="100" cy="40" r="8" fill="#5cff95"/><circle cx="138" cy="44" r="7" fill="#5cff95"/>${lbl(34,28,'SELF-LUMINOUS NIGHT LAMPS','#7dffb0')}`,
+    tall: `<rect x="20" y="50" width="90" height="12" fill="#464c52"/><rect x="110" y="28" width="66" height="36" fill="#6b727a"/><rect x="30" y="18" width="8" height="32" fill="#1e4268"/><rect x="96" y="18" width="8" height="32" fill="#1e4268"/><path d="M14 21h172" stroke="#215732" stroke-width="2" stroke-dasharray="4 3"/>${lbl(18,14,'TALL SIGHT LINE CLEARS 3" CAN','#215732')}`,
+    moa: `<path d="M18 56L176 24M18 56h158" stroke="#1e4268" stroke-width="2.5"/><path d="M176 24v32" stroke="#9c241c" stroke-width="3"/>${lbl(22,44,'1 MOA CONE','#1e4268')}${lbl(112,72,'1.047" @ 100 YD','#9c241c')}`,
+    zero: `<path d="M16 44h168" stroke="#1e4268" stroke-width="2" stroke-dasharray="4 3"/><path d="M16 56Q82 30 184 68" fill="none" stroke="#9c241c" stroke-width="3"/><circle cx="96" cy="44" r="5" fill="#215732"/>${lbl(66,22,'25-YD ZERO CROSSING','#215732')}`,
+    hold: `<circle cx="148" cy="54" r="18" fill="none" stroke="#222" stroke-width="2.5"/><circle cx="148" cy="54" r="4" fill="#9c241c"/><path d="M148 54V20" stroke="#1e4268" stroke-width="2" stroke-dasharray="3 2"/><circle cx="148" cy="20" r="4" fill="#1e4268"/><path d="M20 34Q92 16 148 54" fill="none" stroke="#9c241c" stroke-width="2.5"/>${lbl(20,20,'AIM HIGH (+MOA)','#1e4268')}${lbl(20,68,'IMPACT CENTER','#9c241c')}`,
+    tof: `<circle cx="52" cy="42" r="22" fill="none" stroke="#222" stroke-width="2.5"/><path d="M52 42V26M52 42l12 8" stroke="#9c241c" stroke-width="3"/><path d="M84 42h92" stroke="#1e4268" stroke-width="2.5" stroke-dasharray="5 3"/>${lbl(86,32,'100 YD TOF = 0.318 s')}${lbl(86,58,'DELAYED RING / HIT','#9c241c')}`,
+    velocity: `<path d="M24 22Q96 42 176 58" fill="none" stroke="#9c241c" stroke-width="3"/><circle cx="24" cy="22" r="4" fill="#222"/><circle cx="176" cy="58" r="4" fill="#9c241c"/>${lbl(18,15,'V0: 1,075 FPS')}${lbl(106,74,'100 YD: 833 FPS','#9c241c')}`,
+    bc: `<path d="M22 26Q100 30 178 44" fill="none" stroke="#1e4268" stroke-width="2.5" stroke-dasharray="5 3"/><path d="M22 26Q96 44 178 68" fill="none" stroke="#9c241c" stroke-width="3"/>${lbl(96,22,'HIGH BC (LESS DRAG)','#1e4268')}${lbl(58,75,'.22 HEEL BC ~0.12','#9c241c')}`,
+    wind: `<path d="M36 20v48" stroke="#666" stroke-width="2" stroke-dasharray="3 3"/><path d="M36 20Q42 44 96 68" fill="none" stroke="#9c241c" stroke-width="3"/><path d="M116 28h52M156 22l12 6-12 6M116 44h52M156 38l12 6-12 6" fill="none" stroke="#1e4268" stroke-width="2"/>${lbl(112,18,'CROSSWIND ->','#1e4268')}`,
+    dispersion: `<circle cx="100" cy="42" r="26" fill="none" stroke="#1e4268" stroke-width="2" stroke-dasharray="4 3"/><circle cx="96" cy="38" r="3.5" fill="#9c241c"/><circle cx="108" cy="46" r="3.5" fill="#9c241c"/><circle cx="90" cy="50" r="3.5" fill="#9c241c"/><circle cx="105" cy="31" r="3.5" fill="#9c241c"/><circle cx="100" cy="43" r="3.5" fill="#9c241c"/>${lbl(18,74,'GAUSSIAN GROUP CONE')}`,
+    steel: `<path d="M84 6v16M116 6v16" stroke="#444" stroke-width="3"/><circle cx="100" cy="46" r="26" fill="#8d9298" stroke="#222" stroke-width="3"/><circle cx="100" cy="46" r="6" fill="#c85a18"/>${lbl(18,74,'AR500 SWINGING GONG')}`,
+    bullseye: `<circle cx="100" cy="42" r="28" fill="#1d1c19"/><circle cx="100" cy="42" r="18" fill="none" stroke="#e9e1c9" stroke-width="2"/><circle cx="100" cy="42" r="9" fill="none" stroke="#e9e1c9" stroke-width="2"/><circle cx="110" cy="36" r="4" fill="#ff6b4a"/>${lbl(16,75,'NRA B-8 REPAIR CENTER')}`,
+    silhouette: `<circle cx="100" cy="22" r="10" fill="#24231f"/><path d="M76 34h48l6 38H70z" fill="#24231f"/><circle cx="100" cy="50" r="10" fill="none" stroke="#e9e1c9" stroke-width="1.5"/>${lbl(16,74,'24" B-27 SILHOUETTE')}`,
+    cyclic: `<rect x="20" y="18" width="160" height="48" fill="rgba(156,36,28,0.10)" stroke="#9c241c" stroke-width="2"/><text x="100" y="41" text-anchor="middle" font-size="13" font-weight="bold" font-family="monospace" fill="#9c241c">~1,050 RPM TIMING LOOP</text><text x="100" y="56" text-anchor="middle" font-size="9" font-family="monospace" fill="#222">SOFTWARE DEMO ONLY · NO PART</text>`,
+    mcd: `<rect x="18" y="14" width="164" height="56" fill="#9c241c"/><text x="100" y="36" text-anchor="middle" font-size="12" font-weight="bold" font-family="monospace" fill="#fff">26 U.S.C. § 5845(b)</text><text x="100" y="52" text-anchor="middle" font-size="9.5" font-family="monospace" fill="#ffe4dc">FELONY · NO P322 PART EXISTS</text>`,
+    nfa: `<rect x="18" y="14" width="164" height="56" fill="var(--paper-bg)" stroke="#9c241c" stroke-width="3"/><text x="100" y="37" text-anchor="middle" font-size="13" font-weight="bold" font-family="monospace" fill="#9c241c">NFA // 26 U.S.C. CH. 53</text><text x="100" y="54" text-anchor="middle" font-size="9.5" font-family="monospace" fill="var(--ink-primary)">UP TO 10 YRS / $250,000 FINE</text>`,
+    fopa: `<rect x="18" y="14" width="164" height="56" fill="var(--paper-bg)" stroke="#1e4268" stroke-width="3"/><text x="100" y="37" text-anchor="middle" font-size="13" font-weight="bold" font-family="monospace" fill="#1e4268">18 U.S.C. § 922(o)</text><text x="100" y="54" text-anchor="middle" font-size="9.5" font-family="monospace" fill="var(--ink-primary)">19 MAY 1986 REGISTRY CUTOFF</text>`
+  };
+  return wrap(map[icon] || map.barrel);
+}
+
+function openGlossary(term) {
+  const key = resolveGlossaryKey(term);
+  const entry = GLOSSARY[key];
+  const modal = document.getElementById('glossaryModal');
+  if (!modal || !entry) return;
+  document.getElementById('glossaryTitle').textContent = entry.title;
+  document.getElementById('glossaryVisual').innerHTML = glossVisual(entry.icon);
+  document.getElementById('glossaryDef').textContent = entry.def;
+  document.getElementById('glossaryRelated').innerHTML = (entry.related || []).map((r) => {
+    const rk = resolveGlossaryKey(r);
+    return `<button class="btn-ord btn-sm" onclick="openGlossary('${rk}')">${r.toUpperCase()}</button>`;
+  }).join('');
+  document.getElementById('glossarySections').innerHTML = (entry.sections || []).map(([href, label]) =>
+    `<a class="btn-ord btn-sm" href="${href}" onclick="closeGlossary()">${label.toUpperCase()} &rarr;</a>`
+  ).join('');
+  modal.classList.add('is-open');
+  modal.setAttribute('aria-hidden', 'false');
+}
+
+function openGlossaryIndex() {
+  const modal = document.getElementById('glossaryModal');
+  if (!modal) return;
+  document.getElementById('glossaryTitle').textContent = 'ILLUSTRATED GLOSSARY INDEX (' + Object.keys(GLOSSARY).length + ' TERMS)';
+  document.getElementById('glossaryVisual').innerHTML = glossVisual('iron');
+  document.getElementById('glossaryDef').textContent = 'Tap any term below — or any dotted-underlined technical word anywhere in the dossier — to view its schematic diagram, plain-language definition, related terms, and section jump links.';
+  document.getElementById('glossaryRelated').innerHTML = Object.keys(GLOSSARY).map((k) =>
+    `<button class="btn-ord btn-sm" onclick="openGlossary('${k}')">${k.toUpperCase()}</button>`
+  ).join('');
+  document.getElementById('glossarySections').innerHTML =
+    `<a class="btn-ord btn-sm" href="#sec-glossary" onclick="closeGlossary()">JUMP TO APPENDIX G &rarr;</a>` +
+    `<a class="btn-ord btn-sm" href="#sec-bench" onclick="closeGlossary()">RETURN TO 3D BENCH &rarr;</a>`;
+  modal.classList.add('is-open');
+  modal.setAttribute('aria-hidden', 'false');
+}
+
+function closeGlossary() {
+  const modal = document.getElementById('glossaryModal');
+  if (!modal) return;
+  modal.classList.remove('is-open');
+  modal.setAttribute('aria-hidden', 'true');
+}
+
+function enhanceGlossaryTerms() {
+  if (!document.createTreeWalker || typeof NodeFilter === 'undefined') return;
+  const allKeys = Object.keys(GLOSSARY).concat(Object.keys(GLOSSARY_ALIASES)).sort((a, b) => b.length - a.length);
+  const esc = (t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const pattern = new RegExp('(^|[^A-Za-z0-9_/-])(' + allKeys.map(esc).join('|') + ')(?![A-Za-z0-9_/-])', 'gi');
+
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+    acceptNode(node) {
+      const p = node.parentElement;
+      if (!p) return NodeFilter.FILTER_REJECT;
+      if (p.closest('#liveConsole, .top-control-strip, .glossary-modal, #sec-glossary, .section-index-grid, button, a, script, style, select, textarea, input, h1, h2, svg')) {
+        return NodeFilter.FILTER_REJECT;
+      }
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  });
+  const nodes = [];
+  while (walker.nextNode()) nodes.push(walker.currentNode);
+
+  // Limit per-section repetition so prose stays clean and readable (first 2 mentions per section per term)
+  const seenPerSec = new Map();
+  nodes.forEach((node) => {
+    const text = node.nodeValue;
+    if (!text || text.trim().length < 3) return;
+    pattern.lastIndex = 0;
+    if (!pattern.test(text)) return;
+    pattern.lastIndex = 0;
+
+    const sec = node.parentElement.closest('section');
+    const secId = sec ? sec.id : 'root';
+    let frag = null;
+    let last = 0, m;
+    while ((m = pattern.exec(text)) !== null) {
+      const lead = m[1] || '';
+      const word = m[2];
+      const wordStart = m.index + lead.length;
+      const canon = resolveGlossaryKey(word);
+      const countKey = secId + '::' + canon;
+      const used = seenPerSec.get(countKey) || 0;
+      if (used >= 2) continue;
+      seenPerSec.set(countKey, used + 1);
+
+      if (!frag) frag = document.createDocumentFragment();
+      if (wordStart > last) frag.appendChild(document.createTextNode(text.slice(last, wordStart)));
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'gloss-term';
+      btn.dataset.term = canon;
+      btn.setAttribute('onclick', "openGlossary('" + canon + "')");
+      btn.textContent = word;
+      frag.appendChild(btn);
+      last = wordStart + word.length;
+    }
+    if (frag) {
+      if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+      node.parentNode.replaceChild(frag, node);
+    }
+  });
 }
 
 /* --- JUMP-TO-BENCH PRESETS & PAPER --- */
@@ -7398,9 +8667,8 @@ function cyclePaperStock() {
   const st = STOCKS[stockIdx];
   if (st === 'archive') document.body.removeAttribute('data-stock');
   else document.body.setAttribute('data-stock', st);
-  const labels = { archive: 'PAPER: 1984 BOND', manila: 'PAPER: MANILA COPY', blueprint: 'PAPER: BLUEPRINT' };
-  const btn = document.getElementById('btnStock');
-  if (btn) btn.textContent = labels[st];
+  const labels = { archive: 'BOND', manila: 'MNLA', blueprint: 'BLUP' };
+  setPadLabel('btnStock', labels[st]);
   if (audioEngine) audioEngine.playSafetyToggle(true);
 }
 
@@ -7409,7 +8677,7 @@ function toggleAudioMute() {
   audioEngine.enabled = !audioEngine.enabled;
   const btn = document.getElementById('btnAudio');
   if (btn) {
-    btn.textContent = audioEngine.enabled ? 'AUDIO: ON' : 'AUDIO: MUTED';
+    setPadLabel(btn, audioEngine.enabled ? 'SND' : 'MUTE');
     btn.classList.toggle('is-on', audioEngine.enabled);
   }
   if (audioEngine.enabled) audioEngine.playSafetyToggle(true);
@@ -7526,12 +8794,19 @@ function initDossierApp() {
     syncRangeUI();
   });
 
+  enhanceGlossaryTerms();
+  const glossModal = document.getElementById('glossaryModal');
+  if (glossModal) {
+    glossModal.addEventListener('click', (e) => { if (e.target === glossModal) closeGlossary(); });
+  }
+
   syncUI(p322Mech);
-  setLog('3D KINEMATIC BENCH ONLINE. DEPLOY A DOWNRANGE TARGET, SWAP IRON SIGHTS, OR DRAG THE SLIDE DIRECTLY.', 'info');
+  setLog('3D KINEMATIC BENCH ONLINE. ALL 4 PERIMETER BEZELS ACTIVE — DEPLOY TARGET, INSPECT HITS, OR TAP ANY UNDERLINED GLOSSARY WORD.', 'info');
 }
 
 window.addEventListener('DOMContentLoaded', initDossierApp);
 
+  
   </script>
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a5badbbf3850e118',t:'MTc5NDg3Nzg1NA=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a5badbbf3850e118',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a5bec50f9863eaf4',t:'MTc5NDkxODg2OA=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a5bec50f9863eaf4',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
