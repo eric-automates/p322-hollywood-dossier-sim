@@ -756,40 +756,90 @@ details.tm-detail[open] summary {
   cursor: ew-resize;
 }
 
-/* Diegetic HUD Overlays inside 3D Bench */
-.hud-top-left {
+/* Diegetic HUD Overlays inside 3D Bench — Non-overlapping Flex Dock + Click-to-Border-Shrink */
+.hud-top-dock {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 5px;
+  padding: 5px 6px 0;
   pointer-events: none;
-  background: rgba(16, 20, 18, 0.82);
-  border: 1px solid rgba(214, 203, 174, 0.35);
+}
+
+.hud-dockable {
+  pointer-events: auto !important;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: padding 0.14s ease, opacity 0.14s ease, border-color 0.14s ease, background-color 0.14s ease;
+}
+.hud-dockable:hover {
+  border-color: rgba(242, 224, 172, 0.72);
+}
+
+.hud-top-left {
+  position: relative;
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: calc(100% - 92px);
+  background: rgba(14, 18, 16, 0.84);
+  border: 1px solid rgba(214, 203, 174, 0.34);
   color: #eae3cf;
-  padding: 6px 10px;
-  font-size: 0.7rem;
-  line-height: 1.45;
+  padding: 4px 8px;
+  font-size: 0.63rem;
+  line-height: 1.3;
   backdrop-filter: blur(2px);
+}
+.hud-top-left > div {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hud-top-left.is-docked {
+  margin-top: -5px;
+  margin-left: -6px;
+  padding: 2px 7px;
+  border-top: none;
+  border-left: none;
+  border-radius: 0 0 4px 0;
+  background: rgba(12, 16, 15, 0.90);
+  font-size: 0.58rem;
+  color: #d7e2d9;
 }
 
 .hud-top-right {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+  position: relative;
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 5px;
+  gap: 4px;
   pointer-events: none;
 }
 
 .hud-pill {
-  background: rgba(16, 20, 18, 0.84);
+  background: rgba(14, 18, 16, 0.86);
   border: 1px solid rgba(214, 203, 174, 0.4);
   color: #efe8d5;
-  padding: 4px 9px;
-  font-size: 0.7rem;
+  padding: 3px 8px;
+  font-size: 0.64rem;
   font-weight: bold;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.hud-pill.is-docked {
+  margin-top: -5px;
+  margin-right: -6px;
+  padding: 2px 6px;
+  border-top: none;
+  border-right: none;
+  border-radius: 0 0 0 4px;
+  font-size: 0.56rem;
 }
 
 .hud-pill.status-hot {
@@ -809,20 +859,23 @@ details.tm-detail[open] summary {
 
 .hud-hover-tag {
   position: absolute;
-  bottom: 46px;
+  bottom: 34px;
   left: 50%;
   transform: translateX(-50%);
   pointer-events: none;
   background: rgba(235, 224, 194, 0.94);
   color: #181612;
   border: 1.5px solid #181612;
-  padding: 4px 12px;
-  font-size: 0.74rem;
+  padding: 3px 10px;
+  font-size: 0.68rem;
   font-weight: bold;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   opacity: 0;
   transition: opacity 0.14s;
   white-space: nowrap;
+  max-width: 94%;
+  overflow: hidden;
+  text-overflow: ellipsis;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
 }
 
@@ -832,19 +885,29 @@ details.tm-detail[open] summary {
 
 .hud-bottom-hint {
   position: absolute;
-  bottom: 8px;
-  left: 10px;
-  right: 10px;
+  bottom: 5px;
+  left: 6px;
+  right: 6px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 8px;
-  pointer-events: none;
-  font-size: 0.67rem;
+  font-size: 0.61rem;
   color: rgba(236, 228, 207, 0.84);
-  background: rgba(14, 18, 16, 0.72);
-  border: 1px solid rgba(214, 203, 174, 0.22);
-  padding: 4px 9px;
+  background: rgba(14, 18, 16, 0.76);
+  border: 1px solid rgba(214, 203, 174, 0.24);
+  padding: 3px 8px;
+}
+.hud-bottom-hint.is-docked {
+  bottom: 0;
+  left: 0;
+  right: auto;
+  padding: 2px 7px;
+  border-bottom: none;
+  border-left: none;
+  border-radius: 0 4px 0 0;
+  font-size: 0.54rem;
+  background: rgba(12, 16, 15, 0.88);
 }
 
 /* Camera & View Presets Bar */
@@ -1188,6 +1251,8 @@ table.ord-table tr:nth-child(even) td {
 /* Keep diegetic HUD labels above the reticle canvas */
 .hud-top-left, .hud-top-right, .hud-hover-tag, .hud-bottom-hint {
   z-index: 4;
+}
+.hud-hover-tag {
   pointer-events: none;
 }
 
@@ -1764,6 +1829,7 @@ body.console-fullscreen-open .top-control-strip {
 }
 .btn-close-only { display: none !important; }
 .live-console.is-fullscreen .btn-close-only { display: inline-flex !important; }
+.live-console.is-fullscreen #btnConsoleExpand { display: none !important; }
 
 /* Fix Viewport HUD & SIM-AUTO Badge so nothing ever overlaps! */
 .console-stage .sim-badge {
@@ -1776,6 +1842,19 @@ body.console-fullscreen-open .top-control-strip {
   padding: 4px 8px;
   gap: 5px;
   font-size: 0.64rem;
+}
+.console-stage .sim-badge.is-docked {
+  bottom: 0;
+  left: 0;
+  right: auto;
+  padding: 2px 7px;
+  border-bottom: none;
+  border-left: none;
+  border-radius: 0 4px 0 0;
+  font-size: 0.54rem;
+}
+.console-stage .sim-badge.is-docked small {
+  display: none;
 }
 .console-stage .sim-badge small {
   font-size: 0.52rem;
@@ -1928,8 +2007,8 @@ body.console-fullscreen-open .top-control-strip {
     min-height: 27px;
   }
   .rail-right .bezel-col .btn-ord.btn-pad {
-    height: 33px;
-    min-height: 31px;
+    height: 30px;
+    min-height: 29px;
   }
 
   .btn-ord.btn-pad {
@@ -1953,39 +2032,64 @@ body.console-fullscreen-open .top-control-strip {
     letter-spacing: 0;
   }
 
-  /* Clean non-overlapping HUD inside mobile center viewport */
-  .console-stage .hud-top-left {
-    top: 4px;
-    left: 4px;
-    padding: 3px 5px;
-    font-size: 0.50rem;
-    line-height: 1.25;
-    max-width: 62%;
+  /* Clean non-overlapping dockable HUD inside mobile center viewport */
+  .hud-top-dock {
+    padding: 3px 4px 0;
+    gap: 3px;
   }
-  .console-stage .hud-top-right {
-    top: 4px;
-    right: 4px;
+  .console-stage .hud-top-left {
+    padding: 2px 5px;
+    font-size: 0.47rem;
+    line-height: 1.22;
+    max-width: calc(100% - 68px);
+  }
+  .console-stage .hud-top-left.is-docked {
+    margin-top: -3px;
+    margin-left: -4px;
+    padding: 2px 5px;
+    font-size: 0.46rem;
   }
   .console-stage .hud-pill {
     padding: 2px 5px;
-    font-size: 0.50rem;
+    font-size: 0.47rem;
+    letter-spacing: 0.02em;
+  }
+  .console-stage .hud-pill.is-docked {
+    margin-top: -3px;
+    margin-right: -4px;
+    padding: 2px 5px;
+    font-size: 0.46rem;
   }
   .console-stage .hud-bottom-hint {
-    bottom: 4px;
+    bottom: 3px;
     left: 4px;
     right: 4px;
     padding: 2px 5px;
-    font-size: 0.48rem;
+    font-size: 0.46rem;
+  }
+  .console-stage .hud-bottom-hint.is-docked {
+    bottom: 0;
+    left: 0;
+    right: auto;
+    padding: 1.5px 5px;
+    font-size: 0.45rem;
   }
   .console-stage .hud-bottom-hint span:last-child {
     display: none;
   }
   .console-stage .sim-badge {
-    bottom: 4px;
+    bottom: 3px;
     left: 4px;
     right: 4px;
     padding: 3px 6px;
-    font-size: 0.54rem;
+    font-size: 0.52rem;
+  }
+  .console-stage .sim-badge.is-docked {
+    bottom: 0;
+    left: 0;
+    right: auto;
+    padding: 2px 5px;
+    font-size: 0.46rem;
   }
   .console-stage .sim-badge small {
     font-size: 0.46rem;
@@ -2391,27 +2495,29 @@ body.console-fullscreen-open .top-control-strip {
                 <canvas id="glCanvas" aria-label="Interactive 3D SIG Sauer P322 Pistol Model"></canvas>
                 <canvas id="sightCanvas" class="sight-canvas" aria-label="Iron sight reticle overlay for downrange aiming"></canvas>
 
-                <div id="hudSpecOverlay" class="hud-top-left">
-                  <div>HAMMER: <strong>COCKED (SAO)</strong> | TRIG: <strong>FLAT</strong></div>
-                  <div>LOAD: <strong>CCI MINI-MAG 40gr</strong> (1075 FPS / 4" BBL)</div>
-                  <div>MUZZLE: <strong>FLUSH CAP (UNSUPPRESSED)</strong></div>
-                </div>
+                <div class="hud-top-dock">
+                  <div id="hudSpecOverlay" class="hud-top-left hud-dockable" onclick="toggleHudCard('spec')" title="Tap or click to dock onto top-left border / expand">
+                    <div>HAMMER: <strong>COCKED (SAO)</strong> | TRIG: <strong>FLAT</strong></div>
+                    <div>LOAD: <strong>CCI MINI-MAG 40gr</strong> (1075 FPS / 4" BBL)</div>
+                    <div>MUZZLE: <strong>FLUSH CAP (UNSUPPRESSED)</strong></div>
+                  </div>
 
-                <div class="hud-top-right">
-                  <div id="hudStatusPill" class="hud-pill status-hot">CONDITION: HOT / READY</div>
+                  <div class="hud-top-right">
+                    <div id="hudStatusPill" class="hud-pill status-hot hud-dockable" onclick="toggleHudCard('status')" title="Tap or click to dock onto top-right border / expand">CONDITION: HOT / READY</div>
+                  </div>
                 </div>
 
                 <div id="hudHoverTag" class="hud-hover-tag">ALUMINUM SLIDE &mdash; DRAG TO RACK</div>
 
-                <div id="simAutoBadge" class="sim-badge">
+                <div id="simAutoBadge" class="sim-badge hud-dockable" onclick="toggleHudCard('sim')" title="Tap or click to dock onto bottom-left border / expand">
                   <span class="sim-led"></span>
                   <strong>SIM-AUTO [TEST ONLY]</strong>
                   <small>HYPOTHETICAL CYCLIC DEMO &middot; NOT A REAL PART &middot; NOT FOR SALE &middot; NO HARDWARE EXISTS FOR THIS PISTOL</small>
                 </div>
 
-                <div class="hud-bottom-hint">
-                  <span><strong>DRAG PART:</strong> SLIDE / MAG / CONTROLS</span>
-                  <span><strong>DRAG SPACE:</strong> SPIN 360&deg; &middot; <strong>PINCH:</strong> ZOOM</span>
+                <div id="hudBottomHint" class="hud-bottom-hint hud-dockable" onclick="toggleHudCard('hint')" title="Tap or click to dock onto bottom-left border / expand">
+                  <span id="hudHintPrimary"><strong>DRAG PART:</strong> SLIDE / MAG / CONTROLS</span>
+                  <span id="hudHintSecondary"><strong>DRAG SPACE:</strong> SPIN 360&deg; &middot; <strong>TAP HUD:</strong> DOCK</span>
                 </div>
               </div>
 
@@ -6167,7 +6273,10 @@ class P322Renderer3D {
 
     this.orbitOnly = false;
     this.hoveredPart = null;
-    this.activeDrag = null; // { mode: 'orbit'|'slide'|'mag', ... }
+    this.hoveredXrayBadge = null;
+    this.activeDrag = null; // { mode: 'orbit'|'slide'|'mag'|'xrayBadge', ... }
+    this.xrayMinified = new Set(); // Set of X-Ray PSI callout IDs shrunk to border numbers
+    this.xrayHitRects = [];        // Live CSS-pixel hitboxes for X-Ray PSI callouts
 
     this.viewMat = M3D.ident();
     this.projMat = M3D.ident();
@@ -6445,19 +6554,103 @@ class P322Renderer3D {
     return [(ndcX * 0.5 + 0.5) * w, (0.5 - ndcY * 0.5) * h];
   }
 
+  _pickXrayBadge(clientX, clientY) {
+    if (!this.mech || !this.mech.xray) return null;
+    if (this.viewMode !== 'bench' && this.viewMode !== 'range') return null;
+    if (!this.xrayHitRects || !this.xrayHitRects.length) return null;
+    const rect = this.canvas.getBoundingClientRect();
+    const lx = clientX - rect.left;
+    const ly = clientY - rect.top;
+    for (let i = 0; i < this.xrayHitRects.length; i++) {
+      const r = this.xrayHitRects[i];
+      if (lx >= r.x - 2 && lx <= r.x + r.w + 2 && ly >= r.y - 2 && ly <= r.y + r.h + 2) {
+        return r;
+      }
+    }
+    return null;
+  }
+
+  toggleXrayBadge(id) {
+    const allIds = ['upper', 'chamber', 'barrel', 'mag', 'muzzle'];
+    if (id === '__all__') {
+      const allShrunk = allIds.every(k => this.xrayMinified.has(k));
+      if (allShrunk) this.xrayMinified.clear();
+      else allIds.forEach(k => this.xrayMinified.add(k));
+    } else if (this.xrayMinified.has(id)) {
+      this.xrayMinified.delete(id);
+    } else {
+      this.xrayMinified.add(id);
+    }
+    if (this.mech && this.mech.audio) {
+      this.mech.audio.playSafetyToggle(!this.xrayMinified.has(id));
+    }
+  }
+
   _drawXrayPressureOverlay(c, w, h) {
     const m = this.mech;
     const P = this.partMatrices;
+    this.xrayHitRects = [];
     if (!m || !m.xray || !P || !P.root) return;
     if (this.viewMode !== 'bench' && this.viewMode !== 'range') return;
 
     const g = m.gas;
-    const dpr = Math.min(2, window.devicePixelRatio || 1);
-    const compact = w < 560 * dpr;
+    const cvRect = this.canvas.getBoundingClientRect();
+    const cssW = Math.max(1, cvRect.width || (w / (window.devicePixelRatio || 1)));
+    const cssH = Math.max(1, cvRect.height || (h / (window.devicePixelRatio || 1)));
+    const dpr = w / cssW;
+    const compact = cssW < 540;
+    const ultraCompact = cssW < 360;
+
+    // Measure live DOM HUD element rectangles in canvas CSS pixels so nothing EVER collides
+    const domBoxesTop = [];
+    const domBoxesBot = [];
+    const measureDom = (id, bucket) => {
+      if (typeof document === 'undefined') return;
+      const el = document.getElementById(id);
+      if (!el || el.offsetParent === null) return;
+      const st = window.getComputedStyle ? window.getComputedStyle(el) : null;
+      if (st && (st.display === 'none' || st.visibility === 'hidden')) return;
+      const r = el.getBoundingClientRect();
+      if (r.width < 1 || r.height < 1) return;
+      bucket.push({
+        x1: Math.max(0, r.left - cvRect.left),
+        x2: Math.min(cssW, r.right - cvRect.left),
+        y1: Math.max(0, r.top - cvRect.top),
+        y2: Math.min(cssH, r.bottom - cvRect.top)
+      });
+    };
+    measureDom('hudSpecOverlay', domBoxesTop);
+    measureDom('hudStatusPill', domBoxesTop);
+    measureDom('hudBottomHint', domBoxesBot);
+    measureDom('simAutoBadge', domBoxesBot);
+
+    const topClearForSpan = (x1, x2, pad) => {
+      let y = pad;
+      for (let i = 0; i < domBoxesTop.length; i++) {
+        const b = domBoxesTop[i];
+        if (x2 > b.x1 - 2 && x1 < b.x2 + 2) {
+          y = Math.max(y, b.y2 + pad);
+        }
+      }
+      return y;
+    };
+    const botLimitForSpan = (x1, x2, pad) => {
+      let y = cssH - pad;
+      for (let i = 0; i < domBoxesBot.length; i++) {
+        const b = domBoxesBot[i];
+        if (x2 > b.x1 - 2 && x1 < b.x2 + 2) {
+          y = Math.min(y, b.y1 - pad);
+        }
+      }
+      return y;
+    };
 
     const muzTitle = m.muzzleMode === 'commercial' ? '7-BAFFLE CAN'
       : (m.muzzleMode === 'oilcan' ? '3" OIL CANISTER'
         : (m.muzzleMode === 'comp' ? 'PORTED COMP' : 'MUZZLE CROWN'));
+    const muzShort = m.muzzleMode === 'commercial' ? '7-BFL CAN'
+      : (m.muzzleMode === 'oilcan' ? 'OIL CAN'
+        : (m.muzzleMode === 'comp' ? 'COMP' : 'CROWN'));
     const muzAnchor = m.muzzleMode === 'commercial' ? [16.8, 2.46, 0]
       : (m.muzzleMode === 'oilcan' ? [15.8, 2.46, 0]
         : (m.muzzleMode === 'comp' ? [11.15, 2.65, 0] : [9.25, 2.46, 0]));
@@ -6469,138 +6662,304 @@ class P322Renderer3D {
     const chDisp = Math.max(g.chamberPsi, g.chamberPeak);
     const chTag = g.chamberPsi > 50 ? 'LIVE COMBUSTION' : (g.chamberPeak > 5 ? 'PEAK HOLD DECAY' : (m.chambered ? 'CHAMBERED READY' : 'CHAMBER CLEAR'));
 
+    const fmtCompactNum = (v, decimals) => {
+      if (v >= 10000) return (v / 1000).toFixed(1) + 'k';
+      if (v >= 100) return Math.round(v).toLocaleString();
+      return v.toFixed(decimals);
+    };
+
     const pins = [
       {
-        label: 'UPPER / BREECH',
+        id: 'upper',
+        label: ultraCompact ? 'BREECH' : 'UPPER / BREECH',
         world: M3D.transformPoint(P.slide || P.root, [-2.20, 2.88, 0]),
         psi: g.upperPsi,
         maxPsi: 120,
         valTxt: g.upperPsi.toFixed(1) + ' PSI',
+        numOnly: fmtCompactNum(g.upperPsi, 1) + ' PSI',
         subTxt: g.upperPsi > 0.8 ? 'BLOWBACK CAVITY' : 'PORT VENTED',
-        slot: 'topMidLeft'
+        row: 'top',
+        colIdx: 0
       },
       {
-        label: 'CHAMBER (.22 LR)',
+        id: 'chamber',
+        label: ultraCompact ? 'CHAMBER' : 'CHAMBER (.22 LR)',
         world: M3D.transformPoint(P.root, [-0.25, 2.46, 0]),
         psi: chDisp,
         maxPsi: 24000,
         valTxt: Math.round(chDisp).toLocaleString() + ' PSI',
+        numOnly: fmtCompactNum(chDisp, 0) + ' PSI',
         subTxt: chTag,
-        slot: 'topCenter'
+        row: 'top',
+        colIdx: 1
       },
       {
-        label: 'BARREL BORE (4")',
+        id: 'barrel',
+        label: ultraCompact ? '4" BORE' : 'BARREL BORE (4")',
         world: M3D.transformPoint(P.root, [5.35, 2.46, 0]),
         psi: g.barrelPsi,
         maxPsi: 7500,
         valTxt: (g.barrelPsi >= 10 ? Math.round(g.barrelPsi).toLocaleString() : g.barrelPsi.toFixed(1)) + ' PSI',
+        numOnly: fmtCompactNum(g.barrelPsi, 1) + ' PSI',
         subTxt: 'LEAD ' + Math.round(m.boreFouling) + '% | ' + (g.barrelHeat > 0.05 ? 'HOT GAS' : 'COOL'),
-        slot: 'topRight'
+        row: 'top',
+        colIdx: 2
       },
       {
-        label: 'MAG WELL / STACK',
+        id: 'mag',
+        label: ultraCompact ? 'MAG WELL' : 'MAG WELL / STACK',
         world: M3D.transformPoint(P.magazine || P.root, [-5.95, -2.55, 0]),
         psi: g.magPsi,
         maxPsi: 42,
         valTxt: g.magPsi.toFixed(1) + ' PSI',
+        numOnly: fmtCompactNum(g.magPsi, 1) + ' PSI',
         subTxt: m.magRounds + '/' + m.maxMag + (m.chambered && !m.chamberedSpent ? ' (+1 CHBR)' : ' RDS'),
-        slot: 'botLeft'
+        row: 'bot',
+        colIdx: 0
       },
       {
-        label: muzTitle,
+        id: 'muzzle',
+        label: ultraCompact ? muzShort : muzTitle,
         world: M3D.transformPoint(P.root, muzAnchor),
         psi: g.canPsi,
         maxPsi: canMax,
         valTxt: g.canPsi.toFixed(1) + ' PSI',
+        numOnly: fmtCompactNum(g.canPsi, 1) + ' PSI',
         subTxt: bleedTag,
-        slot: 'botRight'
+        row: 'bot',
+        colIdx: 1
       }
     ];
 
-    const bw = compact ? Math.min(w * 0.30, 128 * dpr) : Math.min(w * 0.22, 156 * dpr);
-    const bh = compact ? 34 * dpr : 40 * dpr;
-    const topY = compact ? 54 * dpr : 58 * dpr;
-    const botY = h - bh - (compact ? 30 * dpr : 34 * dpr);
+    // Responsive 3-column top & 2-column (+ center ALL-PSI chip) bottom geometry in CSS pixels
+    const padX = ultraCompact ? 3 : 6;
+    const gapX = ultraCompact ? 3 : 6;
+    const topColW = Math.max(64, Math.min(156, (cssW - padX * 2 - gapX * 2) / 3));
+    const allChipW = ultraCompact ? 42 : 52;
+    const botColW = Math.max(68, Math.min(158, (cssW - padX * 2 - gapX * 2 - allChipW) / 2));
+    const fullH = ultraCompact ? 28 : (compact ? 32 : 40);
+    const miniH = ultraCompact ? 15 : 17;
 
-    const slotBoxes = {
-      topMidLeft: { x: Math.max(8 * dpr, w * 0.04),  y: topY },
-      topCenter:  { x: Math.max(8 * dpr, w * 0.37),  y: topY },
-      topRight:   { x: Math.min(w - bw - 8 * dpr, w * 0.70), y: topY },
-      botLeft:    { x: Math.max(8 * dpr, w * 0.08),  y: botY },
-      botRight:   { x: Math.min(w - bw - 8 * dpr, w * 0.62), y: botY }
-    };
+    // Top row unified baseline when expanded so the 3 cards align cleanly below any open top HUD
+    const topRowBaseY = Math.max(
+      topClearForSpan(padX, padX + topColW, 3),
+      topClearForSpan(padX + topColW + gapX, padX + topColW * 2 + gapX, 3),
+      topClearForSpan(cssW - padX - topColW, cssW - padX, 3)
+    );
+    const botRowLimY = Math.min(
+      botLimitForSpan(padX, padX + botColW, 3),
+      botLimitForSpan(cssW - padX - botColW, cssW - padX, 3)
+    );
 
     c.save();
-    for (const p of pins) {
+    for (let idx = 0; idx < pins.length; idx++) {
+      const p = pins[idx];
       const pt = this._projectPointToOverlay(p.world, w, h);
-      if (!pt) continue;
-      const [px, py] = pt;
-      const box = slotBoxes[p.slot];
+      const isMini = this.xrayMinified.has(p.id);
+      const isTop = p.row === 'top';
       const frac = Math.max(0, Math.min(1, p.psi / p.maxPsi));
-
       const col = frac > 0.55 ? '#ff5d42' : (frac > 0.06 ? '#f5b638' : '#58d5c9');
+
+      // Compute exact CSS-pixel slot X and Width
+      let slotX, slotW;
+      if (isTop) {
+        slotW = topColW;
+        if (p.colIdx === 0) slotX = padX;
+        else if (p.colIdx === 1) slotX = (cssW - slotW) * 0.5;
+        else slotX = cssW - padX - slotW;
+      } else {
+        slotW = botColW;
+        slotX = p.colIdx === 0 ? padX : (cssW - padX - slotW);
+      }
+
+      if (isMini) {
+        // ---- SHRUNK BORDER-NUMBER PILL (just the live number hugging its border!) ----
+        const fMini = Math.max(8, Math.round((ultraCompact ? 8.2 : 9.2) * dpr));
+        c.font = 'bold ' + fMini + 'px monospace';
+        const txtW = c.measureText(p.numOnly).width / dpr;
+        const pillW = Math.min(slotW, Math.max(44, txtW + 14));
+        let pillX = slotX;
+        if (isTop && p.colIdx === 1) pillX = slotX + (slotW - pillW) * 0.5;
+        else if ((isTop && p.colIdx === 2) || (!isTop && p.colIdx === 1)) pillX = slotX + slotW - pillW;
+
+        // If a compact corner HUD tab occupies the corner, slide beside it along the border if space allows
+        const activeDom = isTop ? domBoxesTop : domBoxesBot;
+        if (p.colIdx === 0) {
+          const maxRight = isTop ? ((cssW - topColW) * 0.5 - 3) : ((cssW - allChipW) * 0.5 - 3);
+          for (let di = 0; di < activeDom.length; di++) {
+            const db = activeDom[di];
+            if (db.x1 < cssW * 0.35 && pillX < db.x2 + 3 && db.x2 + 3 + pillW <= maxRight) {
+              pillX = db.x2 + 3;
+            }
+          }
+        } else if ((isTop && p.colIdx === 2) || (!isTop && p.colIdx === 1)) {
+          const minLeft = isTop ? ((cssW + topColW) * 0.5 + 3) : ((cssW + allChipW) * 0.5 + 3);
+          for (let di = 0; di < activeDom.length; di++) {
+            const db = activeDom[di];
+            if (db.x2 > cssW * 0.65 && pillX + pillW > db.x1 - 3 && db.x1 - 3 - pillW >= minLeft) {
+              pillX = db.x1 - 3 - pillW;
+            }
+          }
+        }
+
+        // Hug the border directly unless a DOM HUD card still spans across [pillX, pillX + pillW]
+        const pillY = isTop
+          ? topClearForSpan(pillX, pillX + pillW, 0)
+          : (botLimitForSpan(pillX, pillX + pillW, 0) - miniH);
+
+        this.xrayHitRects.push({
+          id: p.id,
+          label: p.label,
+          shrunk: true,
+          x: pillX,
+          y: pillY,
+          w: pillW,
+          h: miniH
+        });
+
+        // Subtle sensor pinpoint on 3D chamber so user still sees where the sensor lives
+        if (pt) {
+          c.globalAlpha = 0.65;
+          c.fillStyle = col;
+          c.beginPath();
+          c.arc(pt[0], pt[1], 2.1 * dpr, 0, Math.PI * 2);
+          c.fill();
+        }
+
+        const bx = pillX * dpr, by = pillY * dpr, bw = pillW * dpr, bh = miniH * dpr;
+        c.globalAlpha = 1.0;
+        c.fillStyle = 'rgba(10, 15, 14, 0.90)';
+        c.fillRect(bx, by, bw, bh);
+        c.strokeStyle = col;
+        c.globalAlpha = 0.72;
+        c.lineWidth = 1.05 * dpr;
+        c.strokeRect(bx, by, bw, bh);
+        c.globalAlpha = 1.0;
+
+        // Live status dot + number only
+        c.fillStyle = col;
+        c.beginPath();
+        c.arc(bx + 5.2 * dpr, by + bh * 0.5, 2.1 * dpr, 0, Math.PI * 2);
+        c.fill();
+        c.font = 'bold ' + fMini + 'px monospace';
+        c.textAlign = 'left';
+        c.textBaseline = 'middle';
+        c.fillText(p.numOnly, bx + 9.5 * dpr, by + bh * 0.53, bw - 12 * dpr);
+        c.textBaseline = 'alphabetic';
+        continue;
+      }
+
+      // ---- EXPANDED FULL CALLOUT BADGE + 3D LEADER LINE ----
+      const boxXCss = slotX;
+      const boxYCss = isTop ? topRowBaseY : (botRowLimY - fullH);
+      this.xrayHitRects.push({
+        id: p.id,
+        label: p.label,
+        shrunk: false,
+        x: boxXCss,
+        y: boxYCss,
+        w: slotW,
+        h: fullH
+      });
+
+      const bx = boxXCss * dpr, by = boxYCss * dpr, bw = slotW * dpr, bh = fullH * dpr;
       const glowAlpha = 0.28 + frac * 0.55;
 
-      // Anchor target point from badge edge closest to pin
-      const isTop = p.slot.indexOf('top') === 0;
-      const ax = Math.max(box.x + 12 * dpr, Math.min(box.x + bw - 12 * dpr, px));
-      const ay = isTop ? (box.y + bh) : box.y;
-      const elbowY = isTop ? (ay + (py - ay) * 0.34) : (ay - (ay - py) * 0.34);
+      if (pt) {
+        const [px, py] = pt;
+        const ax = Math.max(bx + 10 * dpr, Math.min(bx + bw - 10 * dpr, px));
+        const ay = isTop ? (by + bh) : by;
+        const elbowY = isTop ? (ay + (py - ay) * 0.34) : (ay - (ay - py) * 0.34);
 
-      // Leader line
-      c.strokeStyle = col;
-      c.globalAlpha = 0.85;
-      c.lineWidth = 1.35 * dpr;
-      c.beginPath();
-      c.moveTo(px, py);
-      c.lineTo(ax, elbowY);
-      c.lineTo(ax, ay);
-      c.stroke();
+        c.strokeStyle = col;
+        c.globalAlpha = 0.82;
+        c.lineWidth = 1.25 * dpr;
+        c.beginPath();
+        c.moveTo(px, py);
+        c.lineTo(ax, elbowY);
+        c.lineTo(ax, ay);
+        c.stroke();
 
-      // Sensor pin ring + center dot on 3D chamber
+        c.globalAlpha = 1.0;
+        c.fillStyle = 'rgba(10,14,13,0.85)';
+        c.beginPath(); c.arc(px, py, 4.0 * dpr, 0, Math.PI * 2); c.fill();
+        c.strokeStyle = col;
+        c.lineWidth = 1.4 * dpr;
+        c.beginPath(); c.arc(px, py, (4.0 + frac * 3.0) * dpr, 0, Math.PI * 2); c.stroke();
+        c.fillStyle = col;
+        c.beginPath(); c.arc(px, py, 2.1 * dpr, 0, Math.PI * 2); c.fill();
+      }
+
       c.globalAlpha = 1.0;
-      c.fillStyle = 'rgba(10,14,13,0.85)';
-      c.beginPath(); c.arc(px, py, 4.4 * dpr, 0, Math.PI * 2); c.fill();
-      c.strokeStyle = col;
-      c.lineWidth = 1.5 * dpr;
-      c.beginPath(); c.arc(px, py, (4.4 + frac * 3.2) * dpr, 0, Math.PI * 2); c.stroke();
-      c.fillStyle = col;
-      c.beginPath(); c.arc(px, py, 2.3 * dpr, 0, Math.PI * 2); c.fill();
-
-      // Callout badge
-      c.fillStyle = 'rgba(11, 16, 15, 0.84)';
-      c.fillRect(box.x, box.y, bw, bh);
+      c.fillStyle = 'rgba(11, 16, 15, 0.86)';
+      c.fillRect(bx, by, bw, bh);
       c.strokeStyle = col;
       c.globalAlpha = glowAlpha + 0.22;
       c.lineWidth = 1.15 * dpr;
-      c.strokeRect(box.x, box.y, bw, bh);
+      c.strokeRect(bx, by, bw, bh);
       c.globalAlpha = 1.0;
 
+      // Subtle corner minimize cue [-]
+      const f1 = Math.max(7, Math.round((ultraCompact ? 7.2 : (compact ? 7.8 : 8.6)) * dpr));
+      const f2 = Math.max(8, Math.round((ultraCompact ? 8.6 : (compact ? 9.5 : 11.0)) * dpr));
+      c.fillStyle = 'rgba(200, 212, 202, 0.55)';
+      c.font = 'bold ' + f1 + 'px monospace';
+      c.textAlign = 'right';
+      c.fillText('–', bx + bw - 3.5 * dpr, by + (ultraCompact ? 8.8 : 10.2) * dpr);
+
       // Pressure bar along bottom of callout badge
-      const barH = 3.0 * dpr;
+      const barH = (ultraCompact ? 2.2 : 3.0) * dpr;
       c.fillStyle = 'rgba(255,255,255,0.10)';
-      c.fillRect(box.x + 3 * dpr, box.y + bh - barH - 2 * dpr, bw - 6 * dpr, barH);
+      c.fillRect(bx + 3 * dpr, by + bh - barH - 1.8 * dpr, bw - 6 * dpr, barH);
       if (frac > 0.002) {
         c.fillStyle = col;
-        c.fillRect(box.x + 3 * dpr, box.y + bh - barH - 2 * dpr, (bw - 6 * dpr) * frac, barH);
+        c.fillRect(bx + 3 * dpr, by + bh - barH - 1.8 * dpr, (bw - 6 * dpr) * frac, barH);
       }
 
-      const f1 = Math.max(8, Math.round((compact ? 7.8 : 8.6) * dpr));
-      const f2 = Math.max(9, Math.round((compact ? 9.6 : 11.0) * dpr));
       c.textAlign = 'left';
-      c.fillStyle = 'rgba(218, 224, 214, 0.85)';
+      c.fillStyle = 'rgba(218, 224, 214, 0.88)';
       c.font = 'bold ' + f1 + 'px monospace';
-      c.fillText(p.label, box.x + 5 * dpr, box.y + 10.5 * dpr);
+      c.fillText(p.label, bx + 4 * dpr, by + (ultraCompact ? 9.0 : 10.5) * dpr, bw - 13 * dpr);
 
       c.fillStyle = col;
       c.font = 'bold ' + f2 + 'px monospace';
-      c.fillText(p.valTxt, box.x + 5 * dpr, box.y + 22.5 * dpr);
+      c.fillText(p.valTxt, bx + 4 * dpr, by + (ultraCompact ? 19.5 : 22.0) * dpr, bw - 8 * dpr);
 
       if (!compact) {
         c.fillStyle = 'rgba(195, 204, 196, 0.72)';
         c.font = f1 + 'px monospace';
-        c.fillText(p.subTxt, box.x + 5 * dpr, box.y + 32.5 * dpr);
+        c.fillText(p.subTxt, bx + 4 * dpr, by + 32.2 * dpr, bw - 8 * dpr);
       }
+    }
+
+    // Center-bottom [PSI -] / [PSI +] master shrink-all / expand-all border chip
+    const allIds = ['upper', 'chamber', 'barrel', 'mag', 'muzzle'];
+    const allShrunk = allIds.every(k => this.xrayMinified.has(k));
+    const chipXCss = (cssW - allChipW) * 0.5;
+    const chipHCss = miniH;
+    const chipYCss = botLimitForSpan(chipXCss, chipXCss + allChipW, 0) - chipHCss;
+    if (chipYCss > topRowBaseY + 24) {
+      this.xrayHitRects.push({
+        id: '__all__',
+        label: 'ALL X-RAY PSI CALLOUTS',
+        shrunk: allShrunk,
+        x: chipXCss,
+        y: chipYCss,
+        w: allChipW,
+        h: chipHCss
+      });
+      const cx = chipXCss * dpr, cy = chipYCss * dpr, cw = allChipW * dpr, ch = chipHCss * dpr;
+      c.fillStyle = 'rgba(12, 18, 17, 0.90)';
+      c.fillRect(cx, cy, cw, ch);
+      c.strokeStyle = 'rgba(125, 218, 208, 0.58)';
+      c.lineWidth = 1.0 * dpr;
+      c.strokeRect(cx, cy, cw, ch);
+      c.fillStyle = '#9fe7de';
+      c.font = 'bold ' + Math.max(7, Math.round((ultraCompact ? 7.4 : 8.2) * dpr)) + 'px monospace';
+      c.textAlign = 'center';
+      c.textBaseline = 'middle';
+      c.fillText(allShrunk ? 'PSI +' : 'PSI –', cx + cw * 0.5, cy + ch * 0.53, cw - 4 * dpr);
+      c.textBaseline = 'alphabetic';
     }
     c.restore();
   }
@@ -7016,6 +7375,17 @@ class P322Renderer3D {
       }
 
       const forceOrbit = this.orbitOnly || e.button === 2 || e.shiftKey;
+      const xBadge = (e.button === 2 || e.shiftKey) ? null : this._pickXrayBadge(e.clientX, e.clientY);
+      if (xBadge) {
+        this.activeDrag = {
+          mode: 'xrayBadge',
+          badgeId: xBadge.id,
+          startX: e.clientX,
+          startY: e.clientY
+        };
+        return;
+      }
+
       const hit = forceOrbit ? null : this._pickPart(e.clientX, e.clientY);
 
       if (hit && hit.id === 'slide' && !this.mech.fieldStripped) {
@@ -7084,6 +7454,22 @@ class P322Renderer3D {
       }
 
       if (!this.activeDrag) {
+        const xb = this._pickXrayBadge(e.clientX, e.clientY);
+        if (xb) {
+          const xbKey = xb.id + (xb.shrunk ? ':1' : ':0');
+          if (this.hoveredXrayBadge !== xbKey) {
+            this.hoveredXrayBadge = xbKey;
+            this.hoveredPart = null;
+            this.onHoverPart({
+              id: 'xray_' + xb.id,
+              label: xb.label + (xb.shrunk ? ' — CLICK TO EXPAND CALLOUT' : ' — CLICK TO SHRINK TO BORDER NUMBER')
+            });
+            el.className = 'is-hover-part';
+          }
+          return;
+        } else if (this.hoveredXrayBadge) {
+          this.hoveredXrayBadge = null;
+        }
         const hit = this._pickPart(e.clientX, e.clientY);
         const newId = hit ? hit.id : null;
         if (newId !== this.hoveredPart) {
@@ -7095,6 +7481,13 @@ class P322Renderer3D {
       }
 
       const d = this.activeDrag;
+      if (d.mode === 'xrayBadge') {
+        if (Math.hypot(e.clientX - d.startX, e.clientY - d.startY) > 9) {
+          this.activeDrag = { mode: 'orbit', lastX: e.clientX, lastY: e.clientY };
+          el.className = 'is-orbiting';
+        }
+        return;
+      }
       if (d.mode === 'orbit') {
         const dx = e.clientX - d.lastX;
         const dy = e.clientY - d.lastY;
@@ -7152,6 +7545,8 @@ class P322Renderer3D {
       } else if (d.mode === 'mag') {
         if (!d.moved) this.mech.toggleMagazine();
         else this.mech.finishMagazineDrag();
+      } else if (d.mode === 'xrayBadge') {
+        this.toggleXrayBadge(d.badgeId);
       } else if (d.mode === 'click') {
         if (d.partId === 'trigger') this.mech.pullTrigger();
         else if (d.partId === 'safety') this.mech.toggleSafety();
@@ -8757,42 +9152,80 @@ function syncUI(m) {
     foulFill.style.backgroundColor = foulPct > 65 ? '#9c241c' : (foulPct > 30 ? '#b57614' : '#215732');
   }
 
-  // Diegetic Viewport HUD overlays
+  // Diegetic Viewport HUD overlays (click any card to shrink onto its border, click again to expand)
+  const hudDock = window.__hudDockState || (window.__hudDockState = {
+    spec: false, status: false, hint: false, sim: false,
+    manual: { spec: false, status: false, hint: false, sim: false }
+  });
+
   const hudStatus = document.getElementById('hudStatusPill');
   if (hudStatus) {
+    let fullTxt, shortTxt, cls;
     if (m.simAuto) {
-      hudStatus.textContent = 'SIM-AUTO [TEST ONLY]';
-      hudStatus.className = 'hud-pill status-hot sim-hot';
+      fullTxt = 'SIM-AUTO [TEST ONLY]';
+      shortTxt = '● SIM-AUTO ▾';
+      cls = 'hud-pill hud-dockable status-hot sim-hot';
     } else if (m.fieldStripped) {
-      hudStatus.textContent = 'STATUS: FIELD STRIPPED';
-      hudStatus.className = 'hud-pill status-warn';
+      fullTxt = 'STATUS: FIELD STRIPPED';
+      shortTxt = '● STRIPPED ▾';
+      cls = 'hud-pill hud-dockable status-warn';
     } else if (m.safetyOn) {
-      hudStatus.textContent = 'SAFETY: ON (UP)';
-      hudStatus.className = 'hud-pill status-safe';
+      fullTxt = 'SAFETY: ON (UP)';
+      shortTxt = '● SAFE ▾';
+      cls = 'hud-pill hud-dockable status-safe';
     } else if (m.slideLocked) {
-      hudStatus.textContent = 'SLIDE: LOCKED REAR';
-      hudStatus.className = 'hud-pill status-warn';
+      fullTxt = 'SLIDE: LOCKED REAR';
+      shortTxt = '● LOCKED ▾';
+      cls = 'hud-pill hud-dockable status-warn';
     } else if (m.chambered && !m.chamberedSpent) {
-      hudStatus.textContent = 'CONDITION: HOT / READY';
-      hudStatus.className = 'hud-pill status-hot';
+      fullTxt = 'CONDITION: HOT / READY';
+      shortTxt = '● HOT ▾';
+      cls = 'hud-pill hud-dockable status-hot';
     } else {
-      hudStatus.textContent = 'CHAMBER: CLEAR';
-      hudStatus.className = 'hud-pill status-safe';
+      fullTxt = 'CHAMBER: CLEAR';
+      shortTxt = '● CLEAR ▾';
+      cls = 'hud-pill hud-dockable status-safe';
     }
+    hudStatus.className = cls + (hudDock.status ? ' is-docked' : '');
+    hudStatus.textContent = hudDock.status ? shortTxt : (fullTxt + ' –');
   }
 
   const hudDetail = document.getElementById('hudSpecOverlay');
   if (hudDetail) {
-    const muzLabel = m.muzzleMode === 'none' ? 'FLUSH CAP (UNSUPPRESSED)'
-      : (m.muzzleMode === 'comp' ? '1/2x28 PORTED COMP (-38% FLIP)'
-        : (m.muzzleMode === 'commercial' ? '1/2x28 RIMFIRE CAN (-32% FLIP)'
-          : `SIM. OIL CANISTER (${Math.round(m.oilCanIntegrity * 100)}% MEDIA)`));
-    const sightObj = sightSetById(m.sightSet);
-    hudDetail.innerHTML =
-      `<div>HAMMER: <strong>${m.hammerCocked ? 'COCKED (SAO)' : 'DOWN'}</strong> | MAG: <strong>${m.magRounds}/${m.maxMag}${plusOne}</strong></div>` +
-      `<div>LOAD: <strong>${ammo.shortName}</strong> (${ammo.pistolFps} FPS / 4" BBL)</div>` +
-      `<div>MUZZLE: <strong>${muzLabel}</strong></div>` +
-      `<div>${sightObj.isOptic ? 'OPTIC' : 'IRONS'}: <strong>${sightObj.label}</strong>${blocked ? ' <strong>[BLOCKED]</strong>' : ''}</div>`;
+    hudDetail.classList.toggle('is-docked', !!hudDock.spec);
+    if (hudDock.spec) {
+      hudDetail.innerHTML = `<div>&#9656; SPEC &middot; <strong>${m.magRounds}/${m.maxMag}${plusOne}</strong>${blocked ? ' <strong>[BLK]</strong>' : ''}</div>`;
+    } else {
+      const muzLabel = m.muzzleMode === 'none' ? 'FLUSH CAP (UNSUPPRESSED)'
+        : (m.muzzleMode === 'comp' ? '1/2x28 PORTED COMP (-38% FLIP)'
+          : (m.muzzleMode === 'commercial' ? '1/2x28 RIMFIRE CAN (-32% FLIP)'
+            : `SIM. OIL CANISTER (${Math.round(m.oilCanIntegrity * 100)}% MEDIA)`));
+      const sightObj = sightSetById(m.sightSet);
+      hudDetail.innerHTML =
+        `<div>HAMMER: <strong>${m.hammerCocked ? 'COCKED (SAO)' : 'DOWN'}</strong> | MAG: <strong>${m.magRounds}/${m.maxMag}${plusOne}</strong> &ndash;</div>` +
+        `<div>LOAD: <strong>${ammo.shortName}</strong> (${ammo.pistolFps} FPS / 4" BBL)</div>` +
+        `<div>MUZZLE: <strong>${muzLabel}</strong></div>` +
+        `<div>${sightObj.isOptic ? 'OPTIC' : 'IRONS'}: <strong>${sightObj.label}</strong>${blocked ? ' <strong>[BLOCKED]</strong>' : ''}</div>`;
+    }
+  }
+
+  const hudHint = document.getElementById('hudBottomHint');
+  if (hudHint) {
+    // Hide bottom hint while SIM-AUTO warning banner occupies the bottom edge
+    hudHint.style.display = m.simAuto ? 'none' : '';
+    hudHint.classList.toggle('is-docked', !!hudDock.hint);
+    const hp1 = document.getElementById('hudHintPrimary');
+    const hp2 = document.getElementById('hudHintSecondary');
+    if (hudDock.hint) {
+      if (hp1) hp1.innerHTML = '&#9656; <strong>HELP</strong>';
+      if (hp2) hp2.style.display = 'none';
+    } else {
+      if (hp1) hp1.innerHTML = '<strong>DRAG PART:</strong> SLIDE / MAG / CONTROLS &ndash;';
+      if (hp2) {
+        hp2.style.display = '';
+        hp2.innerHTML = '<strong>DRAG SPACE:</strong> SPIN 360&deg; &middot; <strong>TAP HUD:</strong> DOCK';
+      }
+    }
   }
 
   // Sync button toggle states (preserving SVG icons via .pad-lbl)
@@ -8847,7 +9280,11 @@ function syncShopUI() {
   setAct('btnSimAuto', m.simAuto, m.simAuto ? 'ARMD' : 'AUTO');
 
   const badge = document.getElementById('simAutoBadge');
-  if (badge) badge.classList.toggle('is-live', m.simAuto);
+  if (badge) {
+    badge.classList.toggle('is-live', m.simAuto);
+    const hudDock = window.__hudDockState;
+    badge.classList.toggle('is-docked', !!(hudDock && hudDock.sim));
+  }
   const st = document.getElementById('simPanelStatus');
   if (st) {
     st.textContent = m.simAuto
@@ -8948,11 +9385,34 @@ function benchSetAmmo(id) {
   syncRangeUI();
 }
 
+function toggleHudCard(key) {
+  const hudDock = window.__hudDockState || (window.__hudDockState = {
+    spec: false, status: false, hint: false, sim: false,
+    manual: { spec: false, status: false, hint: false, sim: false }
+  });
+  if (!(key in hudDock) || key === 'manual') return;
+  hudDock[key] = !hudDock[key];
+  hudDock.manual[key] = true;
+  if (audioEngine) audioEngine.playSafetyToggle(!hudDock[key]);
+  if (p322Mech) syncUI(p322Mech);
+}
+
 function benchToggleXray() {
   p322Mech.xray = !p322Mech.xray;
   if (audioEngine) audioEngine.playSafetyToggle(p322Mech.xray);
+  // On compact mobile viewports, smartly dock spec/hint onto their borders when X-Ray opens (unless manually set)
+  const hudDock = window.__hudDockState || (window.__hudDockState = {
+    spec: false, status: false, hint: false, sim: false,
+    manual: { spec: false, status: false, hint: false, sim: false }
+  });
+  const stageEl = document.querySelector('.viewport-frame');
+  const isCompactStage = stageEl ? (stageEl.clientWidth < 480 || stageEl.clientHeight < 340) : (window.innerWidth < 780);
+  if (isCompactStage) {
+    if (!hudDock.manual.spec) hudDock.spec = p322Mech.xray;
+    if (!hudDock.manual.hint) hudDock.hint = p322Mech.xray;
+  }
   setLog(p322Mech.xray
-    ? 'X-RAY CUTAWAY ACTIVE: VIEW ENCLOSED HAMMER, FIXED BARREL, RECOIL SPRING, BAFFLES & BORE LEADING.'
+    ? 'X-RAY CUTAWAY ACTIVE: TAP ANY PRESSURE CALLOUT OR HUD CARD TO SHRINK IT ONTO ITS BORDER; TAP AGAIN TO EXPAND.'
     : 'EXTERIOR SOLID FINISH RESTORED.', 'info');
   syncUI(p322Mech);
 }
@@ -9863,5 +10323,5 @@ window.addEventListener('DOMContentLoaded', initDossierApp);
 
   
   </script>
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a5bfd14e8b3ee830',t:'MTc5NDkyOTg1NQ=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a5bfd14e8b3ee830',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a5c00ff39d10258c',t:'MTc5NDkzMjQyMQ=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a5c00ff39d10258c',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
