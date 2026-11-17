@@ -1541,6 +1541,26 @@ table.ord-table tr:nth-child(even) td {
   font-weight: 800;
 }
 .console-jump:hover { background: #f4be5e; color: #14120d; }
+.console-jump.is-open {
+  background: #f4be5e;
+  border-color: #ffe09e;
+  color: #14120d;
+}
+.console-jump.is-open:hover {
+  background: #ffd27d;
+  color: #14120d;
+}
+
+body.console-fullscreen-open {
+  overflow: hidden;
+}
+body.console-fullscreen-open .top-control-strip {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 160;
+}
 
 /* Hide legacy tab bar — all 4 borders stay visible around the gun at all sizes */
 .rail-tabs { display: none !important; }
@@ -1562,14 +1582,17 @@ table.ord-table tr:nth-child(even) td {
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
 }
 
-/* Fullscreen pinned MFD cockpit mode */
+/* Fullscreen pinned MFD cockpit mode (docked cleanly below the top control strip) */
 .live-console.is-fullscreen {
   position: fixed;
-  inset: 0;
+  top: var(--strip-offset, 44px);
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 120;
   margin: 0;
-  height: 100vh;
-  height: 100dvh;
+  height: calc(100vh - var(--strip-offset, 44px));
+  height: calc(100dvh - var(--strip-offset, 44px));
   grid-template-rows: auto minmax(0, 1fr) auto;
   overflow: hidden;
   background: var(--paper-bg);
@@ -2132,7 +2155,7 @@ table.ord-table tr:nth-child(even) td {
         <span>ORDNANCE EVALUATION DOSSIER // SIG SAUER P322 (.22 LR)</span>
       </div>
       <div class="strip-actions">
-        <button class="strip-btn console-jump" onclick="openLiveConsole()" title="Open the full-screen perimeter control console">⛶ OPEN LIVE CONSOLE</button>
+        <button id="btnTopConsole" class="strip-btn console-jump" onclick="openLiveConsole()" aria-expanded="false" title="Open the full-screen perimeter control console">⛶ OPEN LIVE CONSOLE</button>
         <button class="strip-btn" onclick="openGlossaryIndex()" title="Open the clickable glossary">GLOSSARY</button>
         <button class="strip-btn" onclick="exportStandaloneHtml()" title="Download single-file index.html for GitHub Pages">EXPORT INDEX.HTML</button>
       </div>
@@ -8071,39 +8094,88 @@ function toggleTelemetryDrawer(force) {
   if (open) syncUI(p322Mech);
 }
 
+let _savedDocScrollY = 0;
+let _wasNativeFs = false;
+
+function updateConsoleStripOffset() {
+  const con = document.getElementById('liveConsole');
+  if (!con) return;
+  const strip = document.querySelector('.top-control-strip');
+  const h = strip ? Math.max(0, Math.ceil(strip.getBoundingClientRect().height)) : 0;
+  con.style.setProperty('--strip-offset', h + 'px');
+}
+
+function syncTopConsoleBtn(on) {
+  const topBtn = document.getElementById('btnTopConsole');
+  if (!topBtn) return;
+  topBtn.textContent = on ? '✕ CLOSE LIVE CONSOLE' : '⛶ OPEN LIVE CONSOLE';
+  topBtn.classList.toggle('is-open', !!on);
+  topBtn.setAttribute('aria-expanded', on ? 'true' : 'false');
+  topBtn.title = on
+    ? 'Close the live console and return to the document'
+    : 'Open the full-screen perimeter control console';
+}
+
 function toggleConsoleFullscreen(force) {
   const con = document.getElementById('liveConsole');
   if (!con) return;
-  const on = force !== undefined ? !!force : !con.classList.contains('is-fullscreen');
+  const wasOpen = con.classList.contains('is-fullscreen');
+  const on = force !== undefined ? !!force : !wasOpen;
+  if (on && !wasOpen) {
+    _savedDocScrollY = window.scrollY || window.pageYOffset || 0;
+  }
   con.classList.toggle('is-fullscreen', on);
   document.body.classList.toggle('console-fullscreen-open', on);
+  syncTopConsoleBtn(on);
   const btn = document.getElementById('btnConsoleExpand');
   if (btn) {
     btn.classList.toggle('active', on);
     setPadLabel(btn, on ? 'PIN' : 'FULL');
   }
   if (on) {
-    con.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    updateConsoleStripOffset();
     if (document.documentElement.requestFullscreen && !document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch(() => {});
+      document.documentElement.requestFullscreen().then(() => {
+        _wasNativeFs = true;
+        updateConsoleStripOffset();
+      }).catch(() => {});
     }
-  } else if (document.fullscreenElement) {
-    document.exitFullscreen().catch(() => {});
+  } else {
+    if (document.fullscreenElement) {
+      _wasNativeFs = false;
+      document.exitFullscreen().catch(() => {});
+    }
+    if (wasOpen) {
+      window.scrollTo(0, _savedDocScrollY);
+    }
   }
 }
 
 function openLiveConsole() {
+  const con = document.getElementById('liveConsole');
+  if (con && con.classList.contains('is-fullscreen')) {
+    toggleConsoleFullscreen(false);
+    return;
+  }
   toggleConsoleFullscreen(true);
   showRail('top');
   toggleTelemetryDrawer(false);
 }
 
-document.addEventListener('fullscreenchange', () => {
+window.addEventListener('resize', () => {
   const con = document.getElementById('liveConsole');
-  if (!con) return;
+  if (con && con.classList.contains('is-fullscreen')) updateConsoleStripOffset();
+});
+
+document.addEventListener('fullscreenchange', () => {
   const native = !!document.fullscreenElement;
-  con.classList.toggle('is-fullscreen', native || con.classList.contains('is-fullscreen'));
-  if (!native) document.body.classList.remove('console-fullscreen-open');
+  if (native) {
+    _wasNativeFs = true;
+    updateConsoleStripOffset();
+  } else if (_wasNativeFs) {
+    _wasNativeFs = false;
+    toggleConsoleFullscreen(false);
+  }
 });
 
 document.addEventListener('keydown', (e) => {
@@ -8808,5 +8880,5 @@ window.addEventListener('DOMContentLoaded', initDossierApp);
 
   
   </script>
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a5bec50f9863eaf4',t:'MTc5NDkxODg2OA=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a5bec50f9863eaf4',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a5bf6304790cb2e2',t:'MTc5NDkyNTMzOA=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a5bf6304790cb2e2',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
