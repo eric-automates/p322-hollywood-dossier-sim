@@ -2435,7 +2435,7 @@ body.console-fullscreen-open .top-control-strip {
                     </div>
                     <div class="tele-cell">
                       <span class="tele-label">MAGAZINE</span>
-                      <span id="teleMag" class="tele-val">SEATED (20/20)</span>
+                      <span id="teleMag" class="tele-val">SEATED (20/20 +1)</span>
                     </div>
                     <div class="tele-cell">
                       <span class="tele-label">ACTION / INTERLOCK</span>
@@ -2448,6 +2448,14 @@ body.console-fullscreen-open .top-control-strip {
                     <div class="tele-cell">
                       <span class="tele-label">SIGHT LINE</span>
                       <span id="teleSight" class="tele-val safe">CLEAR / FACTORY</span>
+                    </div>
+                    <div class="tele-cell">
+                      <span class="tele-label">MUZZLE / CAN PSI</span>
+                      <span id="telePressure" class="tele-val safe">0.0 PSI (AMBIENT)</span>
+                    </div>
+                    <div class="tele-cell">
+                      <span class="tele-label">RECOIL MITIGATION</span>
+                      <span id="teleRecoil" class="tele-val">BASELINE (100% FLIP)</span>
                     </div>
                     <div class="tele-cell">
                       <span class="tele-label">BORE LEADING</span>
@@ -2503,7 +2511,8 @@ body.console-fullscreen-open .top-control-strip {
                 <button id="btnSight_suppressor" class="btn-ord btn-pad pad-sq" onclick="shopSetSight('suppressor')" title="Suppressor-Height Steel Sights (Clears 3" Can)" aria-label="Suppressor-Height Steel Sights (Clears 3" Can)"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 13h12" stroke="currentColor" stroke-width="1.5"/><rect x="3.5" y="4" width="2.2" height="9" fill="currentColor"/><rect x="10.3" y="3.5" width="2.2" height="9.5" fill="currentColor"/></svg><span class="pad-lbl">TALL</span></button>
                 <button id="btnSight_target_orange" class="btn-ord btn-pad pad-sq" onclick="shopSetSight('target_orange')" title="Target Blackout Rear + Orange Front Post" aria-label="Target Blackout Rear + Orange Front Post"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 12V7h4v3h4V7h4v5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="6.2" r="1.8" fill="currentColor"/></svg><span class="pad-lbl">TGT</span></button>
                 <button id="btnSight_tritium" class="btn-ord btn-pad pad-sq" onclick="shopSetSight('tritium')" title="Tritium Self-Luminous Night Sights" aria-label="Tritium Self-Luminous Night Sights"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 11.5h12" stroke="currentColor" stroke-width="1.4"/><circle cx="5" cy="8" r="1.7" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="11" cy="8" r="1.7" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 3v2M5 4l1 1.5M11 4l-1 1.5" stroke="currentColor" stroke-width="1.2"/></svg><span class="pad-lbl">TRIT</span></button>
-                <button id="btnMag25" class="btn-ord btn-pad pad-sq" onclick="shopToggleMag25()" title="Toggle 25-Round Extended Magazine" aria-label="Toggle 25-Round Extended Magazine"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 2h5l-1 9H4z" fill="none" stroke="currentColor" stroke-width="1.4"/><rect x="3.2" y="11" width="6.3" height="3" fill="currentColor"/></svg><span class="pad-lbl">20RD</span></button>
+                <button id="btnSight_red_dot" class="btn-ord btn-pad pad-sq btn-accent" onclick="shopSetSight('red_dot')" title="SIG ROMEOZero 3 MOA Micro Red-Dot Reflex Sight" aria-label="SIG ROMEOZero 3 MOA Micro Red-Dot Reflex Sight"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 11.5V6.5a5 5 0 0 1 10 0v5z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="7.5" r="1.6" fill="currentColor"/><path d="M2 12.5h12" stroke="currentColor" stroke-width="1.5"/></svg><span class="pad-lbl">RDOT</span></button>
+                <button id="btnMag25" class="btn-ord btn-pad pad-sq" onclick="shopToggleMag25()" title="Toggle 25-Round Extended Magazine (25+1)" aria-label="Toggle 25-Round Extended Magazine (25+1)"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 2h5l-1 9H4z" fill="none" stroke="currentColor" stroke-width="1.4"/><rect x="3.2" y="11" width="6.3" height="3" fill="currentColor"/></svg><span class="pad-lbl">20RD</span></button>
                 <button id="btnTrigRed" class="btn-ord btn-pad pad-sq" onclick="shopToggleTrigger()" title="Toggle Red Anodized Billet Trigger" aria-label="Toggle Red Anodized Billet Trigger"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 3.5h8v2H9L7.5 13" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="9.5" cy="9.5" r="1.3" fill="currentColor"/></svg><span class="pad-lbl">TRIG</span></button>
                 <button id="btnRailLight" class="btn-ord btn-pad pad-sq" onclick="shopToggleLight()" title="Toggle M1913 Picatinny Rail Light" aria-label="Toggle M1913 Picatinny Rail Light"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><rect x="2.5" y="5.5" width="6.5" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M9.5 6.5l4.5-2.2v7.4L9.5 9.5" fill="none" stroke="currentColor" stroke-width="1.3"/></svg><span class="pad-lbl">LITE</span></button>
               </div>
@@ -2513,7 +2522,7 @@ body.console-fullscreen-open .top-control-strip {
             <div class="console-rail rail-bottom">
               <div class="rail-btns bezel-strip bezel-bottom">
                 <button id="btnDeploy" class="btn-ord btn-pad pad-sq btn-range" onclick="rangeDeploy()" title="Deploy / Stow Overhead Target Carrier" aria-label="Deploy / Stow Overhead Target Carrier"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h12M8 3v3" stroke="currentColor" stroke-width="1.5"/><rect x="4" y="6" width="8" height="7.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="9.8" r="1.8" fill="currentColor"/></svg><span class="pad-lbl">DPLY</span></button>
-                <button id="btnCycleTarget" class="btn-ord btn-pad pad-sq" onclick="rangeCycleTarget()" title="Cycle Target Type (B-8 / AR500 Gong / B-27 / Grid)" aria-label="Cycle Target Type (B-8 / AR500 Gong / B-27 / Grid)"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><rect x="2.5" y="4.5" width="8" height="8" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M6 2.5h7.5V10" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="6.5" cy="8.5" r="1.6" fill="currentColor"/></svg><span class="pad-lbl">T1/4</span></button>
+                <button id="btnCycleTarget" class="btn-ord btn-pad pad-sq" onclick="rangeCycleTarget()" title="Cycle Target Type (B-8 / AR500 Gong / B-27 / Grid / Hostage Qual)" aria-label="Cycle Target Type (B-8 / AR500 Gong / B-27 / Grid / Hostage Qual)"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><rect x="2.5" y="4.5" width="8" height="8" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M6 2.5h7.5V10" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="6.5" cy="8.5" r="1.6" fill="currentColor"/></svg><span class="pad-lbl">T1/5</span></button>
                 <button id="btnPushOut" class="btn-ord btn-pad pad-sq" onclick="rangePushOut()" title="Push Target Out (7 / 15 / 25 / 50 / 75 / 100 yd)" aria-label="Push Target Out (7 / 15 / 25 / 50 / 75 / 100 yd)"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 12.5L7 4.5M13.5 12.5L9 4.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 12V5.5M6 7.5L8 5.2l2 2.3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><span class="pad-lbl">7YD</span></button>
                 <button id="btnInspect" class="btn-ord btn-pad pad-sq btn-accent" onclick="rangeInspect()" title="Inspect Target Up Close (View Hits & Rings)" aria-label="Inspect Target Up Close (View Hits & Rings)"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="7" cy="7" r="1.5" fill="currentColor"/><path d="M10.3 10.3L14 14" stroke="currentColor" stroke-width="1.8"/></svg><span class="pad-lbl">INSP</span></button>
                 <button id="btnClearTarget" class="btn-ord btn-pad pad-sq" onclick="rangeClearTarget()" title="Install Fresh Target (Clear Hit Holes)" aria-label="Install Fresh Target (Clear Hit Holes)"><svg class="pad-ico" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="3" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M5.5 8l2 2 3.5-4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg><span class="pad-lbl">FRSH</span></button>
@@ -2958,7 +2967,7 @@ body.console-fullscreen-open .top-control-strip {
 
         <div class="section-body">
           <p class="exec-summary">
-            <strong>EXECUTIVE BRIEF:</strong> The 3D bench now includes an overhead-rail target carrier, four swappable target faces, six real yard lines from <strong>7 to 100 yards</strong>, and a first-person <strong>SIGHT PICTURE</strong> where holdover and windage genuinely move the point of impact. .22 LR is a slow, low-BC heel bullet: from a 4-inch P322 barrel it sheds velocity fast, so a 25-yard zero puts a Mini-Mag roughly <strong>13.6 inches low at 100 yards</strong>. Everything below is computed live with true-yardage physics; the 3D downrange lane is compressed and display-scaled so a 100-yard target still fits the viewport.
+            <strong>EXECUTIVE BRIEF:</strong> The 3D bench includes an overhead-rail target carrier, <strong>five swappable target faces</strong> (including a Hostage Rescue Qualification target), six real yard lines from <strong>7 to 100 yards</strong>, and a first-person <strong>SIGHT PICTURE</strong> supporting four iron-sight sets plus the direct-mount <strong>SIG ROMEOZero 3 MOA Red Dot</strong>. .22 LR is a slow, low-BC heel bullet: from a 4-inch P322 barrel it sheds velocity fast, so a 25-yard zero puts a Mini-Mag roughly <strong>13.6 inches low at 100 yards</strong>. Everything below is computed live with true-yardage physics; the 3D downrange lane is compressed and display-scaled so a 100-yard target still fits the viewport.
           </p>
 
           <h3 class="subhead">7-1. TARGET CARRIER CONTROLS &amp; WHAT EACH BUTTON DOES</h3>
@@ -2967,20 +2976,20 @@ body.console-fullscreen-open .top-control-strip {
               <thead><tr><th>CONTROL</th><th>FUNCTION</th><th>PHYSICAL / SIMULATION NOTE</th></tr></thead>
               <tbody>
                 <tr><th>+ DEPLOY TARGET / RETRACT TARGET</th><td>Lowers a hanging carrier onto the overhead rail and switches to the wide range diorama view.</td><td>Plays the trolley motor; target starts at the currently selected yard line.</td></tr>
-                <tr><th>CYCLE TARGET: 1/4</th><td>Swaps B-8 bullseye &rarr; AR500 steel gong &rarr; B-27 silhouette &rarr; 1-inch sight-in grid.</td><td>Fresh Canvas2D face texture; holes are painted into that texture in real UV coordinates.</td></tr>
+                <tr><th>CYCLE TARGET: T1/5 &ndash; T5/5</th><td>Swaps B-8 bullseye &rarr; AR500 steel gong &rarr; B-27 silhouette &rarr; 1-inch sight-in grid &rarr; Hostage Rescue Qualification.</td><td>Fresh Canvas2D face texture; holes and hostage penalty markers are painted in real UV coordinates.</td></tr>
                 <tr><th>PUSH TARGET OUT: 7 YD</th><td>Steps 7 &rarr; 15 &rarr; 25 &rarr; 50 &rarr; 75 &rarr; 100 YD &rarr; 7 YD.</td><td>Drop, time of flight, wind drift and dispersion all recompute at the true yardage.</td></tr>
-                <tr><th>INSPECT TARGET (PULL IN) &harr; SEND TARGET BACK OUT</th><td>Glides the carrier up to the shooter for a close look at every numbered hole, then returns it to its yard line.</td><td>Button label toggles exactly as requested; camera follows the carrier on its rail.</td></tr>
-                <tr><th>SIGHT PICTURE / AIM</th><td>First-person iron-sight view over the downrange 3D target. Drag (or arrow keys / ELEV-WIND buttons) to hold elevation and windage.</td><td>An orange <em>BALLISTIC HOLD</em> cue shows where the front sight must sit to center the group. <em>AUTO HOLDOVER</em> dials the exact solution.</td></tr>
-                <tr><th>FIRE AT TARGET</th><td>Fires the currently chambered .22 LR load through the real interlock logic.</td><td>Impact arrives after actual time of flight; steel gong gives a delayed resonant DING and physically swings.</td></tr>
+                <tr><th>INSPECT TARGET (PULL IN) &harr; SEND TARGET BACK OUT</th><td>Glides the carrier up to the shooter for a close look at every numbered hole, then returns it to its yard line.</td><td>Button label toggles cleanly; camera follows the carrier on its rail.</td></tr>
+                <tr><th>SIGHT PICTURE / AIM</th><td>First-person iron-sight or ROMEOZero reflex window over the downrange 3D target. Drag (or arrow keys / ELEV-WIND buttons) to hold elevation and windage.</td><td>An orange <em>BALLISTIC HOLD</em> cue shows where the aiming post or 3 MOA dot must sit to center the group. <em>AUTO HOLDOVER</em> dials the exact solution.</td></tr>
+                <tr><th>FIRE AT TARGET</th><td>Fires the currently chambered .22 LR load through the real interlock, recoil, and multi-chamber gas physics.</td><td>Impact arrives after actual time of flight; steel gong gives a delayed resonant DING and physically swings; Hostage Qualification scores Threat T-Box / A-Zone vs. No-Shoot Hostage penalties.</td></tr>
               </tbody>
             </table>
           </div>
 
-          <h3 class="subhead">7-2. FOUR TARGET FACES (ALL RENDERED IN 3D, NOT FLAT IMAGES)</h3>
+          <h3 class="subhead">7-2. FIVE TARGET FACES (ALL RENDERED IN 3D, NOT EXTERNAL IMAGES)</h3>
           <div class="three-col">
-            <div class="info-card"><h3>NRA B-8 BULLSEYE</h3><p>Official 25-yard slow-fire repair center with black 8-ring and white scoring rings. 12-inch face. Paper punch holes with light torn rings and shot numbers.</p></div>
+            <div class="info-card"><h3>NRA B-8 &amp; 1" MOA GRID</h3><p>Official 25-yard slow-fire repair center with black 8-ring, plus a 1-inch zeroing grid with 1-MOA reference ticks. Numbered paper punch holes.</p></div>
             <div class="info-card"><h3>AR500 8" STEEL GONG</h3><p>3/8-inch AR500 round plate on a chain hanger. Transparent outside the circle so the 3D silhouette is real. Lead splatter marks, physical swing, and a flight-time-delayed metallic <em>DING!</em></p></div>
-            <div class="info-card"><h3>B-27 SILHOUETTE / 1" GRID</h3><p>Full 24-inch B-27 qualification silhouette, plus a 1-inch sight-in grid with 1-MOA ticks. Both use the same hit UV math as the bullseye.</p></div>
+            <div class="info-card"><h3>B-27 &amp; HOSTAGE RESCUE QUAL</h3><p>Full 24-inch B-27 silhouette plus an LE Hostage Rescue Qualification target featuring an armed threat (Cranial T-Box &amp; Thoracic A-Zone) partially masked behind a foreground <strong>NO-SHOOT</strong> hostage silhouette.</p></div>
           </div>
 
           <h3 class="subhead">7-3. LIVE .22 LR TRAJECTORY TABLE (25-YD ZERO, 0.62" SIGHT HEIGHT, NO WIND)</h3>
@@ -3020,21 +3029,22 @@ body.console-fullscreen-open .top-control-strip {
               <h3>MUZZLE DEVICE / SIGHT CLEARANCE MATRIX</h3>
               <div class="table-scroll">
                 <table class="ord-table tight-table">
-                  <thead><tr><th>DEVICE</th><th>FACTORY / TARGET / TRITIUM IRONS</th><th>SUPPRESSOR-HEIGHT IRONS</th></tr></thead>
+                  <thead><tr><th>DEVICE</th><th>FACTORY / TARGET / TRITIUM IRONS</th><th>TALL IRONS &amp; ROMEOZERO RED DOT</th></tr></thead>
                   <tbody>
                     <tr><th>Factory flush cap</th><td class="good-cell">CLEAR</td><td class="good-cell">CLEAR</td></tr>
-                    <tr><th>1/2&times;28 ported compensator</th><td class="good-cell">CLEAR</td><td class="good-cell">CLEAR</td></tr>
-                    <tr><th>1-inch commercial rimfire can</th><td class="good-cell">CLEAR (P322 factory irons already clear most 1" cans)</td><td class="good-cell">CLEAR</td></tr>
-                    <tr><th>Simulated 3-inch OD canister</th><td class="bad-cell">BLOCKED &mdash; no sight picture</td><td class="good-cell">CLEAR (tall blades see over it)</td></tr>
+                    <tr><th>1/2&times;28 ported compensator</th><td class="good-cell">CLEAR (-38% muzzle flip + upward port flames)</td><td class="good-cell">CLEAR</td></tr>
+                    <tr><th>1-inch commercial rimfire can</th><td class="good-cell">CLEAR (-32% flip / -28% kick)</td><td class="good-cell">CLEAR</td></tr>
+                    <tr><th>Simulated 3-inch OD canister</th><td class="bad-cell">BLOCKED &mdash; no sight picture</td><td class="good-cell">CLEAR (tall blades &amp; red dot see over it)</td></tr>
                   </tbody>
                 </table>
               </div>
-              <p style="margin-top:8px;">The P322's factory <em>rear</em> sight is mounted on the removable RMSc optic cover plate, not a standard SIG P-series dovetail &mdash; an important detail when shopping for aftermarket irons.</p>
+              <p style="margin-top:8px;">The P322's factory <em>rear</em> sight is mounted on the removable RMSc optic cover plate, so installing the SIG ROMEOZero replaces the rear plate directly while retaining the front blade as a lower backup reference.</p>
             </div>
           </div>
           <div class="demo-row">
             <button class="btn-ord btn-accent" onclick="demoRangeSetup('factory','oilcan',4)">DEMO BLOCKED</button>
             <button class="btn-ord btn-accent" onclick="demoRangeSetup('suppressor','oilcan',4)">DEMO SUPP FIX</button>
+            <button class="btn-ord btn-accent" onclick="demoRangeSetup('red_dot','commercial',2)">DEMO RED DOT</button>
             <button class="btn-ord" onclick="demoRangeSetup('target_orange','comp',2)">DEMO TGT+COMP</button>
           </div>
 
@@ -3044,13 +3054,13 @@ body.console-fullscreen-open .top-control-strip {
             <table class="ord-table">
               <thead><tr><th>UPGRADE</th><th>REAL-WORLD EXAMPLES</th><th>WHAT IT CHANGES IN THIS DOSSIER</th></tr></thead>
               <tbody>
-                <tr><th>Extended magazine</th><td>SIG Sauer factory 25-round P322 magazine (also 10-round compliant versions).</td><td>Toggles the live capacity 20 &harr; 25 and adds the extended +5 baseplate in 3D.</td></tr>
+                <tr><th>Extended magazine</th><td>SIG Sauer factory 25-round P322 magazine (also 10-round compliant versions).</td><td>Toggles capacity 20+1 &harr; 25+1 with exact 0&ndash;25 X-Ray cartridge count, orange anti-tilt follower, and compressing zig-zag spring.</td></tr>
                 <tr><th>Flat / skeletonized trigger</th><td>Tandemkross "Victory" trigger, Armory Craft billet flat trigger. The P322 also ships with both flat and curved polymer shoes.</td><td>Swaps the 3D trigger shoe to a red billet skeletonized profile.</td></tr>
-                <tr><th>Ported compensator</th><td>Tandemkross "Game Changer Pro" 1/2&times;28 rimfire compensator.</td><td>Adds top/side port geometry, a sharper high-frequency bark, and ~35% less simulated muzzle flip.</td></tr>
-                <tr><th>Weapon light</th><td>SIG Foxtrot2 and other compact M1913 rail lights.</td><td>Clamps a compact light to the 3-slot Picatinny dustcover with an emissive lens.</td></tr>
+                <tr><th>Ported compensator</th><td>Tandemkross "Game Changer Pro" 1/2&times;28 rimfire compensator.</td><td>Adds hollow .22 bore, upward + 45&deg; side-port discharge flames, sharper port bark, and ~38% less muzzle flip.</td></tr>
+                <tr><th>Weapon light</th><td>SIG Foxtrot2 and other compact M1913 rail lights.</td><td>Clamps a compact light to the 3-slot Picatinny dustcover (with internal CR123A cell &amp; TIR cone visible in X-Ray).</td></tr>
                 <tr><th>Iron sight sets</th><td>Factory green fiber-optic 3-dot, suppressor-height steel sets, blacked-out target rears with orange FO fronts, tritium night sight sets.</td><td>Four distinct 3D blade/dot sets with different sight heights and modelled sight-line eye height.</td></tr>
-                <tr><th>Micro red dot</th><td>Shield RMSc / SIG ROMEOZero footprint mounts directly to the P322 slide after removing the cover plate.</td><td>Documented in Section V; the 3D cover plate and its two hex bolts are modelled.</td></tr>
-                <tr><th>Rimfire suppressor</th><td>Standard 1/2&times;28 direct-thread .22 LR cans.</td><td>Modelled with K-baffles, First-Round Pop, and a sight line that stays clear.</td></tr>
+                <tr><th>Micro red dot (RDOT)</th><td>SIG Sauer ROMEOZero 3 MOA micro reflex sight (direct RMSc mount on the P322 slide cut).</td><td>Full 3D polymer hooded housing, tinted reflex lens, glowing 3 MOA crimson dot in Sight Picture, and complete clearance over 3-inch canisters.</td></tr>
+                <tr><th>Rimfire suppressor</th><td>Standard 1/2&times;28 direct-thread .22 LR cans.</td><td>Modelled with 7 K-baffles, First-Round Pop, -32% flip / -28% kick, cumulative multi-baffle swirling gas, and slow endcap pressure bleed with live X-Ray PSI pins.</td></tr>
               </tbody>
             </table>
           </div>
@@ -4312,9 +4322,22 @@ const SIGHT_SETS = [
     id: 'tritium', label: 'TRITIUM NIGHT SIGHTS', rise: 0.10, heightIn: 0.65,
     maker: 'TRITIUM 3-DOT NIGHT SET',
     blurb: 'Self-luminous green front lamp with amber rear lamps for low light. Same silhouette as the factory set; no batteries and no switches.'
+  },
+  {
+    id: 'red_dot', label: 'SIG ROMEOZERO 3 MOA RED DOT', rise: 2.35, heightIn: 0.98,
+    maker: 'SIG ELECTRO-OPTICS (DIRECT RMSc MOUNT)',
+    isOptic: true,
+    blurb: 'Factory-footprint micro reflex red-dot optic mounted directly in the P322 slide cut after removing the rear cover plate. Panoramic polymer housing + 3 MOA red LED emitter clears all suppressors.'
   }
 ];
 const MUZZLE_TOP_Y = { none: 3.08, comp: 3.30, commercial: 3.70, oilcan: 6.18 };
+const MUZZLE_RECOIL = {
+  none:       { flip: 1.00, kick: 1.00, climb: 1.00, groupMult: 1.00, backMult: 1.00, label: 'BASELINE (100% FLIP)' },
+  comp:       { flip: 0.62, kick: 0.84, climb: 0.58, groupMult: 0.88, backMult: 1.08, label: '-38% FLIP (PORTED COMP)' },
+  commercial: { flip: 0.68, kick: 0.72, climb: 0.66, groupMult: 0.92, backMult: 2.35, label: '-32% FLIP / -28% KICK (CAN)' },
+  oilcan:     { flip: 0.56, kick: 0.66, climb: 0.60, groupMult: 1.06, backMult: 3.10, label: '-44% FLIP (HEAVY FRONT CAN)' }
+};
+function muzzleRecoilByMode(mode) { return MUZZLE_RECOIL[mode] || MUZZLE_RECOIL.none; }
 function sightSetById(id) { return SIGHT_SETS.find(function (x) { return x.id === id; }) || SIGHT_SETS[0]; }
 function sightIsObstructed(m) {
   const top = MUZZLE_TOP_Y[m.muzzleMode] || 3.08;
@@ -4424,17 +4447,43 @@ function buildSIGP322Meshes() {
   chassis.addCylinderZ(-1.27, 1.27, -5.65, 0.25, 0.16, 10, C.steel);
   chassis.addCylinderZ(-1.27, 1.27, 1.95, 0.15, 0.16, 10, C.steel);
 
-  // --- C. RECIPROCATING ALUMINUM ALLOY SLIDE (TRUE OPEN EJECTION PORT!) ---
+  // --- C. RECIPROCATING ALUMINUM ALLOY SLIDE (TRUE OPEN EJECTION PORT & HOLLOW CNC NOSE!) ---
+  const C_VOID = [0.018, 0.021, 0.026]; // Deep shadow throat for real through-bores
   const slide = new MeshBuilder();
   // Authentic SIG chamfered YZ cross-section (Y, Z)
   const fullSlideYZ = [
     [1.16, -1.28], [3.02, -1.28], [3.64, -0.88],
     [3.64, 0.88],  [3.02, 1.28],  [1.16, 1.28]
   ];
-  // 1) Rear section behind ejection port (-8.20 to -1.05)
-  slide.addExtrudedProfileYZ(fullSlideYZ, -8.20, -1.05, C.slideDark);
-  // 2) Front section forward of ejection port (+2.05 to +9.02)
-  slide.addExtrudedProfileYZ(fullSlideYZ, 2.05, 9.02, C.slideDark);
+  // 1) Rear section behind ejection port (-8.20 to -1.16)
+  slide.addExtrudedProfileYZ(fullSlideYZ, -8.20, -1.16, C.slideDark);
+  // Internal CNC breech-block face & circular rimfire firing-pin aperture (-1.16 to -1.03)
+  slide.addBox(-1.16, 1.16, -1.22, -1.04, 1.98, 1.22, C.steel);
+  slide.addBox(-1.16, 2.94, -0.92, -1.04, 3.58, 0.92, C.steel);
+  slide.addBox(-1.16, 1.98, -1.22, -1.04, 2.94, -0.44, C.steel);
+  slide.addBox(-1.16, 1.98, 0.44, -1.04, 2.94, 1.22, C.steel);
+  slide.addTubeX(-1.17, -1.03, 2.46, 0.0, 0.46, 0.095, 16, C.steel);
+  slide.addCylinderX(-1.45, -1.05, 2.46, 0.0, 0.09, 0.09, 10, C_VOID);
+
+  // 2) Hollow Front CNC Slide Tunnel forward of ejection port (+2.05 to +9.02)
+  // Left & right sculpted cheek walls + top arch, leaving an open central barrel & recoil tunnel!
+  const leftCheekYZ = [
+    [1.16, -1.28], [3.02, -1.28], [3.64, -0.88],
+    [3.64, -0.58], [1.16, -0.58]
+  ];
+  const rightCheekYZ = [
+    [1.16, 0.58],  [3.64, 0.58],  [3.64, 0.88],
+    [3.02, 1.28],  [1.16, 1.28]
+  ];
+  slide.addExtrudedProfileYZ(leftCheekYZ, 2.05, 9.02, C.slideDark);
+  slide.addExtrudedProfileYZ(rightCheekYZ, 2.05, 9.02, C.slideDark);
+  // Top roof arch above barrel tunnel (y: 3.08..3.64, z: -0.60..+0.60)
+  slide.addBox(2.05, 3.08, -0.60, 9.02, 3.64, 0.60, C.slideDark);
+  // Horizontal web dividing upper barrel tunnel (cy=2.46) from lower guide-rod tunnel (cy=1.55)
+  slide.addBox(2.05, 1.82, -0.60, 9.00, 1.90, 0.60, C.slideDark);
+  // Lower dustcover rail apron under guide-rod bore
+  slide.addBox(2.05, 1.16, -0.60, 9.02, 1.28, 0.60, C.slideDark);
+
   // 3) Left wall & top-left bridge across ejection port (-1.05 to +2.05, Z: -1.28 to +0.02)
   const leftBridgeYZ = [
     [1.16, -1.28], [3.02, -1.28], [3.64, -0.88],
@@ -4444,8 +4493,19 @@ function buildSIGP322Meshes() {
   // 4) Lower right sill under ejection port (-1.05 to +2.05, Y: 1.16 to 1.96)
   slide.addBox(-1.05, 1.16, 0.04, 2.05, 1.96, 1.28, C.slideDark);
 
-  // Subtle front muzzle taper nose cap ring
-  slide.addBox(8.98, 1.32, -1.16, 9.10, 3.44, 1.16, C.slideEdge);
+  // 5) Machined Front Slide Muzzle Nose with TRUE OPEN BUSHING & GUIDE-ROD HOLES!
+  // Outer beveled cheek blocks framing the twin circular ports at x = 8.92..9.10
+  slide.addBox(8.92, 1.28, -1.16, 9.10, 3.44, -0.58, C.slideEdge);
+  slide.addBox(8.92, 1.28, 0.58, 9.10, 3.44, 1.16, C.slideEdge);
+  slide.addBox(8.92, 3.12, -0.60, 9.10, 3.44, 0.60, C.slideEdge);
+  slide.addBox(8.92, 1.81, -0.60, 9.10, 1.90, 0.60, C.slideEdge);
+  slide.addBox(8.92, 1.24, -0.60, 9.10, 1.32, 0.60, C.slideEdge);
+  // Upper Circular Barrel Bushing Tunnel (cy = 2.46, rInner = 0.57 — barrel glides cleanly through!)
+  slide.addTubeX(8.84, 9.11, 2.46, 0.0, 0.69, 0.57, 22, C.slideEdge);
+  slide.addTubeX(2.06, 8.85, 2.46, 0.0, 0.60, 0.57, 20, C_VOID);
+  // Lower Circular Recoil-Guide-Rod Port (cy = 1.55, rInner = 0.21)
+  slide.addTubeX(8.84, 9.11, 1.55, 0.0, 0.31, 0.21, 18, C.slideEdge);
+  slide.addTubeX(2.06, 8.85, 1.55, 0.0, 0.24, 0.21, 16, C_VOID);
 
   // Angled Front Cocking Serrations (5 crisp ribs each side)
   for (let i = 0; i < 5; i++) {
@@ -4462,9 +4522,8 @@ function buildSIGP322Meshes() {
     slide.addExtrudedPolyXY(rib, -1.355, -1.285, C.slideEdge);
   }
 
-  // Removable RMSc / ROMEOZero Optic Cover Plate on top rear
+  // Removable RMSc / ROMEOZero Optic Cut Pocket & Cover Seam on top rear
   slide.addBox(-7.45, 3.63, -0.82, -2.55, 3.74, 0.82, C.opticPlate);
-  // Cover plate hex mounting bolts
   slide.addCylinderX(-6.85, -6.55, 3.75, -0.52, 0.08, 0.08, 8, C.steel);
   slide.addCylinderX(-6.85, -6.55, 3.75, 0.52, 0.08, 0.08, 8, C.steel);
 
@@ -4475,15 +4534,13 @@ function buildSIGP322Meshes() {
   slide.addBox(-1.65, 1.15, -1.31, -1.10, 1.42, -1.26, C.barrelBore);
   slide.addBox(-1.65, 1.15, 1.26, -1.10, 1.42, 1.31, C.barrelBore);
 
-  // Sight blades are separate swappable meshes below (V2 Custom Shop).
-
   // --- C2. GLOWING GREEN FIBER-OPTIC SIGHT RODS (separate mesh for emissive glow!) ---
   const fiberSights = new MeshBuilder();
   fiberSights.addCylinderX(7.50, 8.70, 4.10, 0.0, 0.11, 0.11, 10, C.fiberGreen);    // Front rod
   fiberSights.addCylinderX(-7.72, -6.72, 4.12, -0.54, 0.10, 0.10, 10, C.fiberGreen); // Rear left dot
   fiberSights.addCylinderX(-7.72, -6.72, 4.12, 0.54, 0.10, 0.10, 10, C.fiberGreen);  // Rear right dot
 
-  // --- C3. FOUR SWAPPABLE IRON SIGHT SETS (all real buyable configurations) ---
+  // --- C3. FIVE SWAPPABLE SIGHT / OPTIC SETS (4 iron sets + SIG ROMEOZero Red Dot!) ---
   const sightShells = {};
   const sightGlows = {};
 
@@ -4543,16 +4600,55 @@ function buildSIGP322Meshes() {
   sightShells.tritium = shTri;
   sightGlows.tritium = glTri;
 
+  // (5) SIG ROMEOZERO MICRO RED-DOT REFLEX OPTIC (Direct-Mount RMSc Slide Cut!)
+  const shRdot = new MeshBuilder();
+  // Retained front sight blade for lower-1/5 co-witness reference
+  shRdot.addBox(7.55, 3.64, -0.19, 8.65, 4.34, 0.19, C.steelBlack);
+  // RMSc base deck seated in rear optic pocket (-7.35 to -2.62)
+  shRdot.addBox(-7.35, 3.68, -0.96, -2.62, 4.18, 0.96, C.steelBlack);
+  // Textured WeaponsGrade grip stippling ribs on optic housing flanks
+  for (let i = 0; i < 6; i++) {
+    const rx = -6.95 + i * 0.62;
+    shRdot.addBox(rx, 3.74, 0.96, rx + 0.24, 4.14, 1.02, C.stipple);
+    shRdot.addBox(rx, 3.74, -1.02, rx + 0.24, 4.14, -0.96, C.stipple);
+  }
+  // Twin stainless Torx mounting screws + emitter battery tray
+  shRdot.addBox(-5.65, 4.18, -0.62, -4.15, 4.24, 0.62, C.opticPlate);
+  shRdot.addBox(-6.35, 4.18, -0.56, -6.05, 4.25, -0.32, C.steel);
+  shRdot.addBox(-6.35, 4.18, 0.32, -6.05, 4.25, 0.56, C.steel);
+  // Integral rear backup sight U-notch molded into rear of ROMEOZero deck
+  shRdot.addBox(-7.35, 4.18, -0.92, -6.75, 4.46, -0.22, C.steelBlack);
+  shRdot.addBox(-7.35, 4.18, 0.22, -6.75, 4.46, 0.92, C.steelBlack);
+  // Sculpted front protective hood arch framing the panoramic reflex lens (-3.48 to -2.62)
+  shRdot.addBox(-3.48, 4.18, -0.98, -2.62, 5.72, -0.74, C.steelBlack); // Left pillar
+  shRdot.addBox(-3.48, 4.18, 0.74, -2.62, 5.72, 0.98, C.steelBlack);   // Right pillar
+  const hoodArchYZ = [
+    [5.52, -0.98], [5.86, -0.74], [6.02, 0.0], [5.86, 0.74],
+    [5.52, 0.98],  [5.46, 0.74],  [5.72, 0.0], [5.46, -0.74]
+  ];
+  shRdot.addExtrudedProfileYZ(hoodArchYZ, -3.48, -2.62, C.steelBlack); // Curved top arch
+  sightShells.red_dot = shRdot;
+
+  const glRdot = new MeshBuilder();
+  // Rear LED emitter diode aperture + floating collimated 3 MOA crimson dot on lens plane
+  glRdot.addBox(-6.68, 4.20, -0.10, -6.48, 4.34, 0.10, [1.00, 0.16, 0.10]);
+  glRdot.addCylinderX(-3.16, -3.02, 5.02, 0.0, 0.13, 0.13, 12, [1.00, 0.15, 0.08]);
+  sightGlows.red_dot = glRdot;
+
+  // Tinted aspherical reflex glass lens for ROMEOZero (drawn in translucent pass!)
+  const sightLensRedDot = new MeshBuilder();
+  sightLensRedDot.addBox(-3.14, 4.20, -0.74, -3.04, 5.72, 0.74, [0.22, 0.68, 0.76]);
+
   // --- C4. REAL BUYABLE P322 UPGRADES (bolt-on / drop-in parts) ---
-  // SIG factory 25-round extended magazine: +5 floorplate extension
+  // SIG factory 25-round extended magazine: deep +5 polymer sleeve & basepad (down to y = -9.15)
   const magExt = new MeshBuilder();
   magExt.addExtrudedPolyXY(
-    [[-9.60, -7.58], [-4.75, -7.58], [-4.92, -8.55], [-9.78, -8.55]],
+    [[-9.52, -7.50], [-4.72, -7.50], [-5.28, -9.15], [-10.08, -9.15]],
     -1.18, 1.18, C.magExtPoly);
   for (let i = 0; i < 4; i++) {
-    const xx = -9.45 + i * 1.18;
-    magExt.addBox(xx, -8.52, 1.19, xx + 0.16, -7.72, 1.26, C.stipple);
-    magExt.addBox(xx, -8.52, -1.26, xx + 0.16, -7.72, -1.19, C.stipple);
+    const xx = -9.65 + i * 1.18;
+    magExt.addBox(xx, -8.98, 1.19, xx + 0.16, -7.68, 1.26, C.stipple);
+    magExt.addBox(xx, -8.98, -1.26, xx + 0.16, -7.68, -1.19, C.stipple);
   }
 
   // Billet red skeletonized flat trigger (Tandemkross "Victory" / Armory Craft style)
@@ -4561,54 +4657,111 @@ function buildSIGP322Meshes() {
   triggerRed.addExtrudedPolyXY(trPoly, -0.30, 0.30, C.redAnod);
   triggerRed.addBox(-0.06, -1.54, -0.31, 0.13, -0.62, -0.26, C.redAnodEdge);
   triggerRed.addBox(-0.06, -1.54, 0.26, 0.13, -0.62, 0.31, C.redAnodEdge);
-  // Skeletonizing lightening hole (dark inset on both faces)
   triggerRed.addBox(-0.05, -1.42, -0.32, 0.12, -0.78, -0.30, C.steelBlack);
   triggerRed.addBox(-0.05, -1.42, 0.30, 0.12, -0.78, 0.32, C.steelBlack);
 
-  // 1/2x28 ported compensator (Tandemkross "Game Changer Pro" style)
+  // 1/2x28 ported compensator (Tandemkross "Game Changer Pro" style — true hollow .22 bore!)
   const compOuter = new MeshBuilder();
-  compOuter.addCylinderX(9.02, 9.70, 2.46, 0.0, 0.66, 0.66, 16, C.steel);
-  compOuter.addCylinderX(9.70, 12.55, 2.46, 0.0, 0.76, 0.76, 18, C.compSteel);
-  compOuter.addCylinderX(12.55, 12.75, 2.46, 0.0, 0.70, 0.70, 18, C.compSteel);
-  // Three top gas ports + two side ports (dark recesses)
+  compOuter.addTubeX(9.02, 9.70, 2.46, 0.0, 0.66, 0.28, 18, C.steel);
+  compOuter.addTubeX(9.70, 12.55, 2.46, 0.0, 0.76, 0.36, 20, C.compSteel);
+  compOuter.addTubeX(12.55, 12.78, 2.46, 0.0, 0.70, 0.27, 20, C.compSteel);
+  // Three top gas ports + six 45°-angled side expansion ports + deep dark exit bore throat
   const compPorts = new MeshBuilder();
   for (let i = 0; i < 3; i++) {
     const px = 10.08 + i * 0.82;
-    compPorts.addBox(px, 3.10, -0.22, px + 0.44, 3.24, 0.22, C.compPort);
-    compPorts.addBox(px, 3.08, 0.60, px + 0.44, 3.22, 0.78, C.compPort);
-    compPorts.addBox(px, 3.08, -0.78, px + 0.44, 3.22, -0.60, C.compPort);
+    compPorts.addBox(px, 3.06, -0.23, px + 0.44, 3.24, 0.23, C_VOID);
+    compPorts.addBox(px, 3.04, 0.56, px + 0.44, 3.22, 0.78, C_VOID);
+    compPorts.addBox(px, 3.04, -0.78, px + 0.44, 3.22, -0.56, C_VOID);
   }
-  compPorts.addTubeX(12.72, 12.80, 2.46, 0.0, 0.42, 0.28, 14, C.compPort);
+  compPorts.addCylinderX(11.90, 12.74, 2.46, 0.0, 0.265, 0.265, 14, C_VOID);
 
-  // M1913 3-slot rail compact weapon light (SIG Foxtrot2 style)
+  // Sculpted 3D Compensator Port Flame Jets (erupting upward + 45° left/right from all 3 port stations!)
+  const compPortFlames = new MeshBuilder();
+  for (let i = 0; i < 3; i++) {
+    const px = 10.30 + i * 0.82;
+    const hScale = 1.0 - i * 0.12;
+    // Vertical top-port jet (outer orange plume + white-hot inner core)
+    const topJetXY = [
+      [px - 0.20, 3.16], [px + 0.20, 3.16],
+      [px + 0.42, 3.16 + 2.35 * hScale], [px, 3.16 + 2.95 * hScale], [px - 0.36, 3.16 + 2.25 * hScale]
+    ];
+    compPortFlames.addExtrudedPolyXY(topJetXY, -0.14, 0.14, [1.00, 0.56, 0.12]);
+    const topCoreXY = [
+      [px - 0.10, 3.16], [px + 0.10, 3.16],
+      [px + 0.18, 3.16 + 1.45 * hScale], [px, 3.16 + 1.85 * hScale], [px - 0.16, 3.16 + 1.40 * hScale]
+    ];
+    compPortFlames.addExtrudedPolyXY(topCoreXY, -0.07, 0.07, [1.00, 0.96, 0.78]);
+    // 45-degree angled V-port left & right flame plumes
+    const sideYZ_R = [
+      [3.08, 0.58], [3.22, 0.44], [3.08 + 1.65 * hScale, 0.58 + 1.85 * hScale], [2.92 + 1.30 * hScale, 0.72 + 1.55 * hScale]
+    ];
+    const sideYZ_L = [
+      [3.22, -0.44], [3.08, -0.58], [2.92 + 1.30 * hScale, -0.72 - 1.55 * hScale], [3.08 + 1.65 * hScale, -0.58 - 1.85 * hScale]
+    ];
+    compPortFlames.addExtrudedProfileYZ(sideYZ_R, px - 0.16, px + 0.16, [1.00, 0.62, 0.16]);
+    compPortFlames.addExtrudedProfileYZ(sideYZ_L, px - 0.16, px + 0.16, [1.00, 0.62, 0.16]);
+  }
+
+  // M1913 3-slot rail compact weapon light (SIG Foxtrot2 style + internal cell/reflector for X-Ray!)
   const railLight = new MeshBuilder();
   railLight.addBox(1.30, -1.95, -0.78, 6.55, -0.12, 0.78, C.lightBody);
   railLight.addBox(1.05, -1.72, -0.84, 1.55, -0.34, 0.84, C.steelBlack);
   railLight.addBox(2.10, -0.10, -0.62, 5.90, 0.06, 0.62, C.steel);
-  railLight.addBox(6.55, -1.80, -0.86, 7.25, -0.28, 0.86, C.compSteel);
+  railLight.addTubeX(6.55, 7.26, -1.04, 0.0, 0.82, 0.58, 18, C.compSteel);
   for (let i = 0; i < 7; i++) {
     const xx = 2.0 + i * 0.62;
     railLight.addBox(xx, -1.97, 0.79, xx + 0.12, -0.14, 0.85, C.steelBlack);
     railLight.addBox(xx, -1.97, -0.85, xx + 0.12, -0.14, -0.79, C.steelBlack);
   }
+  // Internal CR123A lithium cell + copper LED heatsink + parabolic TIR cone (visible in X-Ray!)
+  const railLightCore = new MeshBuilder();
+  railLightCore.addCylinderX(1.85, 5.25, -1.04, 0.0, 0.48, 0.48, 14, [0.76, 0.62, 0.24]);
+  railLightCore.addCylinderX(5.25, 5.85, -1.04, 0.0, 0.52, 0.52, 14, C.copper);
+  railLightCore.addCylinderX(5.85, 7.18, -1.04, 0.0, 0.22, 0.56, 16, C.steel);
   const railLens = new MeshBuilder();
-  railLens.addCylinderX(7.22, 7.32, -1.04, 0.0, 0.62, 0.62, 16, C.lightLens, false, true);
+  railLens.addCylinderX(7.20, 7.30, -1.04, 0.0, 0.60, 0.60, 18, C.lightLens, true, true);
 
-  // --- D. FIXED 4.0-INCH CARBON STEEL BARREL & CHAMBER BLOCK ---
+  // --- D. FIXED 4.0-INCH CARBON STEEL BARREL, RECESSED RIFLED CROWN & GUIDE ROD ---
   const barrel = new MeshBuilder();
-  // Chamber hood block visible through ejection port
-  barrel.addBox(-0.98, 1.85, -0.76, 2.02, 3.38, 0.82, C.barrelSteel);
-  // Subtle feed ramp angled toward magazine feed lips
+  // Chamber hood block visible through ejection port, with hollow .22 LR rear chamber throat!
+  barrel.addBox(-0.98, 1.85, -0.76, 2.02, 1.98, 0.82, C.barrelSteel);
+  barrel.addBox(-0.98, 2.96, -0.76, 2.02, 3.38, 0.82, C.barrelSteel);
+  barrel.addBox(-0.98, 1.98, -0.76, 2.02, 2.96, -0.34, C.barrelSteel);
+  barrel.addBox(-0.98, 1.98, 0.34, 2.02, 2.96, 0.82, C.barrelSteel);
+  barrel.addTubeX(-1.00, 1.92, 2.46, 0.0, 0.46, 0.28, 18, C.barrelSteel);
+  barrel.addCylinderX(-0.92, 1.92, 2.46, 0.0, 0.27, 0.23, 14, C_VOID);
+  // Polished feed ramp angled toward magazine feed lips
   const rampPoly = [[-1.58, 1.30], [-0.96, 1.88], [-0.96, 2.15], [-1.72, 1.48]];
   barrel.addExtrudedPolyXY(rampPoly, -0.36, 0.36, C.steel);
-  // 4-inch fixed barrel tube (hollow bore visible from muzzle!)
-  barrel.addTubeX(1.90, 9.20, 2.46, 0.0, 0.56, 0.28, 18, C.barrelSteel);
-  // Dark interior bore core
-  barrel.addCylinderX(1.90, 9.18, 2.46, 0.0, 0.26, 0.26, 12, C.barrelBore);
+  // 4-inch fixed barrel tube + 1/2x28 muzzle threads + recessed 11° target crown!
+  barrel.addTubeX(1.90, 8.70, 2.46, 0.0, 0.55, 0.225, 22, C.barrelSteel);
+  barrel.addTubeX(8.70, 9.25, 2.46, 0.0, 0.49, 0.225, 22, C.steel);
+  for (let i = 0; i < 5; i++) {
+    const tx = 8.74 + i * 0.10;
+    barrel.addTubeX(tx, tx + 0.05, 2.46, 0.0, 0.525, 0.485, 20, C.barrelSteel);
+  }
+  // Stepped recessed muzzle crown dish + deep pitch-black rifled bore throat + 6 rifling lands!
+  barrel.addTubeX(9.25, 9.33, 2.46, 0.0, 0.50, 0.31, 22, C.steel);
+  barrel.addCylinderX(2.05, 9.18, 2.46, 0.0, 0.222, 0.222, 16, C_VOID);
+  for (let i = 0; i < 6; i++) {
+    const a = (i / 6) * Math.PI * 2;
+    const ly = 2.46 + Math.cos(a) * 0.235;
+    const lz = Math.sin(a) * 0.235;
+    barrel.addBox(9.06, ly - 0.022, lz - 0.022, 9.27, ly + 0.022, lz + 0.022, C.steel);
+  }
 
-  // --- D2. VISIBLE BORE LEAD FOULING LAYER (X-Ray / Field Strip visual) ---
+  // Stainless lower captured alignment / guide rod (sits at y = 1.55, passes through lower slide port!)
+  const guideRod = new MeshBuilder();
+  guideRod.addBox(1.96, 1.28, -0.36, 2.22, 1.82, 0.36, C.steel);
+  guideRod.addCylinderX(2.22, 8.96, 1.55, 0.0, 0.17, 0.17, 14, C.steel);
+  guideRod.addCylinderX(8.92, 9.04, 1.55, 0.0, 0.19, 0.15, 14, C.barrelSteel);
+
+  // --- D2. VISIBLE BORE LEAD FOULING LAYER & GLOWING BORE GAS COLUMN (X-Ray / Strip) ---
   const boreFoulingMesh = new MeshBuilder();
   boreFoulingMesh.addCylinderX(2.05, 5.20, 2.46, 0.0, 0.33, 0.30, 12, C.leadFoul);
+
+  const boreGasCore = new MeshBuilder();
+  boreGasCore.addCylinderX(-0.85, 9.25, 2.46, 0.0, 0.24, 0.20, 14, [1.00, 0.78, 0.32], true, true);
 
   // --- E. CONCENTRIC HELICAL RECOIL SPRING (scales dynamically with slide!) ---
   const recoilSpring = new MeshBuilder();
@@ -4677,6 +4830,35 @@ function buildSIGP322Meshes() {
   const magFollowerTabs = new MeshBuilder();
   magFollowerTabs.addCylinderZ(-1.02, 1.02, 0, 0, 0.22, 10, C.magTab);
 
+  // Anti-tilt stepped polymer follower body (high-vis orange top shelf + dark skirt + side load-assist tabs!)
+  const magFollower = new MeshBuilder();
+  magFollower.addBox(-0.65, -0.02, -0.62, 1.75, 0.14, 0.62, C.flagOrange);
+  magFollower.addBox(-0.68, -0.26, -0.66, 1.72, -0.02, 0.66, C.magTab);
+  magFollower.addCylinderZ(-1.04, 1.04, 0.35, -0.10, 0.20, 10, C.magTab);
+
+  // Dynamic 13-switchback rectangular oval-coil steel magazine spring (normalized u = 0..1 along +Y)
+  const magSpring = new MeshBuilder();
+  const nSwitch = 13;
+  for (let i = 0; i < nSwitch; i++) {
+    const u0 = i / nSwitch;
+    const u1 = (i + 1) / nSwitch;
+    const dir = (i % 2 === 0) ? 1 : -1;
+    const xA = -0.78 * dir, xB = 0.78 * dir;
+    // Front & rear wire legs of the oval coil switchback
+    for (const zOff of [-0.46, 0.46]) {
+      const wireXY = [
+        [xA - 0.08, u0], [xA + 0.08, u0],
+        [xB + 0.08, u1], [xB - 0.08, u1]
+      ];
+      magSpring.addExtrudedPolyXY(wireXY, zOff - 0.045, zOff + 0.045, C.springSteel);
+    }
+    // End bend connecting front & rear legs
+    magSpring.addBox(xB - 0.09, Math.max(0, u1 - 0.025), -0.50, xB + 0.09, Math.min(1, u1 + 0.025), 0.50, C.springSteel);
+  }
+  // Baseplate anchor loop (u = 0) & follower top loop (u = 1)
+  magSpring.addBox(-0.84, 0.0, -0.50, 0.84, 0.03, 0.50, C.springSteel);
+  magSpring.addBox(-0.84, 0.97, -0.50, 0.84, 1.00, 0.50, C.springSteel);
+
   // --- M. SINGLE .22 LR CARTRIDGE MESHES (Brass case + Bullet) ---
   const brassCase = new MeshBuilder();
   // Rim flange + cylindrical brass case along +X (total ~1.55u = 15.5mm)
@@ -4689,26 +4871,22 @@ function buildSIGP322Meshes() {
 
   // --- N. ORANGE CHAMBER SAFETY FLAG (SIG Factory Dry-Fire Cushion!) ---
   const chamberFlag = new MeshBuilder();
-  // Stem seated in chamber + bright protruding safety arm out right ejection port
   chamberFlag.addCylinderX(-0.3, 1.95, 2.46, 0.0, 0.26, 0.24, 10, C.flagOrange);
   chamberFlag.addBox(-0.6, 2.25, 0.10, 0.45, 2.75, 3.65, C.flagOrange);
   chamberFlag.addBox(-0.85, 2.15, 2.50, 0.65, 2.85, 3.70, C.flagOrange);
 
   // --- O. MUZZLE CONFIGURATIONS ---
-  // 1) Factory Flush Cap
+  // 1) Factory Flush 1/2x28 Thread Protector Cap (open hollow muzzle ring)
   const muzzleCap = new MeshBuilder();
-  muzzleCap.addTubeX(9.02, 9.34, 2.46, 0.0, 0.62, 0.29, 16, C.barrelSteel);
+  muzzleCap.addTubeX(8.68, 9.35, 2.46, 0.0, 0.62, 0.29, 20, C.barrelSteel);
 
   // 2) Commercial 1/2x28 Direct-Thread Rimfire Suppressor (1.0" OD x 5.4" L — clears sights!)
   const supOuter = new MeshBuilder();
-  // 1/2x28 threaded adapter collar
-  supOuter.addCylinderX(9.02, 9.88, 2.46, 0.0, 0.65, 0.65, 16, C.steel);
-  // Knurled rear mount endcap
+  supOuter.addTubeX(9.02, 9.88, 2.46, 0.0, 0.65, 0.28, 18, C.steel);
   supOuter.addTubeX(9.88, 10.65, 2.46, 0.0, 1.28, 0.45, 20, C.supKnurl);
-  // Matte black titanium/aluminum tube (r = 1.24 -> top at y = 3.70, BELOW 4.10 fiber dot!)
   supOuter.addTubeX(10.65, 22.65, 2.46, 0.0, 1.24, 1.08, 22, C.supBlack);
-  // Front endcap with .22 bore aperture
-  supOuter.addTubeX(22.65, 23.35, 2.46, 0.0, 1.26, 0.34, 20, C.supKnurl);
+  supOuter.addTubeX(22.65, 23.38, 2.46, 0.0, 1.26, 0.30, 22, C.supKnurl);
+  supOuter.addCylinderX(22.55, 23.32, 2.46, 0.0, 0.29, 0.29, 14, C_VOID);
 
   // Internal 7-Stack Machined Stainless K-Baffles (visible in X-Ray!)
   const supBaffles = new MeshBuilder();
@@ -4718,46 +4896,55 @@ function buildSIGP322Meshes() {
     supBaffles.addTubeX(bx + 0.65, bx + 0.85, 2.46, 0.0, 1.05, 0.36, 16, C.steel);
   }
 
-  // 3) Simulated Oversized Oil-Canister Profile (3.0" OD x 4.6" L — COMPLETELY BLOCKS SIGHTS!)
+  // 3) Simulated Oversized Oil-Canister Profile (3.0" OD x 4.6" L — BLOCKS STANDARD IRONS!)
   const oilCanOuter = new MeshBuilder();
-  // Heavy mount collar
-  oilCanOuter.addCylinderX(9.02, 9.92, 2.46, 0.0, 0.72, 0.72, 16, C.steel);
-  // Rolled steel rear crimp lip
+  oilCanOuter.addTubeX(9.02, 9.92, 2.46, 0.0, 0.72, 0.30, 18, C.steel);
   oilCanOuter.addCylinderX(9.92, 10.45, 2.46, 0.0, 3.68, 3.82, 24, C.oilCanSeam, true, false);
-  // Massive 75mm OD steel canister body (top at y = 2.46 + 3.72 = 6.18 >> 4.30 sights!)
   oilCanOuter.addTubeX(10.45, 13.60, 2.46, 0.0, 3.72, 3.45, 24, C.oilCanBody);
   oilCanOuter.addTubeX(13.60, 15.10, 2.46, 0.0, 3.74, 3.45, 24, C.oilCanBand);
   oilCanOuter.addTubeX(15.10, 20.85, 2.46, 0.0, 3.72, 3.45, 24, C.oilCanBody);
-  // Stamped grip flutes on nose dome
   for (let i = 0; i < 12; i++) {
     const ang = (i / 12) * Math.PI * 2;
     const fy = 2.46 + Math.cos(ang) * 3.73;
     const fz = Math.sin(ang) * 3.73;
     oilCanOuter.addBox(18.6, fy - 0.18, fz - 0.18, 21.1, fy + 0.18, fz + 0.18, C.oilCanSeam);
   }
-  // Front dome cap with bullet exit hole
-  oilCanOuter.addTubeX(20.85, 21.45, 2.46, 0.0, 3.62, 0.45, 24, C.oilCanBody);
+  oilCanOuter.addTubeX(20.85, 21.48, 2.46, 0.0, 3.62, 0.36, 24, C.oilCanBody);
+  oilCanOuter.addCylinderX(20.75, 21.42, 2.46, 0.0, 0.35, 0.35, 14, C_VOID);
 
   // Internal Pleated Filter Core (visible in X-Ray — visibly scorches/degrades!)
   const oilCanCore = new MeshBuilder();
   oilCanCore.addTubeX(10.75, 20.55, 2.46, 0.0, 3.10, 1.15, 20, C.oilCanMedia);
-  // Perforated steel center tube
   oilCanCore.addTubeX(10.75, 20.55, 2.46, 0.0, 1.12, 0.92, 16, C.steel);
 
   // --- P. 3D CLEANING ROD & BRONZE BORE BRUSH ---
   const boreBrush = new MeshBuilder();
   boreBrush.addCylinderX(0.0, 10.5, 2.46, 0.0, 0.14, 0.14, 10, C.brushBrass);
   boreBrush.addCylinderX(10.5, 13.0, 2.46, 0.0, 0.42, 0.36, 12, C.brushBronze);
-  // T-Handle
   boreBrush.addBox(-0.6, 1.4, -0.25, 0.1, 3.5, 0.25, C.controlDark);
 
-  // --- Q. MUZZLE FLASH CONE & SUPPRESSOR GAS PUFF ---
+  // --- Q. MUZZLE FLASH CONE, VOLUMETRIC GAS PUFF & 3D SWIRLING VORTEX MESHES ---
   const flashCone = new MeshBuilder();
   flashCone.addCylinderX(0.0, 2.8, 0, 0, 0.32, 1.35, 10, C.flashYellow, false, false);
   flashCone.addCylinderX(0.0, 1.6, 0, 0, 0.18, 0.72, 10, [1.0, 0.97, 0.82], false, false);
 
   const gasPuff = new MeshBuilder();
-  gasPuff.addCylinderX(-0.5, 0.5, 0, 0, 0.65, 0.65, 10, C.gasSmoke, true, true);
+  gasPuff.addCylinderX(-0.5, 0.5, 0, 0, 0.65, 0.65, 12, C.gasSmoke, true, true);
+
+  // Swirling helical gas vortex ribbon (centered at origin along X: -0.5..+0.5, radius ~0.72)
+  const vortexRibbon = new MeshBuilder();
+  vortexRibbon.addHelixSpringX(-0.48, 0.48, 0, 0, 0.72, 0.16, 1.75, 12, [1.0, 0.86, 0.58]);
+  vortexRibbon.addHelixSpringX(-0.42, 0.42, 0, 0, 0.42, 0.12, 1.50, 10, [0.95, 0.96, 1.0]);
+
+  // Wide radial toroidal vortex ring for oversized canisters & chamber recirculation
+  const toroidVortex = new MeshBuilder();
+  for (let i = 0; i < 8; i++) {
+    const a0 = (i / 8) * Math.PI * 2;
+    const a1 = a0 + 0.52;
+    const cy0 = Math.cos(a0) * 0.78, cz0 = Math.sin(a0) * 0.78;
+    const cy1 = Math.cos(a1) * 0.88, cz1 = Math.sin(a1) * 0.88;
+    toroidVortex.addCylinderX(-0.36, 0.36, (cy0 + cy1) * 0.5, (cz0 + cz1) * 0.5, 0.24, 0.16, 8, [0.96, 0.88, 0.74], true, true);
+  }
 
   return {
     frame: frame.toData(),
@@ -4772,14 +4959,21 @@ function buildSIGP322Meshes() {
     sightGlow_target_orange: sightGlows.target_orange.toData(),
     sightShell_tritium: sightShells.tritium.toData(),
     sightGlow_tritium: sightGlows.tritium.toData(),
+    sightShell_red_dot: sightShells.red_dot.toData(),
+    sightGlow_red_dot: sightGlows.red_dot.toData(),
+    sightLens_red_dot: sightLensRedDot.toData(),
     magExt: magExt.toData(),
     triggerRed: triggerRed.toData(),
     compOuter: compOuter.toData(),
     compPorts: compPorts.toData(),
+    compPortFlames: compPortFlames.toData(),
     railLight: railLight.toData(),
+    railLightCore: railLightCore.toData(),
     railLens: railLens.toData(),
     barrel: barrel.toData(),
+    guideRod: guideRod.toData(),
     boreFoulingMesh: boreFoulingMesh.toData(),
+    boreGasCore: boreGasCore.toData(),
     recoilSpring: recoilSpring.toData(),
     hammer: hammer.toData(),
     triggerFlat: triggerFlat.toData(),
@@ -4789,6 +4983,8 @@ function buildSIGP322Meshes() {
     takedown: takedown.toData(),
     magRelease: magRelease.toData(),
     magBody: magBody.toData(),
+    magFollower: magFollower.toData(),
+    magSpring: magSpring.toData(),
     magFollowerTabs: magFollowerTabs.toData(),
     brassCase: brassCase.toData(),
     bulletNose: bulletNose.toData(),
@@ -4800,7 +4996,9 @@ function buildSIGP322Meshes() {
     oilCanCore: oilCanCore.toData(),
     boreBrush: boreBrush.toData(),
     flashCone: flashCone.toData(),
-    gasPuff: gasPuff.toData()
+    gasPuff: gasPuff.toData(),
+    vortexRibbon: vortexRibbon.toData(),
+    toroidVortex: toroidVortex.toData()
   };
 }
 
@@ -4872,13 +5070,104 @@ class P322Mechanics {
 
     this.xray = false;
 
-    // Visual FX dynamics
+    // Visual FX & Multi-Chamber Compressible Gas / Recoil Dynamics (V5)
     this.recoilPitch = 0.0;
     this.recoilPitchVel = 0.0;
+    this.recoilRear = 0.0;
+    this.recoilRearVel = 0.0;
     this.muzzleFlash = 0.0;
     this.baffleGas = 0.0;
+    this.gas = {
+      chamberPsi: 0.0,
+      chamberPeak: 0.0,
+      barrelPsi: 0.0,
+      barrelHeat: 0.0,
+      upperPsi: 0.0,
+      magPsi: 0.0,
+      bafflePsi: [0, 0, 0, 0, 0, 0, 0],
+      canPsi: 0.0,
+      canBleedRate: 0.0,
+      swirlPhase: 0.0,
+      compFlame: 0.0,
+      portJet: 0.0,
+      bleedWispAccum: 0.0
+    };
     this.casings = [];           // Flying 3D brass/live cartridges
     this.smoke = [];             // Rising muzzle/port smoke puffs
+  }
+
+  _getCartridgePsi(ammo) {
+    const table = {
+      cci_stinger: 23800,
+      cci_minimag: 20400,
+      bulk_lead:   19200,
+      cci_sv:      16800,
+      cci_sup:     16400,
+      cci_quiet:   9400
+    };
+    return table[ammo.id] || 18500;
+  }
+
+  _injectDischargeGas(ammo, isFrp) {
+    const p0 = this._getCartridgePsi(ammo);
+    const g = this.gas;
+    const rec = muzzleRecoilByMode(this.muzzleMode);
+    const scale = p0 / 20400;
+    const effBack = this.muzzleMode === 'oilcan'
+      ? rec.backMult * (0.48 + 0.52 * this.oilCanIntegrity)
+      : rec.backMult;
+
+    g.chamberPsi = Math.min(26500, g.chamberPsi * 0.25 + p0);
+    g.chamberPeak = Math.max(g.chamberPeak, g.chamberPsi);
+    g.barrelPsi = Math.min(9800, g.barrelPsi * 0.45 + p0 * 0.31);
+    g.barrelHeat = Math.min(1.0, g.barrelHeat + 0.68);
+    g.upperPsi = Math.min(175, g.upperPsi + (p0 / 1250) * effBack);
+    g.portJet = Math.min(1.0, g.portJet + 0.44 * effBack);
+    g.magPsi = Math.min(58, g.magPsi + (this.isMagSeated() ? (p0 / 4050) * effBack : 0.7));
+
+    if (this.muzzleMode === 'commercial') {
+      const frp = isFrp ? 1.28 : 1.0;
+      const inject = [230 * frp, 145 * frp, 92, 56, 32, 16, 8];
+      for (let i = 0; i < 7; i++) {
+        g.bafflePsi[i] = Math.min(1280, g.bafflePsi[i] + inject[i] * scale);
+      }
+    } else if (this.muzzleMode === 'oilcan') {
+      const ret = 0.52 + 0.48 * this.oilCanIntegrity;
+      const inject = [155, 138, 122, 108, 92, 76, 58];
+      for (let i = 0; i < 7; i++) {
+        g.bafflePsi[i] = Math.min(1150, g.bafflePsi[i] + inject[i] * scale * ret);
+      }
+    } else if (this.muzzleMode === 'comp') {
+      g.compFlame = 1.0;
+      g.bafflePsi[0] = Math.min(980, g.bafflePsi[0] + 465 * scale);
+      g.bafflePsi[1] = Math.min(790, g.bafflePsi[1] + 315 * scale);
+      g.bafflePsi[2] = Math.min(640, g.bafflePsi[2] + 205 * scale);
+    } else {
+      g.bafflePsi[0] = Math.min(620, g.bafflePsi[0] + 225 * scale);
+    }
+    this._refreshCanPsi(0);
+  }
+
+  _refreshCanPsi(prevCanPsi, dt) {
+    const g = this.gas;
+    let next = 0;
+    if (this.muzzleMode === 'commercial' || this.muzzleMode === 'oilcan') {
+      let sum = 0;
+      for (let i = 0; i < 7; i++) sum += g.bafflePsi[i];
+      next = sum / 7;
+    } else if (this.muzzleMode === 'comp') {
+      next = (g.bafflePsi[0] + g.bafflePsi[1] + g.bafflePsi[2]) / 3;
+    } else {
+      next = g.bafflePsi[0];
+    }
+    if (dt && dt > 0.0001) {
+      const instRate = (next - prevCanPsi) / dt;
+      g.canBleedRate = g.canBleedRate * 0.72 + instRate * 0.28;
+    }
+    g.canPsi = next;
+    this.baffleGas = (this.muzzleMode === 'commercial' || this.muzzleMode === 'oilcan')
+      ? Math.min(1.0, next / 210)
+      : 0.0;
   }
 
   getAmmo() {
@@ -5246,32 +5535,52 @@ class P322Mechanics {
     }
 
     // Bore lead fouling (higher backpressure when suppressed)
-    const foulMult = this.muzzleMode === 'none' ? 1.0 : 1.32;
+    const foulMult = this.muzzleMode === 'none' ? 1.0 : (this.muzzleMode === 'comp' ? 1.08 : 1.34);
     this.boreFouling = Math.min(100, this.boreFouling + ammo.foulRate * foulMult);
 
-    // Visual recoil, flash & smoke
-    this.muzzleFlash = (this.muzzleMode === 'none' || this.muzzleMode === 'comp') ? 1.0 : (isFrp ? 0.45 : 0.14);
-    this.baffleGas = (this.muzzleMode === 'commercial' || this.muzzleMode === 'oilcan') ? 1.0 : 0.0;
-    const flipFactor = this.muzzleMode === 'comp' ? 0.049 : (this.muzzleMode === 'oilcan' ? 0.045 : 0.075);
-    const pitchKick = (ammo.energyFtlbs / 105) * flipFactor;
-    this.recoilPitchVel = pitchKick * 12;
-    if (this._simAutoShot) this.recoilPitchVel += 0.58; // progressive simulated cyclic climb
+    // Inject compressible multi-zone gas & baffle pressure (accumulates on rapid/burst fire!)
+    this._injectDischargeGas(ammo, isFrp);
+
+    // Muzzle-device-accurate recoil pitch (muzzle flip) & rearward kick impulse
+    const rec = muzzleRecoilByMode(this.muzzleMode);
+    this.muzzleFlash = this.muzzleMode === 'none' ? 1.0 : (this.muzzleMode === 'comp' ? 0.86 : (isFrp ? 0.45 : 0.14));
+    const pitchKick = (ammo.energyFtlbs / 105) * 0.075 * rec.flip;
+    this.recoilPitchVel = Math.min(2.6, this.recoilPitchVel * 0.35 + pitchKick * 12.0 + (this._simAutoShot ? 0.56 * rec.climb : 0));
+    this.recoilRearVel = Math.min(5.2, this.recoilRearVel * 0.30 + (ammo.energyFtlbs / 105) * 2.85 * rec.kick);
 
     const muzzleX = this.muzzleMode === 'none' ? 9.4
-      : (this.muzzleMode === 'comp' ? 12.75
+      : (this.muzzleMode === 'comp' ? 12.78
         : (this.muzzleMode === 'commercial' ? 23.5 : 21.6));
-    for (let i = 0; i < (this.muzzleMode === 'none' ? 5 : 4); i++) {
+    const nMuzSmoke = this.muzzleMode === 'none' ? 5 : (this.muzzleMode === 'comp' ? 2 : 3);
+    for (let i = 0; i < nMuzSmoke; i++) {
       this.smoke.push({
         x: muzzleX + Math.random() * 0.6,
-        y: 2.46 + (Math.random() - 0.5) * 0.4,
-        z: (Math.random() - 0.5) * 0.4,
-        vx: 2.2 + Math.random() * 2.5,
-        vy: 0.7 + Math.random() * 1.1,
-        vz: (Math.random() - 0.5) * 0.8,
-        scale: 0.45 + Math.random() * 0.4,
-        alpha: 0.52
+        y: 2.46 + (Math.random() - 0.5) * 0.35,
+        z: (Math.random() - 0.5) * 0.35,
+        vx: 2.0 + Math.random() * 2.4,
+        vy: 0.65 + Math.random() * 1.0,
+        vz: (Math.random() - 0.5) * 0.7,
+        scale: 0.42 + Math.random() * 0.38,
+        alpha: 0.50
       });
     }
+    // Compensator upward & 45°-angled port smoke jets!
+    if (this.muzzleMode === 'comp') {
+      for (let p = 0; p < 3; p++) {
+        const px = 10.30 + p * 0.82;
+        this.smoke.push({
+          x: px + (Math.random() - 0.5) * 0.16,
+          y: 3.30,
+          z: (Math.random() - 0.5) * 0.25,
+          vx: 0.35 + Math.random() * 0.5,
+          vy: 3.4 + Math.random() * 1.8,
+          vz: (Math.random() - 0.5) * 2.4,
+          scale: 0.34 + Math.random() * 0.26,
+          alpha: 0.48
+        });
+      }
+    }
+    if (this.smoke.length > 64) this.smoke.splice(0, this.smoke.length - 64);
 
     if (!cycles) {
       // REALISTIC SHORT-STROKE STOPPAGE (CCI Quiet-22 660 fps or heavily leaded bore!)
@@ -5317,9 +5626,12 @@ class P322Mechanics {
     if (noMagWarn) {
       this.slideVel = -11.5;
       this.log(`WARNING: ${note} — FIRED WITH MAGAZINE REMOVED (STANDARD P322 HAS NO MAG DISCONNECT!).`, 'warn');
+    } else if (this._simAutoShot) {
+      this.slideVel = -12.0;
+      this.log(`${note} — CYCLIC FEED (${this.magRounds}/${this.maxMag} IN MAG${this.chambered ? ' +1 CHBR' : ''}).`, 'normal');
     } else if (this.magRounds > 0) {
       this.slideVel = -12.0;
-      this.log(`${note} — BLOWBACK CYCLED (${this.magRounds - 1}/${this.maxMag} LEFT AFTER FEED).`, 'normal');
+      this.log(`${note} — BLOWBACK CYCLED (${this.magRounds - 1}/${this.maxMag} IN MAG +1 CHAMBERED).`, 'normal');
     } else {
       // Last round fired -> empty mag follower engages slide catch!
       this.slideLocked = true;
@@ -5341,13 +5653,13 @@ class P322Mechanics {
       this.magTargetT = 1.0;
       if (this.audio) this.audio.playMagDrop();
       this.log(this.chambered
-        ? 'MAGAZINE RELEASED. CAUTION: LIVE ROUND REMAINS IN CHAMBER (NO MAG DISCONNECT)!'
-        : '20-ROUND POLYMER MAGAZINE DROPPED FREE.', this.chambered ? 'warn' : 'info');
+        ? `MAGAZINE RELEASED (${this.magRounds}/${this.maxMag}). CAUTION: LIVE ROUND REMAINS IN CHAMBER (NO MAG DISCONNECT)!`
+        : `${this.maxMag}-ROUND POLYMER MAGAZINE DROPPED FREE.`, this.chambered ? 'warn' : 'info');
     } else {
       this.magInserted = true;
       this.magTargetT = 0.0;
       if (this.audio) this.audio.playMagInsert();
-      this.log(`20-ROUND MAGAZINE SEATED (${this.magRounds}/${this.maxMag} RDS).`, 'info');
+      this.log(`${this.maxMag}-ROUND MAGAZINE SEATED (${this.magRounds}/${this.maxMag}${this.chambered && !this.chamberedSpent ? ' +1' : ''} RDS).`, 'info');
     }
     this.notify();
   }
@@ -5367,27 +5679,27 @@ class P322Mechanics {
       this.magInserted = true;
       this.magTargetT = 0.0;
       if (this.audio) this.audio.playMagInsert();
-      this.log(`MAGAZINE SEATED & LATCHED (${this.magRounds}/${this.maxMag} RDS).`, 'info');
+      this.log(`MAGAZINE SEATED & LATCHED (${this.magRounds}/${this.maxMag}${this.chambered && !this.chamberedSpent ? ' +1' : ''} RDS).`, 'info');
     }
     this.notify();
   }
 
   loadMagazine(count) {
     if (this.magRounds >= this.maxMag) {
-      this.log('MAGAZINE ALREADY AT FULL 20-ROUND CAPACITY.', 'info');
+      this.log(`MAGAZINE ALREADY AT FULL ${this.maxMag}-ROUND CAPACITY (${this.magRounds}/${this.maxMag}${this.chambered && !this.chamberedSpent ? ' +1 IN CHAMBER' : ''}).`, 'info');
       return;
     }
     const added = Math.min(count, this.maxMag - this.magRounds);
     this.magRounds += added;
     if (this.audio) this.audio.playMagLoadRound();
-    this.log(`LOADED +${added} ROUNDS USING THUMB-TAB ONE-BY-ONE TECHNIQUE (${this.magRounds}/${this.maxMag}). ZERO RIMLOCK.`, 'info');
+    this.log(`LOADED +${added} ROUNDS USING THUMB-TAB ONE-BY-ONE TECHNIQUE (${this.magRounds}/${this.maxMag}${this.chambered && !this.chamberedSpent ? ' +1' : ''}). ZERO RIMLOCK.`, 'info');
     this.notify();
   }
 
   emptyMagazine() {
     this.magRounds = 0;
     if (this.audio) this.audio.playMagLoadRound();
-    this.log('MAGAZINE UNLOADED TO 0/20 (READY TO TEST EMPTY-MAG SLIDE LOCK).', 'info');
+    this.log(`MAGAZINE UNLOADED TO 0/${this.maxMag} (FOLLOWER AT TOP — READY TO TEST EMPTY-MAG SLIDE LOCK).`, 'info');
     this.notify();
   }
 
@@ -5472,21 +5784,27 @@ class P322Mechanics {
       return;
     }
     if (this.muzzleMode === mode) return;
+    // Unthreading a pressurized suppressor vents residual canister gas into ambient air
+    for (let i = 0; i < 7; i++) this.gas.bafflePsi[i] = 0;
+    this.gas.canPsi = 0;
+    this.gas.canBleedRate = 0;
+    this.gas.compFlame = 0;
+    this.baffleGas = 0;
     this.muzzleMode = mode;
     if (mode === 'comp') {
       if (this.audio) this.audio.playThreadMount();
-      this.log('1/2x28 PORTED COMPENSATOR INSTALLED (GAME CHANGER PRO STYLE): ~35% LESS MUZZLE FLIP, SHARPER SIDE-PORT BARK, NO SIGHT OBSTRUCTION.', 'info');
+      this.log('1/2x28 PORTED COMPENSATOR INSTALLED: UPWARD JET PORTS CUT MUZZLE FLIP BY ~38% WITH VISIBLE PORT FLAMES & ZERO SIGHT OBSTRUCTION.', 'info');
     } else if (mode === 'commercial') {
       this.suppressorPurged = false; // Fresh dry can -> Next shot exhibits First-Round Pop!
       if (this.audio) this.audio.playThreadMount();
-      this.log('1/2x28 COMMERCIAL RIMFIRE SUPPRESSOR MOUNTED (CLEAR SIGHT PICTURE; SHOT #1 = FIRST-ROUND POP).', 'info');
+      this.log('1/2x28 7-BAFFLE RIMFIRE SUPPRESSOR MOUNTED (-32% FLIP / -28% KICK; SHOT #1 = FIRST-ROUND POP; TOGGLE X-RAY TO WATCH BAFFLE PRESSURE & SWIRL).', 'info');
     } else if (mode === 'oilcan') {
       this.oilCanIntegrity = 1.0;
       if (this.audio) this.audio.playThreadMount();
-      this.log('SIMULATED OIL-CANISTER PROFILE MOUNTED (TEST COMPARISON ONLY — CHECK [SIGHT PICTURE] TO SEE SIGHT OBSTRUCTION!).', 'warn');
+      this.log('SIMULATED 3-INCH OIL-CANISTER MOUNTED (-44% FLIP; BLOCKS LOW IRONS — FIT TALL IRONS OR ROMEOZERO RED DOT!).', 'warn');
     } else {
       if (this.audio) this.audio.playThreadMount();
-      this.log('FACTORY FLUSH BARREL CAP INSTALLED — UNSUPPRESSED CONFIGURATION (FIELD-STRIP READY).', 'info');
+      this.log('FACTORY FLUSH BARREL CAP INSTALLED — UNSUPPRESSED BASELINE (FIELD-STRIP READY).', 'info');
     }
     this.notify();
   }
@@ -5513,14 +5831,15 @@ class P322Mechanics {
     this.notify();
   }
 
-  /* --- V2 CUSTOM SHOP + CONCEPTUAL CYCLIC DEMO CONTROLS --- */
+  /* --- V2/V5 CUSTOM SHOP + CONCEPTUAL CYCLIC DEMO CONTROLS --- */
   setSightSet(id) {
     const set = sightSetById(id);
-    if (this.fieldStripped) { this.log('REASSEMBLE SLIDE BEFORE SWAPPING SIGHT SETS.', 'warn'); return; }
+    if (this.fieldStripped) { this.log('REASSEMBLE SLIDE BEFORE SWAPPING SIGHTS / OPTICS.', 'warn'); return; }
     this.sightSet = set.id;
     if (this.audio) this.audio.playSafetyToggle(true);
     const blocked = sightIsObstructed(this);
-    this.log('IRON SIGHTS SWAPPED: ' + set.label + ' (' + set.maker + '). ' +
+    const prefix = set.isOptic ? 'MICRO REFLEX OPTIC MOUNTED: ' : 'IRON SIGHTS SWAPPED: ';
+    this.log(prefix + set.label + ' (' + set.maker + '). ' +
       (blocked
         ? 'WARNING: CURRENT MUZZLE DEVICE STILL SITS ABOVE THIS SIGHT LINE — SIGHT PICTURE OBSTRUCTED!'
         : 'SIGHT LINE CLEAR OVER THE CURRENT MUZZLE DEVICE.'), blocked ? 'warn' : 'info');
@@ -5531,14 +5850,19 @@ class P322Mechanics {
     if (this.fieldStripped) { this.log('REASSEMBLE BEFORE SWAPPING MAGAZINES.', 'warn'); return; }
     this.mag25 = !!on;
     this.maxMag = this.mag25 ? 25 : 20;
-    this.magRounds = this.mag25 ? 25 : 20;
+    this.magRounds = this.maxMag;
     this.magInserted = true;
     this.magTargetT = 0.0;
     this.magPullT = 0.0;
+    if (!this.chamberFlag && !this.slideLocked) {
+      this.chambered = true;
+      this.chamberedSpent = false;
+      this.hammerCocked = true;
+    }
     if (this.audio) this.audio.playMagInsert();
     this.log(this.mag25
-      ? 'SIG FACTORY 25-ROUND EXTENDED MAGAZINE SEATED (25+1 CAPACITY). FIVE EXTRA ROUNDS, SAME ANTI-RIMLOCK LOADING DRILL.'
-      : 'STANDARD SIG 20-ROUND MAGAZINE SEATED (20+1 CAPACITY).', 'info');
+      ? 'SIG FACTORY 25-ROUND EXTENDED MAGAZINE SEATED (25+1 = 26 ROUNDS READY). TOGGLE X-RAY TO INSPECT FULL 25-RD STACK & SPRING.'
+      : 'STANDARD SIG 20-ROUND FLUSH MAGAZINE SEATED (20+1 = 21 ROUNDS READY).', 'info');
     this.notify();
   }
 
@@ -5567,7 +5891,7 @@ class P322Mechanics {
     this.simAutoAccum = 0;
     if (this.audio) this.audio.playSafetyToggle(this.simAuto);
     this.log(this.simAuto
-      ? 'SIM-AUTO [TEST ONLY] ARMED. HYPOTHETICAL 1,050 RPM CYCLIC BURST FOR RECOIL/DISPERSION COMPARISON ONLY. NOT A REAL PART, NOT FOR SALE, NOT INSTALLABLE — POSSESSING A REAL CONVERSION DEVICE IS A FEDERAL FELONY.'
+      ? 'SIM-AUTO [TEST ONLY] ARMED. HYPOTHETICAL 1,050 RPM CYCLIC BURST FOR RECOIL/DISPERSION/PRESSURE COMPARISON ONLY. NOT A REAL PART, NOT FOR SALE, NOT INSTALLABLE — POSSESSING A REAL CONVERSION DEVICE IS A FEDERAL FELONY.'
       : 'SIM-AUTO [TEST ONLY] DISARMED. SEMI-AUTOMATIC BENCH BEHAVIOR RESTORED.', 'warn');
     this.notify();
   }
@@ -5579,9 +5903,9 @@ class P322Mechanics {
     if (started) {
       this.simAutoShotIndex = 0;
       this.simAutoAccum = 0.06;
-      this.log('SIM-AUTO CYCLIC RUN STARTED — WATCH PROGRESSIVE MUZZLE CLIMB & GROUP OPENING. SIMULATION ONLY.', 'warn');
+      this.log('SIM-AUTO CYCLIC RUN STARTED — WATCH BAFFLE PRESSURE ACCUMULATION, MUZZLE CLIMB & GROUP OPENING. SIMULATION ONLY.', 'warn');
     } else if (!on) {
-      this.log('SIM-AUTO CYCLIC RUN STOPPED AFTER ' + this.simAutoShotIndex + ' SIMULATED ROUNDS. NO REAL HARDWARE EXISTS FOR THIS PISTOL.', 'info');
+      this.log('SIM-AUTO CYCLIC RUN STOPPED AFTER ' + this.simAutoShotIndex + ' SIMULATED ROUNDS — RESIDUAL CANISTER GAS NOW BLEEDING DOWN.', 'info');
     }
     this.notify();
     return this.simAutoHolding;
@@ -5612,6 +5936,7 @@ class P322Mechanics {
       live: isLive,
       age: 0
     });
+    if (this.casings.length > 36) this.casings.splice(0, this.casings.length - 36);
   }
 
   step(dt) {
@@ -5655,7 +5980,7 @@ class P322Mechanics {
     // Trigger return
     if (this.triggerT > 0) this.triggerT = Math.max(0, this.triggerT - cdt * 6.5);
 
-    // Recoil pitch spring-damper recovery
+    // Recoil pitch & linear rearward kick spring-damper recovery
     const kSpring = 185.0, kDamp = 16.0;
     const acc = -kSpring * this.recoilPitch - kDamp * this.recoilPitchVel;
     this.recoilPitchVel += acc * cdt;
@@ -5663,10 +5988,91 @@ class P322Mechanics {
     if (Math.abs(this.recoilPitch) < 0.0005 && Math.abs(this.recoilPitchVel) < 0.005) {
       this.recoilPitch = 0; this.recoilPitchVel = 0;
     }
+    const rAcc = -210.0 * this.recoilRear - 19.0 * this.recoilRearVel;
+    this.recoilRearVel += rAcc * cdt;
+    this.recoilRear += this.recoilRearVel * cdt;
+    if (Math.abs(this.recoilRear) < 0.0005 && Math.abs(this.recoilRearVel) < 0.005) {
+      this.recoilRear = 0; this.recoilRearVel = 0;
+    }
 
-    // Flash & gas decay
+    // ---- V5 SUB-STEPPED MULTI-CHAMBER GAS, SWIRL & PRESSURE BLEED SOLVER ----
+    const g = this.gas;
+    const prevCanPsi = g.canPsi;
+    const subDt = cdt * 0.25;
+    for (let s = 0; s < 4; s++) {
+      g.chamberPsi *= Math.exp(-subDt * 24.0);
+      g.chamberPeak *= Math.exp(-subDt * 1.38);
+      g.barrelPsi *= Math.exp(-subDt * 8.8);
+      g.barrelHeat *= Math.exp(-subDt * 1.65);
+      g.upperPsi *= Math.exp(-subDt * (this.fieldStripped ? 8.0 : 1.08));
+      g.magPsi *= Math.exp(-subDt * (this.isMagSeated() ? 0.78 : 4.2));
+
+      if (this.muzzleMode === 'commercial') {
+        // Coupled 7-baffle axial orifice cascade + slow front-endcap choked bleed (tau ~ 2.1 s)
+        for (let i = 0; i < 6; i++) {
+          const dp = g.bafflePsi[i] - g.bafflePsi[i + 1];
+          const flux = dp * Math.min(0.40, subDt * 9.0);
+          g.bafflePsi[i] -= flux;
+          g.bafflePsi[i + 1] += flux * 0.97;
+        }
+        g.bafflePsi[6] *= Math.exp(-subDt * 1.18);
+        for (let i = 0; i < 7; i++) g.bafflePsi[i] *= Math.exp(-subDt * 0.24);
+      } else if (this.muzzleMode === 'oilcan') {
+        // Wide radial pleated-media soak + slow seep (tau ~ 2.9 s fresh, faster as media degrades)
+        for (let i = 0; i < 6; i++) {
+          const dp = g.bafflePsi[i] - g.bafflePsi[i + 1];
+          const flux = dp * Math.min(0.36, subDt * 5.6);
+          g.bafflePsi[i] -= flux;
+          g.bafflePsi[i + 1] += flux * 0.98;
+        }
+        const mediaBleed = 0.28 + (1.0 - this.oilCanIntegrity) * 0.92;
+        for (let i = 0; i < 7; i++) g.bafflePsi[i] *= Math.exp(-subDt * mediaBleed);
+      } else if (this.muzzleMode === 'comp') {
+        for (let i = 0; i < 7; i++) g.bafflePsi[i] *= Math.exp(-subDt * 7.2);
+      } else {
+        for (let i = 0; i < 7; i++) g.bafflePsi[i] *= Math.exp(-subDt * 13.5);
+      }
+    }
+    for (let i = 0; i < 7; i++) {
+      if (g.bafflePsi[i] < 0.02) g.bafflePsi[i] = 0;
+    }
+    if (g.chamberPsi < 0.2) g.chamberPsi = 0;
+    if (g.chamberPeak < 0.5) g.chamberPeak = 0;
+    if (g.barrelPsi < 0.1) g.barrelPsi = 0;
+    if (g.barrelHeat < 0.005) g.barrelHeat = 0;
+    if (g.upperPsi < 0.03) g.upperPsi = 0;
+    if (g.magPsi < 0.02) g.magPsi = 0;
+    this._refreshCanPsi(prevCanPsi, cdt);
+
+    // Continuous angular vortex swirl inside pressurized chambers
+    const swirlOmega = this.muzzleMode === 'oilcan'
+      ? (1.6 + Math.min(22.0, g.canPsi * 0.036))
+      : (2.6 + Math.min(34.0, g.canPsi * 0.062 + g.barrelHeat * 6.0));
+    g.swirlPhase = (g.swirlPhase + cdt * swirlOmega) % (Math.PI * 200);
+
+    // Flash & port flame decay
     if (this.muzzleFlash > 0) this.muzzleFlash = Math.max(0, this.muzzleFlash - cdt * 11.0);
-    if (this.baffleGas > 0) this.baffleGas = Math.max(0, this.baffleGas - cdt * 2.8);
+    if (g.compFlame > 0) g.compFlame = Math.max(0, g.compFlame - cdt * 11.5);
+    if (g.portJet > 0) g.portJet = Math.max(0, g.portJet - cdt * 7.5);
+
+    // Slow front-endcap gas bleed wisps while residual suppressor pressure discharges!
+    if ((this.muzzleMode === 'commercial' || this.muzzleMode === 'oilcan') && g.canPsi > 14 && this.smoke.length < 56) {
+      g.bleedWispAccum += cdt * Math.min(9.0, 1.2 + g.canPsi * 0.025);
+      while (g.bleedWispAccum >= 1.0) {
+        g.bleedWispAccum -= 1.0;
+        const tipX = this.muzzleMode === 'commercial' ? 23.45 : 21.55;
+        this.smoke.push({
+          x: tipX + Math.random() * 0.25,
+          y: 2.46 + (Math.random() - 0.5) * 0.18,
+          z: (Math.random() - 0.5) * 0.18,
+          vx: 0.9 + Math.min(3.2, g.canPsi * 0.008),
+          vy: 0.42 + Math.random() * 0.45,
+          vz: (Math.random() - 0.5) * 0.35,
+          scale: 0.26 + Math.random() * 0.20,
+          alpha: Math.min(0.38, 0.10 + g.canPsi * 0.0012)
+        });
+      }
+    }
 
     // Bore brush sweep animation
     if (this.brushAnimT >= 0) {
@@ -6025,7 +6431,180 @@ class P322Renderer3D {
     return null;
   }
 
-  /* 2D iron-sight reticle painted over the 3D downrange target in SIGHT PICTURE */
+  /* 2D sight-picture reticle (including SIG ROMEOZero Red Dot) + X-Ray 3D leader-line PSI pins */
+  _projectPointToOverlay(worldPt, w, h) {
+    if (!this.vpMat) return null;
+    const m = this.vpMat;
+    const x = worldPt[0], y = worldPt[1], z = worldPt[2];
+    const clipX = m[0] * x + m[4] * y + m[8] * z + m[12];
+    const clipY = m[1] * x + m[5] * y + m[9] * z + m[13];
+    const clipW = m[3] * x + m[7] * y + m[11] * z + m[15];
+    if (clipW <= 0.05) return null;
+    const ndcX = clipX / clipW;
+    const ndcY = clipY / clipW;
+    return [(ndcX * 0.5 + 0.5) * w, (0.5 - ndcY * 0.5) * h];
+  }
+
+  _drawXrayPressureOverlay(c, w, h) {
+    const m = this.mech;
+    const P = this.partMatrices;
+    if (!m || !m.xray || !P || !P.root) return;
+    if (this.viewMode !== 'bench' && this.viewMode !== 'range') return;
+
+    const g = m.gas;
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    const compact = w < 560 * dpr;
+
+    const muzTitle = m.muzzleMode === 'commercial' ? '7-BAFFLE CAN'
+      : (m.muzzleMode === 'oilcan' ? '3" OIL CANISTER'
+        : (m.muzzleMode === 'comp' ? 'PORTED COMP' : 'MUZZLE CROWN'));
+    const muzAnchor = m.muzzleMode === 'commercial' ? [16.8, 2.46, 0]
+      : (m.muzzleMode === 'oilcan' ? [15.8, 2.46, 0]
+        : (m.muzzleMode === 'comp' ? [11.15, 2.65, 0] : [9.25, 2.46, 0]));
+    const canMax = m.muzzleMode === 'none' ? 240 : (m.muzzleMode === 'comp' ? 520 : 650);
+    const bleedTag = g.canPsi > 1.5
+      ? (g.canBleedRate < -1.0 ? ('BLEED ' + Math.round(g.canBleedRate) + ' PSI/s') : 'SWIRLING / LIVE')
+      : 'AMBIENT 0 PSI';
+
+    const chDisp = Math.max(g.chamberPsi, g.chamberPeak);
+    const chTag = g.chamberPsi > 50 ? 'LIVE COMBUSTION' : (g.chamberPeak > 5 ? 'PEAK HOLD DECAY' : (m.chambered ? 'CHAMBERED READY' : 'CHAMBER CLEAR'));
+
+    const pins = [
+      {
+        label: 'UPPER / BREECH',
+        world: M3D.transformPoint(P.slide || P.root, [-2.20, 2.88, 0]),
+        psi: g.upperPsi,
+        maxPsi: 120,
+        valTxt: g.upperPsi.toFixed(1) + ' PSI',
+        subTxt: g.upperPsi > 0.8 ? 'BLOWBACK CAVITY' : 'PORT VENTED',
+        slot: 'topMidLeft'
+      },
+      {
+        label: 'CHAMBER (.22 LR)',
+        world: M3D.transformPoint(P.root, [-0.25, 2.46, 0]),
+        psi: chDisp,
+        maxPsi: 24000,
+        valTxt: Math.round(chDisp).toLocaleString() + ' PSI',
+        subTxt: chTag,
+        slot: 'topCenter'
+      },
+      {
+        label: 'BARREL BORE (4")',
+        world: M3D.transformPoint(P.root, [5.35, 2.46, 0]),
+        psi: g.barrelPsi,
+        maxPsi: 7500,
+        valTxt: (g.barrelPsi >= 10 ? Math.round(g.barrelPsi).toLocaleString() : g.barrelPsi.toFixed(1)) + ' PSI',
+        subTxt: 'LEAD ' + Math.round(m.boreFouling) + '% | ' + (g.barrelHeat > 0.05 ? 'HOT GAS' : 'COOL'),
+        slot: 'topRight'
+      },
+      {
+        label: 'MAG WELL / STACK',
+        world: M3D.transformPoint(P.magazine || P.root, [-5.95, -2.55, 0]),
+        psi: g.magPsi,
+        maxPsi: 42,
+        valTxt: g.magPsi.toFixed(1) + ' PSI',
+        subTxt: m.magRounds + '/' + m.maxMag + (m.chambered && !m.chamberedSpent ? ' (+1 CHBR)' : ' RDS'),
+        slot: 'botLeft'
+      },
+      {
+        label: muzTitle,
+        world: M3D.transformPoint(P.root, muzAnchor),
+        psi: g.canPsi,
+        maxPsi: canMax,
+        valTxt: g.canPsi.toFixed(1) + ' PSI',
+        subTxt: bleedTag,
+        slot: 'botRight'
+      }
+    ];
+
+    const bw = compact ? Math.min(w * 0.30, 128 * dpr) : Math.min(w * 0.22, 156 * dpr);
+    const bh = compact ? 34 * dpr : 40 * dpr;
+    const topY = compact ? 54 * dpr : 58 * dpr;
+    const botY = h - bh - (compact ? 30 * dpr : 34 * dpr);
+
+    const slotBoxes = {
+      topMidLeft: { x: Math.max(8 * dpr, w * 0.04),  y: topY },
+      topCenter:  { x: Math.max(8 * dpr, w * 0.37),  y: topY },
+      topRight:   { x: Math.min(w - bw - 8 * dpr, w * 0.70), y: topY },
+      botLeft:    { x: Math.max(8 * dpr, w * 0.08),  y: botY },
+      botRight:   { x: Math.min(w - bw - 8 * dpr, w * 0.62), y: botY }
+    };
+
+    c.save();
+    for (const p of pins) {
+      const pt = this._projectPointToOverlay(p.world, w, h);
+      if (!pt) continue;
+      const [px, py] = pt;
+      const box = slotBoxes[p.slot];
+      const frac = Math.max(0, Math.min(1, p.psi / p.maxPsi));
+
+      const col = frac > 0.55 ? '#ff5d42' : (frac > 0.06 ? '#f5b638' : '#58d5c9');
+      const glowAlpha = 0.28 + frac * 0.55;
+
+      // Anchor target point from badge edge closest to pin
+      const isTop = p.slot.indexOf('top') === 0;
+      const ax = Math.max(box.x + 12 * dpr, Math.min(box.x + bw - 12 * dpr, px));
+      const ay = isTop ? (box.y + bh) : box.y;
+      const elbowY = isTop ? (ay + (py - ay) * 0.34) : (ay - (ay - py) * 0.34);
+
+      // Leader line
+      c.strokeStyle = col;
+      c.globalAlpha = 0.85;
+      c.lineWidth = 1.35 * dpr;
+      c.beginPath();
+      c.moveTo(px, py);
+      c.lineTo(ax, elbowY);
+      c.lineTo(ax, ay);
+      c.stroke();
+
+      // Sensor pin ring + center dot on 3D chamber
+      c.globalAlpha = 1.0;
+      c.fillStyle = 'rgba(10,14,13,0.85)';
+      c.beginPath(); c.arc(px, py, 4.4 * dpr, 0, Math.PI * 2); c.fill();
+      c.strokeStyle = col;
+      c.lineWidth = 1.5 * dpr;
+      c.beginPath(); c.arc(px, py, (4.4 + frac * 3.2) * dpr, 0, Math.PI * 2); c.stroke();
+      c.fillStyle = col;
+      c.beginPath(); c.arc(px, py, 2.3 * dpr, 0, Math.PI * 2); c.fill();
+
+      // Callout badge
+      c.fillStyle = 'rgba(11, 16, 15, 0.84)';
+      c.fillRect(box.x, box.y, bw, bh);
+      c.strokeStyle = col;
+      c.globalAlpha = glowAlpha + 0.22;
+      c.lineWidth = 1.15 * dpr;
+      c.strokeRect(box.x, box.y, bw, bh);
+      c.globalAlpha = 1.0;
+
+      // Pressure bar along bottom of callout badge
+      const barH = 3.0 * dpr;
+      c.fillStyle = 'rgba(255,255,255,0.10)';
+      c.fillRect(box.x + 3 * dpr, box.y + bh - barH - 2 * dpr, bw - 6 * dpr, barH);
+      if (frac > 0.002) {
+        c.fillStyle = col;
+        c.fillRect(box.x + 3 * dpr, box.y + bh - barH - 2 * dpr, (bw - 6 * dpr) * frac, barH);
+      }
+
+      const f1 = Math.max(8, Math.round((compact ? 7.8 : 8.6) * dpr));
+      const f2 = Math.max(9, Math.round((compact ? 9.6 : 11.0) * dpr));
+      c.textAlign = 'left';
+      c.fillStyle = 'rgba(218, 224, 214, 0.85)';
+      c.font = 'bold ' + f1 + 'px monospace';
+      c.fillText(p.label, box.x + 5 * dpr, box.y + 10.5 * dpr);
+
+      c.fillStyle = col;
+      c.font = 'bold ' + f2 + 'px monospace';
+      c.fillText(p.valTxt, box.x + 5 * dpr, box.y + 22.5 * dpr);
+
+      if (!compact) {
+        c.fillStyle = 'rgba(195, 204, 196, 0.72)';
+        c.font = f1 + 'px monospace';
+        c.fillText(p.subTxt, box.x + 5 * dpr, box.y + 32.5 * dpr);
+      }
+    }
+    c.restore();
+  }
+
   drawSightOverlay() {
     const cv = this.overlayCanvas;
     if (!cv) return;
@@ -6037,7 +6616,13 @@ class P322Renderer3D {
     const c = cv.getContext('2d');
     c.setTransform(1, 0, 0, 1, 0, 0);
     c.clearRect(0, 0, w, h);
-    if (this.viewMode !== 'sights' || !this.range || !this.range.deployed) return;
+
+    // In Bench or Range view with X-Ray active, paint live 3D leader-line pressure callouts!
+    if (this.viewMode !== 'sights') {
+      if (this.mech && this.mech.xray) this._drawXrayPressureOverlay(c, w, h);
+      return;
+    }
+    if (!this.range || !this.range.deployed) return;
 
     const cx = w / 2, cy = h / 2, s = Math.min(w, h);
     const vg = c.createRadialGradient(cx, cy, s * 0.20, cx, cy, s * 0.82);
@@ -6047,12 +6632,8 @@ class P322Renderer3D {
 
     const blocked = this.range.isObstructed();
     const set = sightSetById(this.mech.sightSet);
-    const glow = this.mech.sightSet === 'target_orange' ? '#ff7519'
-      : (this.mech.sightSet === 'tritium' ? '#7dff9a' : '#35f57a');
-    const rearGlow = this.mech.sightSet === 'tritium' ? '#ffc94a'
-      : (this.mech.sightSet === 'target_orange' ? null : '#35f57a');
 
-    // Ballistic holdover cue: where the front sight must sit to center the group
+    // Ballistic holdover cue: where the aiming dot/post must sit to center the group
     const sol = this.range.solution();
     const fov = 0.042;
     const markY = cy + ((this.range.aimPitch - sol.holdRad) / fov) * h;
@@ -6068,29 +6649,98 @@ class P322Renderer3D {
       c.fillText('BALLISTIC HOLD', cx + s * 0.052, markY + s * 0.007);
     }
 
-    // Rear notch blades
-    c.fillStyle = '#111310';
-    const bladeW = s * 0.075, bladeH = s * 0.22, gap = s * 0.105;
-    c.fillRect(cx - gap - bladeW, cy - bladeH * 0.5, bladeW, bladeH);
-    c.fillRect(cx + gap, cy - bladeH * 0.5, bladeW, bladeH);
-    c.fillStyle = 'rgba(17,19,16,0.94)';
-    c.fillRect(cx - gap - bladeW, cy + bladeH * 0.38, bladeW * 2 + gap * 2, s * 0.030);
-    // Rear lamps (blackout target set has none)
-    if (rearGlow) {
-      for (const xx of [cx - gap - bladeW * 0.5, cx + gap + bladeW * 0.5]) {
-        c.fillStyle = 'rgba(10,12,10,0.95)';
-        c.beginPath(); c.arc(xx, cy, s * 0.016, 0, Math.PI * 2); c.fill();
-        c.fillStyle = rearGlow;
-        c.beginPath(); c.arc(xx, cy, s * 0.010, 0, Math.PI * 2); c.fill();
+    if (set.isOptic) {
+      // ---- SIG ROMEOZERO 3 MOA MICRO REFLEX RED-DOT WINDOW ----
+      const winW = s * 0.48, winH = s * 0.36;
+      const wall = s * 0.042;
+      const topArchY = cy - winH * 0.52;
+      const botDeckY = cy + winH * 0.48;
+
+      // Dichroic anti-reflective reflex lens tint inside window
+      c.save();
+      c.beginPath();
+      c.moveTo(cx - winW * 0.5, botDeckY);
+      c.lineTo(cx - winW * 0.5, topArchY + winH * 0.24);
+      c.quadraticCurveTo(cx, topArchY - winH * 0.14, cx + winW * 0.5, topArchY + winH * 0.24);
+      c.lineTo(cx + winW * 0.5, botDeckY);
+      c.closePath();
+      const lg = c.createLinearGradient(cx - winW * 0.5, topArchY, cx + winW * 0.5, botDeckY);
+      lg.addColorStop(0, 'rgba(38, 165, 185, 0.13)');
+      lg.addColorStop(0.5, 'rgba(22, 95, 110, 0.06)');
+      lg.addColorStop(1, 'rgba(255, 90, 60, 0.07)');
+      c.fillStyle = lg;
+      c.fill();
+      c.restore();
+
+      // Matte-black WeaponsGrade polymer protective hood arch around window
+      c.strokeStyle = '#141719';
+      c.lineWidth = wall;
+      c.lineJoin = 'round';
+      c.beginPath();
+      c.moveTo(cx - winW * 0.5 - wall * 0.35, botDeckY + wall * 0.3);
+      c.lineTo(cx - winW * 0.5 - wall * 0.35, topArchY + winH * 0.24);
+      c.quadraticCurveTo(cx, topArchY - winH * 0.16, cx + winW * 0.5 + wall * 0.35, topArchY + winH * 0.24);
+      c.lineTo(cx + winW * 0.5 + wall * 0.35, botDeckY + wall * 0.3);
+      c.stroke();
+
+      // Subtle inner chamfer highlight on hood arch
+      c.strokeStyle = 'rgba(180, 195, 205, 0.22)';
+      c.lineWidth = 2;
+      c.beginPath();
+      c.moveTo(cx - winW * 0.5, botDeckY);
+      c.lineTo(cx - winW * 0.5, topArchY + winH * 0.24);
+      c.quadraticCurveTo(cx, topArchY - winH * 0.13, cx + winW * 0.5, topArchY + winH * 0.24);
+      c.lineTo(cx + winW * 0.5, botDeckY);
+      c.stroke();
+
+      // Lower optic deck + integral backup rear U-notch + lower-1/5 co-witness front tip
+      c.fillStyle = '#121517';
+      c.fillRect(cx - winW * 0.58, botDeckY, winW * 1.16, s * 0.085);
+      c.fillStyle = '#1b2024';
+      c.fillRect(cx - s * 0.011, botDeckY - s * 0.032, s * 0.022, s * 0.045);
+
+      // Collimated 3 MOA glowing crimson LED dot at optical center (cx, cy)
+      const halo = c.createRadialGradient(cx, cy, 0, cx, cy, s * 0.038);
+      halo.addColorStop(0, 'rgba(255, 60, 42, 0.85)');
+      halo.addColorStop(0.32, 'rgba(255, 32, 18, 0.34)');
+      halo.addColorStop(1, 'rgba(255, 20, 10, 0)');
+      c.fillStyle = halo;
+      c.beginPath(); c.arc(cx, cy, s * 0.038, 0, Math.PI * 2); c.fill();
+
+      c.fillStyle = '#ff2418';
+      c.beginPath(); c.arc(cx, cy, s * 0.0085, 0, Math.PI * 2); c.fill();
+      c.fillStyle = '#fff3ef';
+      c.beginPath(); c.arc(cx, cy, s * 0.0038, 0, Math.PI * 2); c.fill();
+    } else {
+      const glow = this.mech.sightSet === 'target_orange' ? '#ff7519'
+        : (this.mech.sightSet === 'tritium' ? '#7dff9a' : '#35f57a');
+      const rearGlow = this.mech.sightSet === 'tritium' ? '#ffc94a'
+        : (this.mech.sightSet === 'target_orange' ? null : '#35f57a');
+
+      // Rear notch blades
+      c.fillStyle = '#111310';
+      const bladeW = s * 0.075, bladeH = s * 0.22, gap = s * 0.105;
+      c.fillRect(cx - gap - bladeW, cy - bladeH * 0.5, bladeW, bladeH);
+      c.fillRect(cx + gap, cy - bladeH * 0.5, bladeW, bladeH);
+      c.fillStyle = 'rgba(17,19,16,0.94)';
+      c.fillRect(cx - gap - bladeW, cy + bladeH * 0.38, bladeW * 2 + gap * 2, s * 0.030);
+      // Rear lamps (blackout target set has none)
+      if (rearGlow) {
+        for (const xx of [cx - gap - bladeW * 0.5, cx + gap + bladeW * 0.5]) {
+          c.fillStyle = 'rgba(10,12,10,0.95)';
+          c.beginPath(); c.arc(xx, cy, s * 0.016, 0, Math.PI * 2); c.fill();
+          c.fillStyle = rearGlow;
+          c.beginPath(); c.arc(xx, cy, s * 0.010, 0, Math.PI * 2); c.fill();
+        }
       }
+      // Front blade + front lamp/post
+      c.fillStyle = '#131511';
+      c.fillRect(cx - s * 0.013, cy + s * 0.006, s * 0.026, s * 0.30);
+      c.fillStyle = 'rgba(10,12,10,0.95)';
+      c.beginPath(); c.arc(cx, cy, s * 0.020, 0, Math.PI * 2); c.fill();
+      c.fillStyle = glow;
+      c.beginPath(); c.arc(cx, cy, s * 0.012, 0, Math.PI * 2); c.fill();
     }
-    // Front blade + front lamp/post
-    c.fillStyle = '#131511';
-    c.fillRect(cx - s * 0.013, cy + s * 0.006, s * 0.026, s * 0.30);
-    c.fillStyle = 'rgba(10,12,10,0.95)';
-    c.beginPath(); c.arc(cx, cy, s * 0.020, 0, Math.PI * 2); c.fill();
-    c.fillStyle = glow;
-    c.beginPath(); c.arc(cx, cy, s * 0.012, 0, Math.PI * 2); c.fill();
 
     // Suppressor / canister body silhouette blocking the sight picture
     if (blocked) {
@@ -6109,7 +6759,7 @@ class P322Renderer3D {
       c.textAlign = 'center';
       c.fillText('SIGHT PICTURE OBSTRUCTED', cx, cy + s * 0.14);
       c.font = 'bold ' + Math.round(s * 0.018) + 'px monospace';
-      c.fillText('FIT SUPPRESSOR-HEIGHT SIGHTS', cx, cy + s * 0.172);
+      c.fillText('FIT SUPPRESSOR-HEIGHT SIGHTS OR RED DOT', cx, cy + s * 0.172);
     }
 
     // Small corner legend
@@ -6126,12 +6776,12 @@ class P322Renderer3D {
     if (this.range) this.range.viewMode = 'bench';
     if (this.overlayCanvas) this.overlayCanvas.classList.remove('is-active');
     const hasExt = this.mech.muzzleMode !== 'none';
+    const sightY = 4.04 + sightSetById(this.mech.sightSet).rise * 0.42;
     const presets = {
       right34: { yaw: 0.42, pitch: 0.22, dist: hasExt ? 39.5 : 27.5, target: [hasExt ? 5.8 : 0.6, -0.5, 0.0] },
       left:    { yaw: -2.70, pitch: 0.16, dist: hasExt ? 39.5 : 27.5, target: [hasExt ? 5.8 : 0.6, -0.5, 0.0] },
       top:     { yaw: 0.15, pitch: 1.28, dist: hasExt ? 38.0 : 27.0, target: [hasExt ? 5.4 : 0.6, 0.5, 0.0] },
-      // Authentic shooter's eye-line right behind the 3-dot green fiber-optic sights!
-      sights:  { yaw: -1.5708, pitch: 0.016, dist: 16.5, target: [2.0, 4.04, 0.0] },
+      sights:  { yaw: -1.5708, pitch: 0.016, dist: 16.5, target: [2.0, sightY, 0.0] },
       rear:    { yaw: -1.05, pitch: 0.34, dist: 24.5, target: [-1.5, 0.4, 0.0] },
       muzzle:  { yaw: 0.52, pitch: 0.18, dist: 38.0, target: [6.4, 0.4, 0.0] }
     };
@@ -6156,16 +6806,21 @@ class P322Renderer3D {
   _computeTransforms() {
     const m = this.mech;
 
-    // Root pistol recoil pitch pivot near wrist (-5.0, -2.5, 0)
+    // Root pistol recoil pitch pivot near wrist (-5.0, -2.5, 0) + linear rearward kick
     const rootMat = M3D.mul(
-      M3D.translate(-5.0, -2.5, 0),
+      M3D.translate(-5.0 - (m.recoilRear || 0) * 0.28, -2.5, 0),
       M3D.mul(M3D.rotZ(m.recoilPitch), M3D.translate(5.0, 2.5, 0))
     );
 
-    // Slide kinematic offset (blowback + field strip separation)
-    const sx = -m.slideT * m.slideMaxTravel + m.stripAnimT * 1.4;
-    const sy = m.stripAnimT * 4.7;
+    // Slide kinematic offset (blowback + authentic lift-up/slide-forward field strip separation)
+    const sx = -m.slideT * m.slideMaxTravel + m.stripAnimT * 2.35;
+    const sy = m.stripAnimT * 5.05;
     const slideMat = M3D.mul(rootMat, M3D.translate(sx, sy, 0));
+
+    // Unthreaded muzzle thread-protector cap rests on bench beside pistol when field-stripped!
+    const muzzleCapMat = m.stripAnimT > 0.02
+      ? M3D.mul(rootMat, M3D.translate(m.stripAnimT * 2.2, -m.stripAnimT * 10.8, m.stripAnimT * 2.6))
+      : rootMat;
 
     // Recoil spring concentric around fixed barrel (x=2.2 to x=8.55 - slideTravel)
     const springLen = Math.max(1.6, (8.55 - m.slideT * m.slideMaxTravel) - 2.15);
@@ -6213,15 +6868,32 @@ class P322Renderer3D {
     const magDist = m.magPullT * 7.8;
     const magMat = M3D.mul(rootMat, M3D.translate(-0.34 * magDist, -0.94 * magDist, 0));
 
-    // Side thumb-assist follower button slides down magazine spine with round count
-    const frac = m.magRounds / m.maxMag;
-    const tabX = -4.65 - frac * 2.15;
-    const tabY = -0.35 - frac * 5.65;
-    const magTabMat = M3D.mul(magMat, M3D.translate(tabX, tabY, 0));
+    // Exact follower + thumb-assist tab + compressing zig-zag spring for 0..20 and 0..25 rounds!
+    const nRds = m.magRounds;
+    const follX = -5.24 - nRds * 0.0965;
+    const follY =  0.22 - nRds * 0.312;
+    const magFollowerMat = M3D.mul(magMat, M3D.mul(M3D.translate(follX, follY, 0), M3D.rotZ(0.14)));
+    const magTabMat = M3D.mul(magMat, M3D.translate(follX + 0.35, follY - 0.10, 0));
+
+    // Floorplate anchor (flush 20-rd at -6.82 vs extended 25-rd at -9.02) up to follower underside
+    const bx = m.mag25 ? -7.68 : -7.02;
+    const by = m.mag25 ? -9.02 : -6.82;
+    const tx = follX + 0.54;
+    const ty = follY - 0.24;
+    const sdx = tx - bx;
+    const sdy = Math.max(0.35, ty - by);
+    const springLocal = new Float32Array([
+      1.109, 0.156, 0, 0,
+      sdx,   sdy,   0, 0,
+      0,     0,     1, 0,
+      bx,    by,    0, 1
+    ]);
+    const magSpringMat = M3D.mul(magMat, springLocal);
 
     this.partMatrices = {
       root: rootMat,
       slide: slideMat,
+      muzzleCap: muzzleCapMat,
       spring: springMat,
       hammer: hammerMat,
       trigger: triggerMat,
@@ -6229,6 +6901,8 @@ class P322Renderer3D {
       slideCatch: slideCatchMat,
       takedown: takedownMat,
       magazine: magMat,
+      magFollower: magFollowerMat,
+      magSpring: magSpringMat,
       magTab: magTabMat
     };
 
@@ -6239,9 +6913,9 @@ class P322Renderer3D {
       { id: 'takedown',   mat: takedownMat,   min: [-0.42, -0.38, -1.72], max: [1.40, 0.42, -1.10], label: 'TAKEDOWN LEVER — CLICK TO FIELD STRIP / REASSEMBLE' },
       { id: 'magRelease', mat: rootMat,       min: [-3.35, -1.62, -1.68], max: [-1.95, -0.62, -1.05], label: 'MAGAZINE RELEASE — CLICK TO EJECT / INSERT MAG' },
       { id: 'trigger',    mat: triggerMat,    min: [-0.55, -1.95, -0.65], max: [0.65, 0.15, 0.65],  label: 'SAO TRIGGER — CLICK TO PULL / FIRE' },
-      { id: 'magazine',   mat: magMat,        min: [-9.85, m.mag25 ? -8.65 : -7.85, -1.32], max: [-4.40, -6.55, 1.32], label: (m.mag25 ? '25-RD' : '20-RD') + ' MAGAZINE — DRAG DOWN/UP OR CLICK TO REMOVE/SEAT' },
+      { id: 'magazine',   mat: magMat,        min: [-10.15, m.mag25 ? -9.25 : -7.85, -1.32], max: [-4.40, -6.55, 1.32], label: (m.mag25 ? '25-RD' : '20-RD') + ' MAGAZINE — DRAG DOWN/UP OR CLICK TO REMOVE/SEAT' },
       { id: 'muzzle',     mat: rootMat,       min: [9.00,  0.40, -3.75],  max: [m.muzzleMode === 'none' ? 10.6 : 23.6, 5.80, 3.75], label: 'MUZZLE / SUPPRESSOR — CLICK TO CYCLE MUZZLE DEVICE' },
-      { id: 'slide',      mat: slideMat,      min: [-8.35, 1.12, -1.42],  max: [9.15, 4.40, 1.42],  label: 'ALUMINUM SLIDE — DRAG ALONG AXIS TO RACK / PRESS-CHECK' }
+      { id: 'slide',      mat: slideMat,      min: [-8.35, 1.12, -1.42],  max: [9.15, m.sightSet === 'red_dot' || m.sightSet === 'suppressor' ? 6.20 : 4.45, 1.42],  label: 'ALUMINUM SLIDE — DRAG ALONG AXIS TO RACK / PRESS-CHECK' }
     ];
     // Expand magazine hitbox when partially pulled out so whole mag body is grabbable
     if (m.magPullT > 0.15) {
@@ -6645,9 +7319,10 @@ class P322Renderer3D {
 
     const drawPistol = (this.viewMode === 'bench' || this.viewMode === 'range');
     if (drawPistol) {
-    // 2. OPAQUE PASS — Always solid internals & controls
+    // 2. OPAQUE PASS — Always solid internals, springs, follower, cartridges & controls
     this._draw('chassis', P.root, { metal: 0.78 });
     this._draw('barrel', P.root, { metal: 0.68 });
+    this._draw('guideRod', P.root, { metal: 0.84 });
     this._draw('recoilSpring', P.spring, { metal: 0.85 });
     this._draw('hammer', P.hammer, { metal: 0.80 });
     this._draw(m.triggerRed ? 'triggerRed'
@@ -6657,13 +7332,23 @@ class P322Renderer3D {
     this._draw('slideCatch', P.slideCatch, { metal: 0.42, highlight: hp === 'slideCatch' });
     this._draw('takedown', P.takedown, { metal: 0.55, highlight: hp === 'takedown' });
     this._draw('magRelease', P.root, { metal: 0.25, highlight: hp === 'magRelease' });
+
+    // Magazine anti-tilt follower, compressing zig-zag spring & thumb-assist button!
+    this._draw('magFollower', P.magFollower, { metal: 0.22, highlight: hp === 'magazine' });
+    this._draw('magSpring', P.magSpring, { metal: 0.84 });
     this._draw('magFollowerTabs', P.magTab, { metal: 0.30, highlight: hp === 'magazine' });
-    this._draw('sightShell_' + m.sightSet, P.slide, { metal: 0.62 });
-    this._draw('sightGlow_' + m.sightSet, P.slide, { emissive: 0.92, metal: 0.10 });
+
+    if (!xr || m.sightSet !== 'red_dot') {
+      this._draw('sightShell_' + m.sightSet, P.slide, { metal: 0.62 });
+    }
+    this._draw('sightGlow_' + m.sightSet, P.slide, { emissive: 0.96, metal: 0.10 });
+
+    if (m.railLight && xr) {
+      this._draw('railLightCore', P.root, { metal: 0.74 });
+    }
 
     // Chambered cartridge (visible during press-check, X-Ray, or open ejection port!)
     if (m.chambered) {
-      // Moves slightly rearward during press-check extraction before full eject
       const extractPull = m.slideT > 0.08 ? Math.min(1.5, (m.slideT - 0.08) * 2.1) : 0.0;
       const chMat = M3D.mul(P.root, M3D.translate(-0.78 - extractPull, 2.46, 0.0));
       this._draw('brassCase', chMat, { metal: 0.85 });
@@ -6677,26 +7362,25 @@ class P322Renderer3D {
       this._draw('chamberFlag', P.root, { metal: 0.12 });
     }
 
-    // Stacked .22 LR rounds inside 20-round magazine (staggered double stack!)
-    const showRounds = Math.min(m.magRounds, 14);
+    // Exact .22 LR cartridge stack for EVERY round count (0..20 flush, 0..25 extended!)
+    const showRounds = m.magRounds;
     for (let i = 0; i < showRounds; i++) {
-      const rx = -5.40 - i * 0.18;
-      const ry = 0.25 - i * 0.44;
-      const rz = (i % 2 === 0 ? -0.17 : 0.17);
+      const rx = -5.78 - i * 0.0965;
+      const ry =  0.34 - i * 0.312;
+      const rz = (i % 2 === 0 ? -0.16 : 0.16);
       const rMat = M3D.mul(P.magazine, M3D.mul(M3D.translate(rx, ry, rz), M3D.rotZ(0.14)));
       this._draw('brassCase', rMat, { metal: 0.82 });
       this._draw('bulletNose', rMat, { metal: 0.62, tint: [ammoCol[0] / 0.78, ammoCol[1] / 0.45, ammoCol[2] / 0.22] });
     }
 
-    // Internal muzzle structures (always visible solid inside X-Ray!)
+    // Internal muzzle structures (always visible solid inside X-Ray & Field Strip!)
     if (m.muzzleMode === 'none') {
-      this._draw('muzzleCap', P.root, { metal: 0.65, highlight: hp === 'muzzle' });
+      this._draw('muzzleCap', P.muzzleCap || P.root, { metal: 0.65, highlight: hp === 'muzzle' });
     } else if (m.muzzleMode === 'comp') {
       this._draw('compPorts', P.root, { metal: 0.10 });
     } else if (m.muzzleMode === 'commercial') {
       this._draw('supBaffles', P.root, { metal: 0.82 });
     } else if (m.muzzleMode === 'oilcan') {
-      // Pleated filter core visibly scorches/darkens as integrity drops!
       const scorch = 0.30 + 0.70 * m.oilCanIntegrity;
       this._draw('oilCanCore', P.root, { metal: 0.10, tint: [scorch, scorch * 0.92, scorch * 0.82] });
     }
@@ -6740,7 +7424,7 @@ class P322Renderer3D {
       }
     }
 
-    // 3. TRANSLUCENT PASS (X-Ray cutaway shells, bore lead deposits, muzzle flash, gas & smoke!)
+    // 3. TRANSLUCENT PASS (X-Ray cutaway shells, ROMEOZero lens, volumetric swirling gas, port flames & flash!)
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
     gl.depthMask(false);
@@ -6754,40 +7438,145 @@ class P322Renderer3D {
       });
     }
 
-    // Expanding suppressor baffle propellant gas cloud (visible in X-Ray!)
-    if (m.baffleGas > 0.02 && (m.muzzleMode === 'commercial' || m.muzzleMode === 'oilcan')) {
-      const gx = m.muzzleMode === 'commercial' ? 16.5 : 15.5;
-      const gLen = m.muzzleMode === 'commercial' ? 11.2 : 9.2;
-      const gRad = m.muzzleMode === 'commercial' ? 1.45 : 4.2;
-      const gm = M3D.mul(P.root, M3D.mul(M3D.translate(gx, 2.46, 0), M3D.scaleMat(gLen, gRad, gRad)));
-      this._draw('gasPuff', gm, { alpha: m.baffleGas * 0.45, tint: [1.0, 0.72, 0.30], emissive: 0.75 });
+    const g = m.gas;
+
+    // Hot combustion plasma & propellant gas traveling through chamber & 4" barrel bore!
+    if ((xr || m.fieldStripped || m.slideT > 0.12) && g.barrelHeat > 0.02) {
+      const bh = g.barrelHeat;
+      const bTint = [1.0, 0.55 + 0.38 * bh, 0.22 + 0.40 * bh];
+      this._draw('boreGasCore', P.root, {
+        alpha: Math.min(0.86, 0.14 + bh * 0.72),
+        tint: bTint,
+        emissive: 0.92
+      });
     }
 
-    // X-Ray Ghost Shells
+    // Upper breech / ejection-port blowback gas swirl & port flash!
+    if ((xr || m.slideT > 0.10) && (g.upperPsi > 0.5 || g.portJet > 0.04)) {
+      const uFrac = Math.min(1.0, g.upperPsi / 95);
+      const pAlpha = Math.max(uFrac * 0.42, g.portJet * 0.65);
+      const pm = M3D.mul(P.root, M3D.mul(
+        M3D.translate(-1.35, 2.62, 0.18),
+        M3D.mul(M3D.rotX(-g.swirlPhase * 1.15), M3D.scaleMat(2.5, 0.92 + uFrac * 0.35, 0.92 + uFrac * 0.35))
+      ));
+      this._draw('toroidVortex', pm, {
+        alpha: pAlpha,
+        tint: g.portJet > 0.2 ? [1.0, 0.76, 0.34] : [0.78, 0.86, 0.88],
+        emissive: 0.45 + g.portJet * 0.50
+      });
+    }
+
+    // Magazine well feed-lip backpressure swirl (visible in X-Ray!)
+    if (xr && g.magPsi > 0.25) {
+      const mFrac = Math.min(1.0, g.magPsi / 36);
+      const mm = M3D.mul(P.magazine, M3D.mul(
+        M3D.translate(-4.85, 0.15, 0),
+        M3D.mul(M3D.rotY(g.swirlPhase * 0.7), M3D.scaleMat(1.25, 0.72, 0.68))
+      ));
+      this._draw('toroidVortex', mm, {
+        alpha: 0.12 + mFrac * 0.36,
+        tint: [0.85, 0.78, 0.56],
+        emissive: 0.42
+      });
+    }
+
+    // Multi-chamber volumetric gas & swirling vortices inside suppressors / compensator!
+    if (m.muzzleMode === 'commercial' && g.canPsi > 0.35) {
+      // 7 individual K-baffle chambers: axial jet + counter-swirling helical vortex ribbons!
+      for (let i = 0; i < 7; i++) {
+        const bp = g.bafflePsi[i];
+        if (bp <= 0.35) continue;
+        const pNorm = Math.min(1.0, bp / 240);
+        const bx = 10.95 + i * 1.62;
+        const hot = Math.min(1.0, bp / 340);
+        const cTint = [0.68 + 0.32 * hot, 0.78 + 0.08 * hot, 0.88 - 0.56 * hot];
+        const gm = M3D.mul(P.root, M3D.mul(M3D.translate(bx, 2.46, 0), M3D.scaleMat(1.48, 1.35 * (0.75 + 0.25 * pNorm), 1.35 * (0.75 + 0.25 * pNorm))));
+        this._draw('gasPuff', gm, { alpha: 0.08 + pNorm * 0.34, tint: cTint, emissive: 0.55 + 0.40 * hot });
+
+        const spinDir = (i % 2 === 0) ? 1.0 : -0.88;
+        const vm = M3D.mul(P.root, M3D.mul(
+          M3D.translate(bx, 2.46, 0),
+          M3D.mul(M3D.rotX(g.swirlPhase * spinDir + i * 0.95), M3D.scaleMat(1.38, 1.15, 1.15))
+        ));
+        this._draw('vortexRibbon', vm, { alpha: 0.14 + pNorm * 0.52, tint: cTint, emissive: 0.72 });
+      }
+    } else if (m.muzzleMode === 'oilcan' && g.canPsi > 0.35) {
+      // Oversized 3" canister: wide counter-rotating radial toroidal vortices soaking pleated media!
+      for (let j = 0; j < 4; j++) {
+        const bp = (g.bafflePsi[j] + g.bafflePsi[Math.min(6, j + 2)]) * 0.5;
+        if (bp <= 0.35) continue;
+        const pNorm = Math.min(1.0, bp / 200);
+        const ox = 11.75 + j * 2.35;
+        const hot = Math.min(1.0, bp / 280);
+        const oTint = [0.72 + 0.28 * hot, 0.76 + 0.06 * hot, 0.80 - 0.46 * hot];
+        const gm = M3D.mul(P.root, M3D.mul(M3D.translate(ox, 2.46, 0), M3D.scaleMat(2.25, 4.35 * (0.78 + 0.22 * pNorm), 4.35 * (0.78 + 0.22 * pNorm))));
+        this._draw('gasPuff', gm, { alpha: 0.07 + pNorm * 0.28, tint: oTint, emissive: 0.48 + 0.38 * hot });
+
+        const tm = M3D.mul(P.root, M3D.mul(
+          M3D.translate(ox, 2.46, 0),
+          M3D.mul(M3D.rotX(g.swirlPhase * (j % 2 === 0 ? 0.68 : -0.68) + j * 1.2), M3D.scaleMat(2.1, 3.35, 3.35))
+        ));
+        this._draw('toroidVortex', tm, { alpha: 0.15 + pNorm * 0.46, tint: oTint, emissive: 0.65 });
+      }
+    } else if (xr && m.muzzleMode === 'comp' && g.canPsi > 1.0) {
+      const cNorm = Math.min(1.0, g.canPsi / 360);
+      const cm = M3D.mul(P.root, M3D.mul(
+        M3D.translate(11.15, 2.46, 0),
+        M3D.mul(M3D.rotX(g.swirlPhase * 1.4), M3D.scaleMat(2.4, 0.85, 0.85))
+      ));
+      this._draw('vortexRibbon', cm, { alpha: 0.20 + cNorm * 0.55, tint: [1.0, 0.76, 0.30], emissive: 0.88 });
+    }
+
+    // X-Ray Ghost Shells (complete audit: frame, magBody, magExt, slide, red-dot housing, railLight & muzzle!)
     if (xr) {
-      this._draw('frame', P.root, { alpha: 0.24, metal: 0.18 });
-      this._draw('magBody', P.magazine, { alpha: 0.26, metal: 0.18, highlight: hp === 'magazine' });
-      this._draw('slide', P.slide, { alpha: 0.28, metal: 0.55, highlight: hp === 'slide' });
+      if (m.sightSet === 'red_dot') {
+        this._draw('sightShell_red_dot', P.slide, { alpha: 0.38, metal: 0.45 });
+      }
+      this._draw('frame', P.root, { alpha: 0.22, metal: 0.18 });
+      if (m.railLight) {
+        this._draw('railLight', P.root, { alpha: 0.24, metal: 0.52 });
+        this._draw('railLens', P.root, { alpha: 0.55, emissive: 0.85, metal: 0.10 });
+      }
+      if (m.mag25) {
+        this._draw('magExt', P.magazine, { alpha: 0.24, metal: 0.18, highlight: hp === 'magazine' });
+      }
+      this._draw('magBody', P.magazine, { alpha: 0.24, metal: 0.18, highlight: hp === 'magazine' });
+      this._draw('slide', P.slide, { alpha: 0.25, metal: 0.55, highlight: hp === 'slide' });
       if (m.muzzleMode === 'comp') {
-        this._draw('compOuter', P.root, { alpha: 0.24, metal: 0.62 });
+        this._draw('compOuter', P.root, { alpha: 0.24, metal: 0.62, highlight: hp === 'muzzle' });
       } else if (m.muzzleMode === 'commercial') {
-        this._draw('supOuter', P.root, { alpha: 0.24, metal: 0.55, highlight: hp === 'muzzle' });
+        this._draw('supOuter', P.root, { alpha: 0.22, metal: 0.55, highlight: hp === 'muzzle' });
       } else if (m.muzzleMode === 'oilcan') {
-        this._draw('oilCanOuter', P.root, { alpha: 0.24, metal: 0.42, highlight: hp === 'muzzle' });
+        this._draw('oilCanOuter', P.root, { alpha: 0.22, metal: 0.42, highlight: hp === 'muzzle' });
       }
     }
 
-    // Muzzle Flash Cone
+    // Tinted ROMEOZero reflex glass window in 3D!
+    if (m.sightSet === 'red_dot') {
+      this._draw('sightLens_red_dot', P.slide, { alpha: 0.34, metal: 0.90, emissive: 0.22 });
+    }
+
+    // Compensator Upward & 45°-Angled Port Flame Jets!
+    if (m.muzzleMode === 'comp' && g.compFlame > 0.03) {
+      const jf = 0.62 + 0.55 * g.compFlame;
+      const jMat = M3D.mul(P.root, M3D.mul(
+        M3D.translate(0, 3.16 * (1 - jf), 0),
+        M3D.scaleMat(1.0, jf, 0.75 + 0.40 * g.compFlame)
+      ));
+      this._draw('compPortFlames', jMat, { alpha: Math.min(0.95, g.compFlame * 1.08), emissive: 1.0 });
+    }
+
+    // Forward Muzzle Flash Cone
     if (m.muzzleFlash > 0.04) {
       const fx = m.muzzleMode === 'none' ? 9.35
-        : (m.muzzleMode === 'comp' ? 12.75
+        : (m.muzzleMode === 'comp' ? 12.78
           : (m.muzzleMode === 'commercial' ? 23.4 : 21.5));
-      const sc = 0.6 + m.muzzleFlash * 1.1;
-      const fm = M3D.mul(P.root, M3D.mul(M3D.translate(fx, 2.46, 0), M3D.scaleMat(sc, sc, sc)));
+      const fScale = (m.muzzleMode === 'comp' ? 0.52 : 0.62) + m.muzzleFlash * (m.muzzleMode === 'comp' ? 0.68 : 1.10);
+      const fm = M3D.mul(P.root, M3D.mul(M3D.translate(fx, 2.46, 0), M3D.scaleMat(fScale, fScale, fScale)));
       this._draw('flashCone', fm, { alpha: m.muzzleFlash * 0.9, emissive: 1.0 });
     }
 
-    // Rising Smoke Puffs
+    // Rising Smoke & Endcap Bleed Puffs
     for (const s of m.smoke) {
       const sm = M3D.mul(M3D.translate(s.x, s.y, s.z), M3D.scaleMat(s.scale, s.scale, s.scale));
       this._draw('gasPuff', sm, { alpha: s.alpha * 0.55, emissive: 0.2 });
@@ -6797,7 +7586,25 @@ class P322Renderer3D {
     gl.disable(gl.BLEND);
     }
 
-    // ---- V2: downrange target carrier, tracer streaks & sight-picture reticle ----
+    // Keep Telemetry Drawer pressure readout live while gas bleeds down
+    if (m.gas && (m.gas.canPsi > 0.05 || m.gas.chamberPeak > 0.5 || this._wasPressurized)) {
+      this._wasPressurized = (m.gas.canPsi > 0.05 || m.gas.chamberPeak > 0.5);
+      const tp = document.getElementById('telePressure');
+      if (tp) {
+        if (m.gas.canPsi > 0.4) {
+          tp.textContent = m.gas.canPsi.toFixed(1) + ' PSI (BLEEDING)';
+          tp.className = 'tele-val ' + (m.gas.canPsi > 180 ? 'hot' : 'warn');
+        } else if (m.gas.chamberPeak > 5) {
+          tp.textContent = 'PK ' + Math.round(m.gas.chamberPeak).toLocaleString() + ' PSI';
+          tp.className = 'tele-val warn';
+        } else {
+          tp.textContent = '0.0 PSI (AMBIENT)';
+          tp.className = 'tele-val safe';
+        }
+      }
+    }
+
+    // ---- V2: downrange target carrier, tracer streaks & sight-picture / X-Ray overlay ----
     if (this.range && this.range.deployed && this.rangeGL && this.activePose && this.viewMode !== 'bench') {
       this.rangeGL.draw(this.activePose);
     }
@@ -6852,8 +7659,44 @@ const TARGET_TYPES = [
     sub: 'PAPER / ZERO VERIFICATION',
     faceIn: 12, wideIn: 12, kind: 'paper',
     note: '1-inch grid with 1-MOA reference ticks. Ideal for dialing the iron sights and reading group size.'
+  },
+  {
+    id: 'hostage_qual',
+    label: 'HOSTAGE RESCUE QUAL',
+    sub: 'NO-SHOOT / THREAT DISCRIMINATION',
+    faceIn: 24, wideIn: 18, kind: 'paper',
+    note: 'LE qualification target: armed threat partially masked behind a foreground NO-SHOOT hostage silhouette. Tests precision zero, optic holdover, and muzzle-flip control.'
   }
 ];
+
+/* Exact shared geometry test for the 512x512 Hostage Rescue Qualification target */
+function evalHostageTarget(u, v) {
+  const px = u * 512, py = v * 512;
+  // 1. Foreground NO-SHOOT Hostage (evaluated first because hostage occludes threat behind)
+  const hHead = Math.pow((px - 205) / 50, 2) + Math.pow((py - 178) / 60, 2) <= 1.0;
+  let hTorso = false;
+  if (py >= 232 && py <= 476) {
+    const tRamp = Math.min(1, Math.max(0, (py - 232) / 50));
+    const halfW = 44 + tRamp * 74; // 44px at neck -> 118px across shoulders (x: 87..323)
+    hTorso = Math.abs(px - 205) <= halfW;
+  }
+  if (hHead || hTorso) return 'hostage';
+
+  // 2. Background Armed Threat / Assailant (upper-right behind hostage's right shoulder)
+  if (px >= 294 && px <= 354 && py >= 84 && py <= 122) return 'threat_tbox';
+  if (px >= 325 && px <= 412 && py >= 192 && py <= 316) return 'threat_azone';
+
+  const tHead = Math.pow((px - 324) / 54, 2) + Math.pow((py - 112) / 64, 2) <= 1.0;
+  let tTorso = false;
+  if (py >= 172 && py <= 470) {
+    const sRamp = Math.min(1, Math.max(0, (py - 172) / 54));
+    const halfW = 48 + sRamp * 74; // centered at x=328 -> reaches x=450 on right shoulder
+    tTorso = Math.abs(px - 328) <= halfW;
+  }
+  const tArm = (px >= 395 && px <= 466 && py >= 228 && py <= 322);
+  if (tHead || tTorso || tArm) return 'threat_edge';
+  return 'paper_miss';
+}
 
 const MOA_RAD = Math.PI / (180 * 60);
 
@@ -7009,6 +7852,85 @@ function paintTargetFace(c2d, target, hits) {
       c2d.font = 'bold 14px monospace';
       c2d.fillStyle = '#5c5340';
       c2d.fillText('24 in HIGH  •  QUALIFICATION TARGET', cx, 496);
+    } else if (target.id === 'hostage_qual') {
+      // ---- 1) BACKGROUND ARMED THREAT SILHOUETTE (upper-right behind hostage) ----
+      c2d.fillStyle = '#201f1c';
+      // Threat head
+      c2d.beginPath(); c2d.ellipse(324, 112, 54, 64, 0, 0, Math.PI * 2); c2d.fill();
+      // Threat neck, shoulders & torso
+      c2d.beginPath();
+      c2d.moveTo(280, 172);
+      c2d.lineTo(376, 172);
+      c2d.quadraticCurveTo(442, 184, 450, 236);
+      c2d.lineTo(440, 470);
+      c2d.lineTo(212, 470);
+      c2d.lineTo(206, 226);
+      c2d.closePath(); c2d.fill();
+      // Raised simulated threat hand/prop silhouette on far right
+      c2d.fillStyle = '#2c2b27';
+      c2d.fillRect(398, 250, 66, 24);
+      c2d.fillRect(436, 256, 22, 62);
+
+      // Dashed white scoring zones on exposed Threat T-Box & Upper-Right A-Zone
+      c2d.save();
+      c2d.setLineDash([6, 4]);
+      c2d.strokeStyle = 'rgba(238, 232, 212, 0.78)';
+      c2d.lineWidth = 2;
+      c2d.strokeRect(294, 84, 60, 38);   // Cranial T-Box
+      c2d.strokeRect(326, 192, 86, 124); // Exposed Thoracic/Clavicle A-Zone
+      c2d.restore();
+      c2d.fillStyle = '#f2c14e';
+      c2d.font = 'bold 15px monospace'; c2d.textAlign = 'center';
+      c2d.fillText('X', 324, 108);
+      c2d.fillText('A-ZONE', 369, 258);
+
+      // ---- 2) FOREGROUND HOSTAGE (NO-SHOOT) SILHOUETTE ----
+      c2d.save();
+      c2d.fillStyle = '#d3d9dc';
+      c2d.strokeStyle = '#9c241c';
+      c2d.lineWidth = 4.5;
+      // Hostage torso + shoulders
+      c2d.beginPath();
+      c2d.moveTo(161, 232);
+      c2d.lineTo(249, 232);
+      c2d.quadraticCurveTo(316, 240, 323, 282);
+      c2d.lineTo(323, 476);
+      c2d.lineTo(87, 476);
+      c2d.lineTo(87, 282);
+      c2d.quadraticCurveTo(94, 240, 161, 232);
+      c2d.closePath();
+      c2d.fill();
+      c2d.stroke();
+      // Hostage head
+      c2d.beginPath();
+      c2d.ellipse(205, 178, 50, 60, 0, 0, Math.PI * 2);
+      c2d.fill();
+      c2d.stroke();
+
+      // Subtle diagonal caution stripes across NO-SHOOT torso
+      c2d.strokeStyle = 'rgba(156, 36, 28, 0.14)';
+      c2d.lineWidth = 3;
+      for (let sy = 250; sy < 470; sy += 22) {
+        c2d.beginPath(); c2d.moveTo(94, sy); c2d.lineTo(316, Math.max(242, sy - 42)); c2d.stroke();
+      }
+      c2d.fillStyle = '#9c241c';
+      c2d.font = 'bold 21px monospace'; c2d.textAlign = 'center';
+      c2d.fillText('HOSTAGE', 205, 336);
+      c2d.font = 'bold 17px monospace';
+      c2d.fillText('NO-SHOOT PENALTY', 205, 362);
+      c2d.font = 'bold 13px monospace';
+      c2d.fillStyle = '#364147';
+      c2d.fillText('CLEAR HOSTAGE LINE OF FIRE', 205, 388);
+      c2d.restore();
+
+      // Header & footer qualification stamps
+      c2d.fillStyle = '#2d2820';
+      c2d.font = 'bold 18px monospace'; c2d.textAlign = 'left';
+      c2d.fillText('LE HOSTAGE QUAL // T-BOX & A-ZONE', 22, 36);
+      c2d.textAlign = 'center';
+      c2d.font = 'bold 13px monospace';
+      c2d.fillStyle = '#5c5340';
+      c2d.fillText('DARK = THREAT SCORING  •  LIGHT = NO-SHOOT HOSTAGE', cx, 496);
     } else { // moa_grid
       const pxPerIn = S / 12;
       for (let i = 0; i <= 12; i++) {
@@ -7048,10 +7970,22 @@ function paintTargetFace(c2d, target, hits) {
         c2d.beginPath(); c2d.moveTo(px, py);
         c2d.lineTo(px + Math.cos(a) * r, py + Math.sin(a) * r); c2d.stroke();
       }
+    } else if (h.zone === 'hostage') {
+      // High-visibility NO-SHOOT PENALTY impact marker!
+      c2d.fillStyle = 'rgba(255, 55, 40, 0.30)';
+      c2d.beginPath(); c2d.arc(px, py, 15, 0, Math.PI * 2); c2d.fill();
+      c2d.strokeStyle = '#c81e14'; c2d.lineWidth = 3;
+      c2d.beginPath(); c2d.arc(px, py, 11.5, 0, Math.PI * 2); c2d.stroke();
+      c2d.beginPath();
+      c2d.moveTo(px - 8, py - 8); c2d.lineTo(px + 8, py + 8);
+      c2d.moveTo(px + 8, py - 8); c2d.lineTo(px - 8, py + 8);
+      c2d.stroke();
+      c2d.fillStyle = '#111';
+      c2d.beginPath(); c2d.arc(px, py, 4.5, 0, Math.PI * 2); c2d.fill();
     } else {
       c2d.fillStyle = '#efe5c8';
       c2d.beginPath(); c2d.arc(px, py, 10.5, 0, Math.PI * 2); c2d.fill();
-      c2d.fillStyle = '#d98a2b';
+      c2d.fillStyle = (h.zone === 'threat_tbox' || h.zone === 'threat_azone') ? '#35c96a' : '#d98a2b';
       c2d.beginPath(); c2d.arc(px, py, 7.8, 0, Math.PI * 2); c2d.fill();
       c2d.fillStyle = '#0d0c0a';
       c2d.beginPath(); c2d.arc(px, py, 5.5, 0, Math.PI * 2); c2d.fill();
@@ -7059,11 +7993,11 @@ function paintTargetFace(c2d, target, hits) {
       c2d.beginPath(); c2d.arc(px, py, 10.5, 0, Math.PI * 2); c2d.stroke();
     }
     if (i >= hits.length - 16) {
-      const numTxt = '#' + String(i + 1);
+      const numTxt = '#' + String(i + 1) + (h.zone === 'hostage' ? '!' : '');
       c2d.font = 'bold 15px monospace'; c2d.textAlign = 'left';
       c2d.lineWidth = 4; c2d.strokeStyle = 'rgba(18,16,12,0.92)';
       c2d.strokeText(numTxt, px + 12, py - 8);
-      c2d.fillStyle = '#ff6b4a';
+      c2d.fillStyle = h.zone === 'hostage' ? '#ff3324' : '#ff6b4a';
       c2d.fillText(numTxt, px + 12, py - 8);
     }
   }
@@ -7152,6 +8086,7 @@ class P322RangeSystem {
     this.targetIdx = (this.targetIdx + 1) % TARGET_TYPES.length;
     this.hits = [];
     this.shotsOnTarget = 0;
+    this.hostageHits = 0;
     this.shotsTotal = 0;
     this.lastShot = null;
     this.repaint();
@@ -7185,6 +8120,7 @@ class P322RangeSystem {
   clearTarget() {
     this.hits = [];
     this.shotsOnTarget = 0;
+    this.hostageHits = 0;
     this.shotsTotal = 0;
     this.lastShot = null;
     this.tracers = [];
@@ -7265,10 +8201,11 @@ class P322RangeSystem {
     const sol = this.solution();
     const X = D * 36;
 
-    // Progressive muzzle climb & wider dispersion in the simulated cyclic demo
+    // Progressive muzzle climb & wider dispersion factored by muzzle device recoil physics!
+    const rec = muzzleRecoilByMode(mech.muzzleMode);
     const simAuto = !!opts.simAuto;
     const idx = opts.shotIndex || 0;
-    const climb = simAuto ? Math.min(0.0085, idx * 0.00068) : 0;
+    const climb = simAuto ? Math.min(0.0085, idx * 0.00068) * rec.climb : 0;
     const obstructed = !!opts.obstructed || this.isObstructed();
 
     const el = this.aimPitch + climb + (this.viewMode === 'sights' ? this.swayPitch : 0);
@@ -7277,12 +8214,12 @@ class P322RangeSystem {
     let yIn = sol.pathIn + X * Math.tan(el);
     let xIn = X * Math.tan(az) + sol.windDriftIn;
 
-    // Group size: ~2.1 MOA x load quality factor, plus lead fouling, plus cyclic climb
+    // Group size: ~2.1 MOA x load quality factor, plus lead fouling, plus cyclic climb x muzzle factor
     let groupMoa = 2.1 * (ammo.moaFactor || 1.0)
       + mech.boreFouling * 0.022
-      + (simAuto ? 2.0 + idx * 0.52 : 0)
+      + (simAuto ? (2.0 + idx * 0.52) * rec.climb : 0)
       + (obstructed ? 15.0 : 0);
-    if (mech.muzzleMode === 'comp') groupMoa *= 0.90;   // comp steadies the muzzle
+    groupMoa *= rec.groupMult; // Compensator (0.88) & commercial suppressor (0.92) tighten practical groups!
     const sigmaIn = groupMoa * 1.047 * (D / 100) / 2;
     yIn += gaussianUnit() * sigmaIn;
     xIn += gaussianUnit() * sigmaIn;
@@ -7301,18 +8238,41 @@ class P322RangeSystem {
 
     this.shotsTotal++;
     let note;
+    let zone = null;
     if (onFace) {
-      this.hits.push({ u: u, v: v, xIn: xIn, yIn: yIn, n: this.shotsTotal, simAuto: simAuto });
-      if (this.hits.length > 42) this.hits.shift();
-      this.shotsOnTarget++;
-      this.repaint();
-      if (t.kind === 'steel') this.swingVel += 2.3;
-      note = 'HIT ' + (yIn >= 0 ? '+' : '') + yIn.toFixed(1) + '" V / ' + (xIn >= 0 ? '+' : '') + xIn.toFixed(1) + '" H';
+      if (t.id === 'hostage_qual') {
+        zone = evalHostageTarget(u, v);
+        this.hits.push({ u: u, v: v, xIn: xIn, yIn: yIn, n: this.shotsTotal, simAuto: simAuto, zone: zone });
+        if (this.hits.length > 42) this.hits.shift();
+        if (zone === 'hostage') {
+          this.hostageHits = (this.hostageHits || 0) + 1;
+          note = 'NO-SHOOT PENALTY! HOSTAGE IMPACT (' + (yIn >= 0 ? '+' : '') + yIn.toFixed(1) + '" V / ' + (xIn >= 0 ? '+' : '') + xIn.toFixed(1) + '" H)';
+        } else if (zone === 'threat_tbox') {
+          this.shotsOnTarget++;
+          note = 'THREAT T-BOX [X-RING / HOSTAGE CLEAR] (' + (yIn >= 0 ? '+' : '') + yIn.toFixed(1) + '" V / ' + (xIn >= 0 ? '+' : '') + xIn.toFixed(1) + '" H)';
+        } else if (zone === 'threat_azone') {
+          this.shotsOnTarget++;
+          note = 'THREAT A-ZONE [HOSTAGE CLEAR] (' + (yIn >= 0 ? '+' : '') + yIn.toFixed(1) + '" V / ' + (xIn >= 0 ? '+' : '') + xIn.toFixed(1) + '" H)';
+        } else if (zone === 'threat_edge') {
+          this.shotsOnTarget++;
+          note = 'THREAT C-ZONE [HOSTAGE CLEAR] (' + (yIn >= 0 ? '+' : '') + yIn.toFixed(1) + '" V / ' + (xIn >= 0 ? '+' : '') + xIn.toFixed(1) + '" H)';
+        } else {
+          note = 'PAPER MISS [HOSTAGE CLEAR] (' + (yIn >= 0 ? '+' : '') + yIn.toFixed(1) + '" V / ' + (xIn >= 0 ? '+' : '') + xIn.toFixed(1) + '" H)';
+        }
+        this.repaint();
+      } else {
+        this.hits.push({ u: u, v: v, xIn: xIn, yIn: yIn, n: this.shotsTotal, simAuto: simAuto });
+        if (this.hits.length > 42) this.hits.shift();
+        this.shotsOnTarget++;
+        this.repaint();
+        if (t.kind === 'steel') this.swingVel += 2.3;
+        note = 'HIT ' + (yIn >= 0 ? '+' : '') + yIn.toFixed(1) + '" V / ' + (xIn >= 0 ? '+' : '') + xIn.toFixed(1) + '" H';
+      }
     } else {
       note = 'OFF TARGET (' + (yIn >= 0 ? '+' : '') + yIn.toFixed(1) + '" V / ' + (xIn >= 0 ? '+' : '') + xIn.toFixed(1) + '" H)';
     }
 
-    this.lastShot = { xIn, yIn, u, v, onFace, sol, groupMoa, obstructed, simAuto, note };
+    this.lastShot = { xIn, yIn, u, v, onFace, zone, sol, groupMoa, obstructed, simAuto, note };
 
     // Flight-time-delayed impact report (real .22 LR time of flight!)
     const delayMs = Math.min(1400, sol.tof * 1000);
@@ -7363,6 +8323,7 @@ class P322RangeSystem {
     const s = this.solution();
     const ammo = this.mech.getAmmo();
     const blocked = this.isObstructed();
+    const rec = muzzleRecoilByMode(this.mech.muzzleMode);
     return {
       deployed: this.deployed,
       inspect: this.inspect,
@@ -7380,8 +8341,9 @@ class P322RangeSystem {
       aimWindMoa: this.aimYaw / MOA_RAD,
       windMph: this.windMph,
       blocked: blocked,
-      groupMoa: 2.1 * (ammo.moaFactor || 1) + this.mech.boreFouling * 0.022,
-      hits: this.hits.length,
+      groupMoa: (2.1 * (ammo.moaFactor || 1) + this.mech.boreFouling * 0.022) * rec.groupMult,
+      hits: this.shotsOnTarget,
+      hostageHits: this.hostageHits || 0,
       shots: this.shotsTotal,
       last: this.lastShot
     };
@@ -7730,9 +8692,10 @@ function syncUI(m) {
   }
 
   const magEl = document.getElementById('teleMag');
+  const plusOne = (m.chambered && !m.chamberedSpent) ? ' +1' : '';
   if (magEl) {
     magEl.textContent = m.isMagSeated()
-      ? `SEATED (${m.magRounds}/${m.maxMag})`
+      ? `SEATED (${m.magRounds}/${m.maxMag}${plusOne})`
       : `REMOVED (${m.magRounds}/${m.maxMag})`;
     magEl.className = 'tele-val ' + (m.isMagSeated() ? (m.magRounds === 0 ? 'warn' : '') : 'warn');
   }
@@ -7765,6 +8728,23 @@ function syncUI(m) {
     } else {
       sightEl.textContent = 'CLEAR / ' + set.label;
       sightEl.className = 'tele-val safe';
+    }
+  }
+
+  const recEl = document.getElementById('teleRecoil');
+  if (recEl) {
+    const rec = muzzleRecoilByMode(m.muzzleMode);
+    recEl.textContent = rec.label;
+    recEl.className = 'tele-val ' + (m.muzzleMode === 'none' ? '' : 'safe');
+  }
+  const presEl = document.getElementById('telePressure');
+  if (presEl && m.gas) {
+    if (m.gas.canPsi > 0.4) {
+      presEl.textContent = m.gas.canPsi.toFixed(1) + ' PSI (BLEEDING)';
+      presEl.className = 'tele-val ' + (m.gas.canPsi > 180 ? 'hot' : 'warn');
+    } else {
+      presEl.textContent = '0.0 PSI (AMBIENT)';
+      presEl.className = 'tele-val safe';
     }
   }
 
@@ -7804,14 +8784,15 @@ function syncUI(m) {
   const hudDetail = document.getElementById('hudSpecOverlay');
   if (hudDetail) {
     const muzLabel = m.muzzleMode === 'none' ? 'FLUSH CAP (UNSUPPRESSED)'
-      : (m.muzzleMode === 'comp' ? '1/2x28 PORTED COMPENSATOR'
-        : (m.muzzleMode === 'commercial' ? '1/2x28 RIMFIRE CAN (7-BAFFLE)'
+      : (m.muzzleMode === 'comp' ? '1/2x28 PORTED COMP (-38% FLIP)'
+        : (m.muzzleMode === 'commercial' ? '1/2x28 RIMFIRE CAN (-32% FLIP)'
           : `SIM. OIL CANISTER (${Math.round(m.oilCanIntegrity * 100)}% MEDIA)`));
+    const sightObj = sightSetById(m.sightSet);
     hudDetail.innerHTML =
-      `<div>HAMMER: <strong>${m.hammerCocked ? 'COCKED (SAO)' : 'DOWN'}</strong> | TRIG: <strong>${m.triggerRed ? 'BILLET RED' : m.triggerStyle.toUpperCase()}</strong></div>` +
+      `<div>HAMMER: <strong>${m.hammerCocked ? 'COCKED (SAO)' : 'DOWN'}</strong> | MAG: <strong>${m.magRounds}/${m.maxMag}${plusOne}</strong></div>` +
       `<div>LOAD: <strong>${ammo.shortName}</strong> (${ammo.pistolFps} FPS / 4" BBL)</div>` +
       `<div>MUZZLE: <strong>${muzLabel}</strong></div>` +
-      `<div>IRONS: <strong>${sightSetById(m.sightSet).label}</strong>${blocked ? ' <strong>[BLOCKED]</strong>' : ''}</div>`;
+      `<div>${sightObj.isOptic ? 'OPTIC' : 'IRONS'}: <strong>${sightObj.label}</strong>${blocked ? ' <strong>[BLOCKED]</strong>' : ''}</div>`;
   }
 
   // Sync button toggle states (preserving SVG icons via .pad-lbl)
@@ -7841,7 +8822,7 @@ function syncUI(m) {
   syncRangeUI();
 }
 
-/* --- V2 CUSTOM SHOP UI --- */
+/* --- V2/V5 CUSTOM SHOP UI --- */
 function syncShopUI() {
   if (!p322Mech) return;
   const m = p322Mech;
@@ -7852,7 +8833,7 @@ function syncShopUI() {
     b.classList.toggle('active', !!on);
     if (text !== undefined) setPadLabel(b, text);
   };
-  ['factory', 'suppressor', 'target_orange', 'tritium'].forEach(function (id) {
+  ['factory', 'suppressor', 'target_orange', 'tritium', 'red_dot'].forEach(function (id) {
     setAct('btnSight_' + id, m.sightSet === id);
   });
   const lbl = document.getElementById('shopSightLabel');
@@ -7878,7 +8859,7 @@ function syncShopUI() {
   if (holdBtn) holdBtn.disabled = !m.simAuto;
 }
 
-/* --- V2 DOWNRANGE BALLISTICS HUD --- */
+/* --- V2/V5 DOWNRANGE BALLISTICS HUD --- */
 function syncRangeUI() {
   const rg = R();
   if (!rg) return;
@@ -7898,16 +8879,18 @@ function syncRangeUI() {
     (d.aimWindMoa >= 0 ? '+' : '') + d.aimWindMoa.toFixed(1) + ' W MOA');
   put('ballGroup', d.groupMoa.toFixed(1) + ' MOA nominal');
   put('ballWind', d.windMph + ' MPH' + (d.windMph > 0 ? ' (R)' : (d.windMph < 0 ? ' (L)' : '')));
-  put('ballShots', d.hits + ' / ' + d.shots + ' ON FACE');
+  put('ballShots', d.target.id === 'hostage_qual'
+    ? (d.hits + ' THREAT / ' + d.hostageHits + ' PENALTY (' + d.shots + ')')
+    : (d.hits + ' / ' + d.shots + ' ON FACE'));
   put('ballLast', d.last ? d.last.note : 'NO SHOTS RECORDED');
-  put('ballSight', d.blocked ? 'OBSTRUCTED — FIT SUPPRESSOR-HEIGHT IRONS' : 'CLEAR');
+  put('ballSight', d.blocked ? 'OBSTRUCTED — FIT TALL IRONS OR RED DOT' : 'CLEAR');
   put('ballVelocity', Math.round(d.vTerm) + ' FPS / ' + d.energy.toFixed(0) + ' FT-LB AT TARGET');
 
   const warn = document.getElementById('ballObstruct');
   if (warn) warn.style.display = d.blocked ? '' : 'none';
 
   setPadLabel('btnDeploy', d.deployed ? 'STOW' : 'DPLY');
-  setPadLabel('btnCycleTarget', 'T' + (rg.targetIdx + 1) + '/4');
+  setPadLabel('btnCycleTarget', 'T' + (rg.targetIdx + 1) + '/' + TARGET_TYPES.length);
   setPadLabel('btnPushOut', d.distYd >= 100 ? '100Y' : (d.distYd + 'YD'));
   setPadLabel('btnInspect', d.inspect ? 'BACK' : 'INSP');
   setPadLabel('btnWind', (d.windMph < 0 ? d.windMph : d.windMph + 'M'));
@@ -8880,5 +9863,5 @@ window.addEventListener('DOMContentLoaded', initDossierApp);
 
   
   </script>
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a5bf6304790cb2e2',t:'MTc5NDkyNTMzOA=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a5bf6304790cb2e2',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a5bfd14e8b3ee830',t:'MTc5NDkyOTg1NQ=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a5bfd14e8b3ee830',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
