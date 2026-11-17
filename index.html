@@ -3392,7 +3392,9 @@ const AMMO_PROFILES = {
     vibUnsup: 56,
     vibCommSup: 18,
     vibOilCan: 32,
-    bulletColor: [0.76, 0.44, 0.22],
+    caseType: 'brass',
+    projMetal: 0.80,
+    bulletColor: [0.80, 0.46, 0.23],
     notes: 'Gold-standard reliable P322 range & break-in load. Copper plating drastically curbs bore leading.'
   },
   cci_stinger: {
@@ -3417,8 +3419,10 @@ const AMMO_PROFILES = {
     vibUnsup: 68,
     vibCommSup: 26,
     vibOilCan: 40,
-    bulletColor: [0.78, 0.48, 0.24],
-    notes: 'Flattest short-range trajectory; breaks Mach 1 even from 4" barrel so sonic flight crack remains when suppressed.'
+    caseType: 'nickel',
+    projMetal: 0.84,
+    bulletColor: [0.83, 0.50, 0.25],
+    notes: 'Flattest short-range trajectory; longer nickel-plated case + copper-plated hollow point; breaks Mach 1 from 4" barrel.'
   },
   cci_sv: {
     id: 'cci_sv',
@@ -3442,8 +3446,10 @@ const AMMO_PROFILES = {
     vibUnsup: 46,
     vibCommSup: 14,
     vibOilCan: 26,
-    bulletColor: [0.36, 0.37, 0.40],
-    notes: 'Tightest mechanical accuracy & deeply subsonic from 4" barrel. Steeper drop past 50 yds.'
+    caseType: 'brass',
+    projMetal: 0.18,
+    bulletColor: [0.34, 0.36, 0.39],
+    notes: 'Tightest mechanical accuracy & deeply subsonic waxed lead round-nose from 4" barrel. Steeper drop past 50 yds.'
   },
   cci_sup: {
     id: 'cci_sup',
@@ -3467,8 +3473,10 @@ const AMMO_PROFILES = {
     vibUnsup: 44,
     vibCommSup: 12,
     vibOilCan: 24,
-    bulletColor: [0.34, 0.35, 0.38],
-    notes: 'Heavy 45gr bullet preserves slide momentum for reliable semi-auto cycling while remaining whisper-quiet.'
+    caseType: 'brass',
+    projMetal: 0.20,
+    bulletColor: [0.31, 0.33, 0.36],
+    notes: 'Heavy 45gr dark lubed hollow-point bullet preserves slide momentum for reliable semi-auto cycling while staying subsonic.'
   },
   cci_quiet: {
     id: 'cci_quiet',
@@ -3492,7 +3500,9 @@ const AMMO_PROFILES = {
     vibUnsup: 20,
     vibCommSup: 8,
     vibOilCan: 14,
-    bulletColor: [0.38, 0.39, 0.42],
+    caseType: 'brass',
+    projMetal: 0.22,
+    bulletColor: [0.41, 0.43, 0.46],
     notes: 'Massive mortar-like drop past 25 yds & TOO WEAK to cycle P322 blowback slide — must manually rack!'
   },
   bulk_lead: {
@@ -3517,8 +3527,10 @@ const AMMO_PROFILES = {
     vibUnsup: 52,
     vibCommSup: 18,
     vibOilCan: 31,
-    bulletColor: [0.44, 0.45, 0.47],
-    notes: 'Wider group spread and 4.8x higher bore lead fouling rate; clean barrel regularly.'
+    caseType: 'brass',
+    projMetal: 0.15,
+    bulletColor: [0.48, 0.49, 0.51],
+    notes: 'Truncated-cone unplated cast lead; wider group spread and 4.8x higher bore lead fouling rate; clean barrel regularly.'
   }
 };
 
@@ -4313,13 +4325,13 @@ class MeshBuilder {
     }
   }
 
-  addHelixSpringX(x0, x1, cy, cz, coilR, wireR, turns, segsPerTurn, color) {
-    const total = turns * segsPerTurn;
+  addHelixSpringX(x0, x1, cy, cz, coilR, wireR, turns, segsPerTurn, color, phase0 = 0.0) {
+    const total = Math.max(4, Math.round(Math.abs(turns) * segsPerTurn));
     const ringSegs = 6;
     const pts = [];
     for (let i = 0; i <= total; i++) {
       const u = i / total;
-      const ang = u * turns * Math.PI * 2;
+      const ang = phase0 + u * turns * Math.PI * 2;
       const x = x0 + (x1 - x0) * u;
       const y = cy + Math.cos(ang) * coilR;
       const z = cz + Math.sin(ang) * coilR;
@@ -4553,23 +4565,81 @@ function buildSIGP322Meshes() {
   chassis.addCylinderZ(-1.27, 1.27, -5.65, 0.25, 0.16, 10, C.steel);
   chassis.addCylinderZ(-1.27, 1.27, 1.95, 0.15, 0.16, 10, C.steel);
 
-  // --- C. RECIPROCATING ALUMINUM ALLOY SLIDE (TRUE OPEN EJECTION PORT & HOLLOW CNC NOSE!) ---
-  const C_VOID = [0.018, 0.021, 0.026]; // Deep shadow throat for real through-bores
+  // --- C. RECIPROCATING ALUMINUM ALLOY SLIDE (HOLLOW REAR HAMMER/BREECH CAVITY, OPEN PORT & HOLLOW CNC NOSE!) ---
+  const C_VOID = [0.018, 0.021, 0.026]; // Deep shadow throat for solid non-X-Ray exterior
+  const C_POLISHED = [0.80, 0.83, 0.88]; // Bright machined steel for active pickup/extractor faces
   const slide = new MeshBuilder();
-  // Authentic SIG chamfered YZ cross-section (Y, Z)
-  const fullSlideYZ = [
+  // 1) Hollowed Rear Aluminum Slide (-8.20 to -1.16) framing the pinned steel breechblock & enclosed hammer slot!
+  const rearLeftYZ = [
     [1.16, -1.28], [3.02, -1.28], [3.64, -0.88],
-    [3.64, 0.88],  [3.02, 1.28],  [1.16, 1.28]
+    [3.64, -0.54], [1.16, -0.54]
   ];
-  // 1) Rear section behind ejection port (-8.20 to -1.16)
-  slide.addExtrudedProfileYZ(fullSlideYZ, -8.20, -1.16, C.slideDark);
-  // Internal CNC breech-block face & circular rimfire firing-pin aperture (-1.16 to -1.03)
-  slide.addBox(-1.16, 1.16, -1.22, -1.04, 1.98, 1.22, C.steel);
-  slide.addBox(-1.16, 2.94, -0.92, -1.04, 3.58, 0.92, C.steel);
-  slide.addBox(-1.16, 1.98, -1.22, -1.04, 2.94, -0.44, C.steel);
-  slide.addBox(-1.16, 1.98, 0.44, -1.04, 2.94, 1.22, C.steel);
-  slide.addTubeX(-1.17, -1.03, 2.46, 0.0, 0.46, 0.095, 16, C.steel);
-  slide.addCylinderX(-1.45, -1.05, 2.46, 0.0, 0.09, 0.09, 10, C_VOID);
+  const rearRightYZ = [
+    [1.16, 0.54],  [3.64, 0.54],  [3.64, 0.88],
+    [3.02, 1.28],  [1.16, 1.28]
+  ];
+  slide.addExtrudedProfileYZ(rearLeftYZ, -8.20, -1.16, C.slideDark);
+  slide.addExtrudedProfileYZ(rearRightYZ, -8.20, -1.16, C.slideDark);
+  // Top rear slide roof above hammer/breechblock tunnel (y: 3.04..3.64, z: -0.56..+0.56)
+  slide.addBox(-8.20, 3.04, -0.56, -1.16, 3.64, 0.56, C.slideDark);
+  // Rear slide endplate shroud framing the enclosed internal hammer cavity (-8.20 to -7.86)
+  slide.addBox(-8.20, 2.38, -0.56, -7.84, 3.06, 0.56, C.slideEdge);
+  slide.addBox(-8.20, 1.16, -0.88, -7.84, 2.40, -0.44, C.slideEdge);
+  slide.addBox(-8.20, 1.16, 0.44, -7.84, 2.40, 0.88, C.slideEdge);
+  // Steel breechblock cross-pin visible flush in rear slide flanks
+  slide.addCylinderZ(-1.29, 1.29, -2.75, 2.92, 0.12, 10, C.steel);
+
+  // --- C1B. PINNED STEEL BREECHBLOCK INSERT + LOWER STRIPPER LUG / FEED RAIL (moves with slide!) ---
+  const breechBlock = new MeshBuilder();
+  // Upper steel breechblock body pinned inside slide (-4.35 to -1.04) with 12-o'clock rimfire firing-pin tunnel
+  breechBlock.addBox(-4.35, 2.86, -0.52, -1.04, 3.04, 0.52, C.steel);
+  // Left & right case-head support cheeks (leaving left ejector slot z=-0.30..-0.14 & right extractor pocket open!)
+  breechBlock.addBox(-4.35, 2.16, -0.52, -1.04, 2.86, -0.30, C.steel);
+  breechBlock.addBox(-2.45, 2.16, 0.28, -1.04, 2.86, 0.52, C.steel);
+  breechBlock.addBox(-4.35, 2.16, 0.16, -2.45, 2.86, 0.52, C.steel);
+  // Circular recessed breechface cup supporting the .22 LR rim at x = -1.04 (open 12-o'clock rimfire slot at y=2.73!)
+  breechBlock.addTubeX(-1.14, -1.04, 2.46, 0.0, 0.44, 0.35, 16, C.steel);
+
+  // HIGH-VISIBILITY STEEL STRIPPER RAIL / LOWER BREECHFACE FEED LUG (pushes top mag round into battery!)
+  const stripperLug = new MeshBuilder();
+  // Center steel pickup rib hanging below breechface (y = 1.44..2.20, z = -0.15..+0.15)
+  const lugPoly = [
+    [-4.12, 1.76], [-3.65, 1.44], [-1.04, 1.44],
+    [-1.04, 2.22], [-4.12, 2.22]
+  ];
+  stripperLug.addExtrudedPolyXY(lugPoly, -0.15, 0.15, C.steel);
+  // Polished bright-steel front cartridge-pickup face at x = -1.04 (contacts rear .22 LR rim 1:1 during feed!)
+  stripperLug.addBox(-1.14, 1.43, -0.165, -1.035, 2.20, 0.165, C_POLISHED);
+
+  // --- C1C. INTERNAL SPRING-LOADED RIGHT-SIDE EXTRACTOR CLAW & PLUNGER SPRING (local pivot at 0,0,0 -> world slide [-2.32, 2.46, +0.44]) ---
+  const extractorClaw = new MeshBuilder();
+  // Extractor beam extending forward from pivot (0) to sharp inward rim-grabbing hook at dx = +1.42 (slide x = -0.90!)
+  const extXZ = [
+    [-0.45, -0.08], [1.18, -0.08],
+    [1.36, -0.18],  // Sharp inward beveled hook gripping the front of the .22 LR rim!
+    [1.44, -0.15],
+    [1.34, 0.10],
+    [-0.45, 0.12]
+  ];
+  // Build in XY then rotate? Easier: build directly with boxes & sharp hook prism in local (x, y, z)!
+  extractorClaw.addBox(-0.48, -0.15, -0.08, 1.24, 0.15, 0.11, C.steel);
+  // Hardened polished front extractor hook reaching inward to z_local = -0.19 (slide z = +0.25, right in front of rim r=0.345!)
+  extractorClaw.addBox(1.20, -0.14, -0.19, 1.36, 0.14, 0.10, C_POLISHED);
+  extractorClaw.addBox(1.36, -0.12, -0.11, 1.45, 0.12, 0.09, C_POLISHED); // Angled snap-over nose bevel
+  extractorClaw.addCylinderX(-0.08, 0.08, 0.0, 0.0, 0.16, 0.16, 10, C.barrelSteel); // Pivot pin boss
+
+  const extractorSpring = new MeshBuilder();
+  extractorSpring.addHelixSpringX(-2.95, -2.36, 2.46, 0.46, 0.09, 0.024, 5, 8, C.springSteel);
+
+  // --- C1D. 12-O'CLOCK RIMFIRE CHISEL FIRING PIN & RETURN SPRING (inside upper breechblock at y = 2.73!) ---
+  const firingPin = new MeshBuilder();
+  // Rear hammer-strike button (-4.68..-4.20) + shaft + 12-o'clock chisel rimfire blade (-1.35..-1.06)
+  firingPin.addCylinderX(-4.68, -4.22, 2.73, 0.0, 0.13, 0.13, 10, C_POLISHED);
+  firingPin.addCylinderX(-4.22, -1.42, 2.73, 0.0, 0.085, 0.085, 10, C.steel);
+  firingPin.addBox(-1.42, 2.68, -0.035, -1.05, 2.79, 0.035, C_POLISHED); // Chisel rimfire tip!
+
+  const firingPinSpring = new MeshBuilder();
+  firingPinSpring.addHelixSpringX(-3.95, -1.65, 2.73, 0.0, 0.135, 0.025, 7, 8, C.springSteel);
 
   // 2) Hollow Front CNC Slide Tunnel forward of ejection port (+2.05 to +9.02)
   // Left & right sculpted cheek walls + top arch, leaving an open central barrel & recoil tunnel!
@@ -4751,16 +4821,24 @@ function buildSIGP322Meshes() {
   magExt.addExtrudedPolyXY(
     [[-9.52, -7.50], [-4.72, -7.50], [-5.28, -9.15], [-10.08, -9.15]],
     -1.18, 1.18, C.magExtPoly);
+  // Internal +5 extended polymer tube walls guiding rounds 21..25 & lower spring in X-Ray!
+  magExt.addExtrudedPolyXY(
+    [[-8.80, -6.85], [-8.38, -6.85], [-9.42, -9.02], [-9.84, -9.02]],
+    -0.54, 0.54, C.magPoly);
+  magExt.addExtrudedPolyXY(
+    [[-5.62, -6.85], [-5.25, -6.85], [-6.28, -9.02], [-6.66, -9.02]],
+    -0.54, 0.54, C.magPoly);
   for (let i = 0; i < 4; i++) {
     const xx = -9.65 + i * 1.18;
     magExt.addBox(xx, -8.98, 1.19, xx + 0.16, -7.68, 1.26, C.stipple);
     magExt.addBox(xx, -8.98, -1.26, xx + 0.16, -7.68, -1.19, C.stipple);
   }
 
-  // Billet red skeletonized flat trigger (Tandemkross "Victory" / Armory Craft style)
+  // Billet red skeletonized flat trigger (Tandemkross "Victory" / Armory Craft style — with upper FCU yoke & pivot pin!)
   const triggerRed = new MeshBuilder();
-  const trPoly = [[-0.22, 0.05], [0.22, 0.05], [0.25, -1.74], [-0.16, -1.74], [-0.18, -0.25]];
+  const trPoly = [[-0.26, 0.62], [0.18, 0.58], [0.22, 0.05], [0.25, -1.74], [-0.16, -1.74], [-0.18, -0.25]];
   triggerRed.addExtrudedPolyXY(trPoly, -0.30, 0.30, C.redAnod);
+  triggerRed.addCylinderZ(-0.56, 0.56, 0, 0, 0.12, 10, C.steel); // Trigger pivot pin
   triggerRed.addBox(-0.06, -1.54, -0.31, 0.13, -0.62, -0.26, C.redAnodEdge);
   triggerRed.addBox(-0.06, -1.54, 0.26, 0.13, -0.62, 0.31, C.redAnodEdge);
   triggerRed.addBox(-0.05, -1.42, -0.32, 0.12, -0.78, -0.30, C.steelBlack);
@@ -4827,34 +4905,70 @@ function buildSIGP322Meshes() {
   const railLens = new MeshBuilder();
   railLens.addCylinderX(7.20, 7.30, -1.04, 0.0, 0.60, 0.60, 18, C.lightLens, true, true);
 
-  // --- D. FIXED 4.0-INCH CARBON STEEL BARREL, RECESSED RIFLED CROWN & GUIDE ROD ---
+  // --- D. FIXED 4.0-INCH CARBON STEEL BARREL, TRUNNION MOUNT, HELICAL 1:16" RIFLING & GUIDE ROD ---
+  // Stainless FCU Barrel Mounting Shroud + 3mm x 16mm Serrated Coiled Spring Barrel Retaining Pin + Captive Spring Collar
+  const barrelTrunnion = new MeshBuilder();
+  barrelTrunnion.addBox(-0.88, 1.12, -0.68, 1.94, 1.88, 0.68, C.steel);
+  // 3x16mm serrated coiled spring barrel retaining pin (secures fixed barrel rear lug to stainless FCU!)
+  barrelTrunnion.addCylinderZ(-0.84, 0.84, 0.45, 1.52, 0.17, 12, C_POLISHED);
+  barrelTrunnion.addCylinderZ(-0.86, 0.86, 0.45, 1.52, 0.09, 10, C.barrelBore); // Hollow coiled roll-pin center!
+
   const barrel = new MeshBuilder();
-  // Chamber hood block visible through ejection port, with hollow .22 LR rear chamber throat!
-  barrel.addBox(-0.98, 1.85, -0.76, 2.02, 1.98, 0.82, C.barrelSteel);
-  barrel.addBox(-0.98, 2.96, -0.76, 2.02, 3.38, 0.82, C.barrelSteel);
-  barrel.addBox(-0.98, 1.98, -0.76, 2.02, 2.96, -0.34, C.barrelSteel);
-  barrel.addBox(-0.98, 1.98, 0.34, 2.02, 2.96, 0.82, C.barrelSteel);
-  barrel.addTubeX(-1.00, 1.92, 2.46, 0.0, 0.46, 0.28, 18, C.barrelSteel);
-  barrel.addCylinderX(-0.92, 1.92, 2.46, 0.0, 0.27, 0.23, 14, C_VOID);
-  // Polished feed ramp angled toward magazine feed lips
-  const rampPoly = [[-1.58, 1.30], [-0.96, 1.88], [-0.96, 2.15], [-1.72, 1.48]];
-  barrel.addExtrudedPolyXY(rampPoly, -0.36, 0.36, C.steel);
-  // 4-inch fixed barrel tube + 1/2x28 muzzle threads + recessed 11° target crown!
-  barrel.addTubeX(1.90, 8.70, 2.46, 0.0, 0.55, 0.225, 22, C.barrelSteel);
-  barrel.addTubeX(8.70, 9.25, 2.46, 0.0, 0.49, 0.225, 22, C.steel);
+  // Chamber hood block visible through ejection port — TRUE HOLLOW .22 LR chamber & bore (zero solid C_VOID occluders!)
+  barrel.addBox(-0.92, 1.85, -0.74, 2.00, 1.98, 0.78, C.barrelSteel);
+  barrel.addBox(-0.92, 2.96, -0.74, 2.00, 3.36, 0.78, C.barrelSteel);
+  barrel.addBox(-0.92, 1.98, -0.74, 2.00, 2.96, -0.36, C.barrelSteel);
+  barrel.addBox(-0.92, 1.98, 0.36, 2.00, 2.96, 0.78, C.barrelSteel);
+  // Smooth .22 LR chamber tube (-0.91 to +0.84, rInner = 0.292 enveloping the r=0.280 brass case!)
+  barrel.addTubeX(-0.91, 0.84, 2.46, 0.0, 0.46, 0.292, 20, C.barrelSteel);
+  // Throat / leade transition (+0.84 to +1.92, rInner = 0.232)
+  barrel.addTubeX(0.84, 1.92, 2.46, 0.0, 0.46, 0.232, 20, C.barrelSteel);
+  // 32° Polished integral steel feed ramp angled directly from magazine feed lips into chamber mouth!
+  const rampPoly = [[-1.78, 1.24], [-0.91, 1.92], [-0.91, 2.18], [-1.90, 1.42]];
+  barrel.addExtrudedPolyXY(rampPoly, -0.34, 0.34, C_POLISHED);
+  // Captive recoil-spring rear retaining flange & front bushing collar on barrel shaft
+  barrel.addTubeX(1.94, 2.12, 2.46, 0.0, 0.74, 0.54, 20, C.steel);
+  barrel.addTubeX(8.56, 8.70, 2.46, 0.0, 0.68, 0.50, 20, C.steel);
+  // Cantilevered free-floating 4-inch fixed barrel shaft + 1/2x28 muzzle threads + recessed 11° target crown!
+  barrel.addTubeX(1.92, 8.70, 2.46, 0.0, 0.53, 0.230, 22, C.barrelSteel);
+  barrel.addTubeX(8.70, 9.25, 2.46, 0.0, 0.49, 0.230, 22, C.steel);
   for (let i = 0; i < 5; i++) {
     const tx = 8.74 + i * 0.10;
     barrel.addTubeX(tx, tx + 0.05, 2.46, 0.0, 0.525, 0.485, 20, C.barrelSteel);
   }
-  // Stepped recessed muzzle crown dish + deep pitch-black rifled bore throat + 6 rifling lands!
   barrel.addTubeX(9.25, 9.33, 2.46, 0.0, 0.50, 0.31, 22, C.steel);
-  barrel.addCylinderX(2.05, 9.18, 2.46, 0.0, 0.222, 0.222, 16, C_VOID);
-  for (let i = 0; i < 6; i++) {
-    const a = (i / 6) * Math.PI * 2;
-    const ly = 2.46 + Math.cos(a) * 0.235;
-    const lz = Math.sin(a) * 0.235;
-    barrel.addBox(9.06, ly - 0.022, lz - 0.022, 9.27, ly + 0.022, lz + 0.022, C.steel);
+
+  // Non-X-Ray muzzle shadow plug (drawn ONLY when !xray so solid muzzle crown looks deep black!)
+  const barrelShadowPlug = new MeshBuilder();
+  barrelShadowPlug.addCylinderX(7.80, 9.18, 2.46, 0.0, 0.222, 0.222, 14, C_VOID);
+
+  // --- D1B. INTERNAL BARREL BORE LINE, CHAMBER LEADE RING & 6-GROOVE 1:16" RH HELICAL RIFLING (visible inside X-Ray!) ---
+  const barrelRifling = new MeshBuilder();
+  // Crisp chamber rear rim seat ring (x = -0.91) & chamber-to-rifling leade step ring (x = +0.84)
+  barrelRifling.addTubeX(-0.915, -0.875, 2.46, 0.0, 0.315, 0.285, 20, C_POLISHED);
+  barrelRifling.addTubeX(0.82, 0.88, 2.46, 0.0, 0.292, 0.228, 20, C_POLISHED);
+  // Upper & lower precision internal bore-wall profile filaments (-0.90 to +9.24) so bore line reads clearly through X-Ray layers
+  barrelRifling.addBox(-0.90, 2.46 + 0.286, -0.014, 0.84, 2.46 + 0.302, 0.014, [0.52, 0.58, 0.64]);
+  barrelRifling.addBox(-0.90, 2.46 - 0.302, -0.014, 0.84, 2.46 - 0.286, 0.014, [0.52, 0.58, 0.64]);
+  barrelRifling.addBox(0.84, 2.46 + 0.226, -0.014, 9.25, 2.46 + 0.244, 0.014, [0.55, 0.62, 0.68]);
+  barrelRifling.addBox(0.84, 2.46 - 0.244, -0.014, 9.25, 2.46 - 0.226, 0.014, [0.55, 0.62, 0.68]);
+  // 6 Right-Hand 1:16" Twist Helical Button-Rifling Lands spiraling down the 4.0" bore (x = 0.88 .. 9.25)!
+  for (let k = 0; k < 6; k++) {
+    const ph = (k / 6) * Math.PI * 2;
+    barrelRifling.addHelixSpringX(0.88, 9.25, 2.46, 0.0, 0.226, 0.016, 0.265, 64, [0.74, 0.79, 0.85], ph);
   }
+
+  // --- D1C. FIXED LEFT-SIDE CHISEL-BEVELED EJECTOR BLADE (anchored to stainless FCU left rail!) ---
+  const ejectorBlade = new MeshBuilder();
+  // Rises from left FCU rail (y=1.28) into the left breechblock slot (z = -0.26..-0.15, y = 2.34..2.56)
+  ejectorBlade.addBox(-5.65, 1.24, -0.70, -4.45, 2.42, -0.22, C.steel);
+  // Long fixed ejector blade poking forward to sharp chisel tip at x = -3.77 (strikes left .22 LR rim at slideT >= 0.65!)
+  const ejPoly = [
+    [-5.55, 2.33], [-3.92, 2.33],
+    [-3.76, 2.45], // Chisel-sharp front ejector point!
+    [-3.88, 2.57], [-5.55, 2.57]
+  ];
+  ejectorBlade.addExtrudedPolyXY(ejPoly, -0.26, -0.15, C_POLISHED);
 
   // Stainless lower captured alignment / guide rod (sits at y = 1.55, passes through lower slide port!)
   const guideRod = new MeshBuilder();
@@ -4864,68 +4978,117 @@ function buildSIGP322Meshes() {
 
   // --- D2. VISIBLE BORE LEAD FOULING LAYER & GLOWING BORE GAS COLUMN (X-Ray / Strip) ---
   const boreFoulingMesh = new MeshBuilder();
-  boreFoulingMesh.addCylinderX(2.05, 5.20, 2.46, 0.0, 0.33, 0.30, 12, C.leadFoul);
+  boreFoulingMesh.addTubeX(1.20, 5.60, 2.46, 0.0, 0.232, 0.198, 14, C.leadFoul);
 
   const boreGasCore = new MeshBuilder();
-  boreGasCore.addCylinderX(-0.85, 9.25, 2.46, 0.0, 0.24, 0.20, 14, [1.00, 0.78, 0.32], true, true);
+  boreGasCore.addCylinderX(-0.85, 9.25, 2.46, 0.0, 0.22, 0.19, 14, [1.00, 0.78, 0.32], true, true);
 
   // --- E. CONCENTRIC HELICAL RECOIL SPRING (scales dynamically with slide!) ---
   const recoilSpring = new MeshBuilder();
-  // Normalized X: 0 to 1, centered at y=2.46, z=0; transformed dynamically!
+  // Normalized X: 0 to 1, centered at local y=0, z=0; transformed dynamically along barrel!
   recoilSpring.addHelixSpringX(0.0, 1.0, 0.0, 0.0, 0.78, 0.085, 11, 10, C.springSteel);
 
-  // --- F. ENCLOSED SINGLE-ACTION INTERNAL HAMMER (pivots at -6.15, 0.90, 0) ---
+  // --- F. ENCLOSED SINGLE-ACTION INTERNAL HAMMER + SEAR, TRIGGER BAR & HAMMER MAINSPRING ---
   const hammer = new MeshBuilder();
   const hammerPoly = [
-    [-0.36, -0.32], [0.36, -0.32], [0.42, 0.85], [0.68, 1.45], [0.18, 1.72], [-0.46, 1.10]
+    [-0.36, -0.36], [0.38, -0.36], [0.44, 0.85], [0.68, 1.52], [0.16, 1.82], [-0.46, 1.12]
   ];
-  hammer.addExtrudedPolyXY(hammerPoly, -0.26, 0.26, C.steel);
+  hammer.addExtrudedPolyXY(hammerPoly, -0.24, 0.24, C.steel);
+  hammer.addCylinderZ(-0.52, 0.52, 0, 0, 0.15, 10, C_POLISHED); // Hammer pivot pin
 
-  // --- G. INTERCHANGEABLE TRIGGER SHOES (Flat & Curved, pivot at -0.25, 0.20, 0) ---
+  // Sear pivoting at (-5.68, 0.56, 0) engaging hammer full-cock notch
+  const sear = new MeshBuilder();
+  const searPoly = [[-0.24, -0.26], [0.22, -0.22], [0.18, 0.28], [-0.28, 0.34]];
+  sear.addExtrudedPolyXY(searPoly, -0.32, 0.42, C_POLISHED);
+  sear.addCylinderZ(-0.52, 0.52, 0, 0, 0.11, 10, C.steel);
+
+  // Right-side Stainless Trigger Bar + Out-of-Battery Disconnector Lobe (connects ALL 3 trigger mods to sear!)
+  const triggerBar = new MeshBuilder();
+  const tbPoly = [
+    [-5.95, 0.52], [-0.20, 0.40], [-0.10, 0.62], [-1.35, 0.66],
+    [-1.65, 1.18], [-1.92, 1.18], [-2.18, 0.68], // Vertical disconnector cam lobe riding under right slide rail!
+    [-5.55, 0.78], [-5.95, 0.74]
+  ];
+  triggerBar.addExtrudedPolyXY(tbPoly, 0.46, 0.60, C_POLISHED);
+  // Cross-pin linking trigger bar forward eye into trigger shoe upper yoke
+  triggerBar.addCylinderZ(0.24, 0.64, -0.22, 0.50, 0.10, 8, C.steel);
+
+  // Hammer Strut & Helical Hammer Mainspring inside rear grip housing (compresses when cocked!)
+  const hammerStrut = new MeshBuilder();
+  hammerStrut.addCylinderX(0.0, 1.0, 0.0, 0.0, 0.075, 0.075, 8, C.steel);
+  const hammerMainspring = new MeshBuilder();
+  hammerMainspring.addHelixSpringX(0.08, 0.94, 0.0, 0.0, 0.22, 0.045, 9, 8, C.springSteel);
+
+  // --- G. INTERCHANGEABLE TRIGGER SHOES (Flat, Curved & Billet Red — all with upper FCU yoke & pivot pin!) ---
   const triggerFlat = new MeshBuilder();
   const tfPoly = [
-    [-0.22, 0.05], [0.22, 0.05], [0.24, -1.72], [-0.14, -1.72], [-0.18, -0.25]
+    [-0.26, 0.62], [0.18, 0.58], [0.22, 0.05], [0.24, -1.72], [-0.14, -1.72], [-0.18, -0.25]
   ];
   triggerFlat.addExtrudedPolyXY(tfPoly, -0.32, 0.32, C.controlDark);
+  triggerFlat.addCylinderZ(-0.62, 0.62, 0, 0, 0.13, 10, C.steel);
 
   const triggerCurved = new MeshBuilder();
   const tcPoly = [
-    [-0.22, 0.05], [0.22, 0.05], [0.06, -0.58], [0.12, -1.18],
+    [-0.26, 0.62], [0.18, 0.58], [0.22, 0.05], [0.06, -0.58], [0.12, -1.18],
     [0.44, -1.68], [0.08, -1.78], [-0.26, -1.24], [-0.28, -0.55]
   ];
   triggerCurved.addExtrudedPolyXY(tcPoly, -0.32, 0.32, C.controlDark);
+  triggerCurved.addCylinderZ(-0.62, 0.62, 0, 0, 0.13, 10, C.steel);
 
-  // --- H. AMBIDEXTROUS MANUAL THUMB SAFETY (pivots at -6.15, 0.76, 0) ---
+  // Add upper FCU linkage yoke + adjustable overtravel pin onto billet red trigger too!
+  triggerRed.addBox(-0.24, 0.04, -0.26, 0.16, 0.60, 0.26, C.redAnod);
+  triggerRed.addCylinderZ(-0.62, 0.62, 0, 0, 0.13, 10, C_POLISHED);
+  triggerRed.addCylinderX(-0.28, 0.26, -0.38, 0.0, 0.065, 0.065, 8, C.steel); // Pre/overtravel adjustment screw!
+
+  // --- H. AMBIDEXTROUS MANUAL THUMB SAFETY + INTERNAL TRIGGER-BAR BLOCKING LUG (pivots at -6.15, 0.76, 0) ---
   const safety = new MeshBuilder();
   const safPoly = [[-0.28, -0.22], [1.45, -0.14], [1.55, 0.26], [-0.18, 0.26]];
   safety.addExtrudedPolyXY(safPoly, 1.24, 1.56, C.controlDark);   // Right paddle
   safety.addExtrudedPolyXY(safPoly, -1.56, -1.24, C.controlDark); // Left paddle
-  safety.addCylinderZ(-1.35, 1.35, 0, 0, 0.20, 10, C.steel);      // Cross shaft
+  safety.addCylinderZ(-1.35, 1.35, 0, 0, 0.18, 10, C.steel);      // Cross shaft
+  // Internal eccentric cam lug on right side (z=0.40..0.64) that rotates behind trigger bar when SAFE!
+  safety.addBox(0.05, -0.34, 0.40, 0.42, 0.12, 0.64, C_POLISHED);
 
-  // --- I. AMBIDEXTROUS SLIDE CATCH LEVER (pivots at -2.75, 0.78, 0) ---
+  // --- I. AMBIDEXTROUS SLIDE CATCH LEVER + INTERNAL MAGAZINE-FOLLOWER TRIP TAB (pivots at -2.75, 0.78, 0) ---
   const slideCatch = new MeshBuilder();
   const scPoly = [[-0.35, -0.18], [1.75, -0.12], [1.85, 0.28], [1.05, 0.38], [-0.28, 0.22]];
   slideCatch.addExtrudedPolyXY(scPoly, 1.24, 1.50, C.controlDark);
   slideCatch.addExtrudedPolyXY(scPoly, -1.50, -1.24, C.controlDark);
+  slideCatch.addCylinderZ(-1.32, 1.32, 0, 0, 0.13, 10, C.steel);
+  // Internal follower-engagement shelf reaching inward at x_local = +0.55..+0.95, z = -0.68..-0.34!
+  slideCatch.addBox(0.45, 0.08, -0.72, 0.95, 0.32, -0.34, C_POLISHED);
 
-  // --- J. LEFT-SIDE TAKEDOWN LEVER (pivots at +1.95, 0.56, -1.36) ---
+  // --- J. LEFT-SIDE TAKEDOWN LEVER + INTERNAL D-CAM & MAGAZINE/TRIGGER INTERLOCK SHAFT (pivots at +1.95, 0.56) ---
   const takedown = new MeshBuilder();
-  takedown.addCylinderZ(-1.54, -1.22, 0, 0, 0.28, 12, C.steel);
+  takedown.addCylinderZ(-1.54, 0.72, 0, 0, 0.22, 12, C.steel);
+  takedown.addBox(-0.24, 0.08, -0.68, 0.24, 0.36, 0.68, C_POLISHED); // Eccentric slide-release / interlock cam
   const tdPoly = [[-0.25, -0.18], [1.22, -0.14], [1.26, 0.20], [-0.22, 0.24]];
   takedown.addExtrudedPolyXY(tdPoly, -1.56, -1.28, C.controlDark);
 
-  // --- K. MAGAZINE RELEASE BUTTON (Left side behind trigger guard) ---
+  // --- K. MAGAZINE RELEASE BUTTON + INTERNAL CATCH BAR (Left side behind trigger guard) ---
   const magRelease = new MeshBuilder();
   const mrPoly = [[-3.12, -1.38], [-2.22, -1.34], [-2.12, -0.84], [-2.92, -0.78]];
   magRelease.addExtrudedPolyXY(mrPoly, -1.48, -1.22, C.controlDark);
+  magRelease.addBox(-3.02, -1.24, -1.22, -2.30, -0.92, 0.92, C.steel);
 
-  // --- L. 20-ROUND STAGGERED POLYMER MAGAZINE & THUMB-ASSIST TABS ---
+  // --- L. 20-ROUND & 25-ROUND STAGGERED POLYMER MAGAZINE WITH UPPER FEED-LIP TOWER ---
   const magBody = new MeshBuilder();
-  // Angled polymer tube fitting cleanly inside the 108° grip cavity
+  // Main angled polymer tube + tapered upper feed tower rising right behind the barrel feed ramp!
   const mbPoly = [
-    [-3.10, 0.75], [-6.25, 0.75], [-8.80, -6.85], [-5.25, -6.85]
+    [-2.02, 0.82], [-2.35, 1.48], [-4.56, 1.48], [-5.95, 0.75],
+    [-8.80, -6.85], [-5.25, -6.85], [-2.98, 0.55]
   ];
-  magBody.addExtrudedPolyXY(mbPoly, -0.86, 0.86, C.magPoly);
+  // Left & right magazine walls + curved top feed lips (leaving center slot z = -0.21..+0.21 open for breechblock stripper lug!)
+  magBody.addExtrudedPolyXY(mbPoly, -0.84, -0.52, C.magPoly);
+  magBody.addExtrudedPolyXY(mbPoly, 0.52, 0.84, C.magPoly);
+  // Front & rear magazine spine walls below feed lips (down to basepad)
+  const spineRear = [[-4.42, 1.22], [-5.95, 0.75], [-8.80, -6.85], [-8.38, -6.85], [-4.16, 1.22]];
+  const spineFront = [[-2.02, 0.82], [-2.42, 0.82], [-5.62, -6.85], [-5.25, -6.85], [-2.98, 0.55]];
+  magBody.addExtrudedPolyXY(spineRear, -0.54, 0.54, C.magPoly);
+  magBody.addExtrudedPolyXY(spineFront, -0.54, 0.54, C.magPoly);
+  // Hardened inward-curved polymer/steel top feed lips holding the top .22 LR cartridge at y = 1.46 (open center channel z = -0.21..+0.21!)
+  magBody.addBox(-4.48, 1.44, -0.56, -2.52, 1.64, -0.21, C.stipple);
+  magBody.addBox(-4.48, 1.44, 0.21, -2.52, 1.64, 0.56, C.stipple);
   // Flared textured polymer basepad extending cleanly below magwell (grabbable!)
   const padPoly = [
     [-4.65, -6.90], [-9.50, -6.90], [-9.72, -7.62], [-4.85, -7.62]
@@ -4934,13 +5097,14 @@ function buildSIGP322Meshes() {
 
   // Side follower thumb-assist buttons (tucked inside grip when seated; visible when mag pulled out or X-Ray!)
   const magFollowerTabs = new MeshBuilder();
-  magFollowerTabs.addCylinderZ(-1.02, 1.02, 0, 0, 0.22, 10, C.magTab);
+  magFollowerTabs.addCylinderZ(-1.02, 1.02, 0, 0, 0.20, 10, C.magTab);
 
-  // Anti-tilt stepped polymer follower body (high-vis orange top shelf + dark skirt + side load-assist tabs!)
+  // Anti-tilt stepped polymer follower body (high-vis orange top shelf + slide-lock trip ledge + dark skirt!)
   const magFollower = new MeshBuilder();
-  magFollower.addBox(-0.65, -0.02, -0.62, 1.75, 0.14, 0.62, C.flagOrange);
-  magFollower.addBox(-0.68, -0.26, -0.66, 1.72, -0.02, 0.66, C.magTab);
-  magFollower.addCylinderZ(-1.04, 1.04, 0.35, -0.10, 0.20, 10, C.magTab);
+  magFollower.addBox(-0.18, -0.02, -0.50, 2.15, 0.14, 0.50, C.flagOrange);
+  magFollower.addBox(1.25, 0.12, -0.52, 1.95, 0.26, -0.24, C.flagOrange); // Left-side slide-catch trip shelf!
+  magFollower.addBox(-0.22, -0.26, -0.52, 2.12, -0.02, 0.52, C.magTab);
+  magFollower.addCylinderZ(-1.02, 1.02, 0.65, -0.10, 0.19, 10, C.magTab);
 
   // Dynamic 13-switchback rectangular oval-coil steel magazine spring (normalized u = 0..1 along +Y)
   const magSpring = new MeshBuilder();
@@ -4949,31 +5113,112 @@ function buildSIGP322Meshes() {
     const u0 = i / nSwitch;
     const u1 = (i + 1) / nSwitch;
     const dir = (i % 2 === 0) ? 1 : -1;
-    const xA = -0.78 * dir, xB = 0.78 * dir;
-    // Front & rear wire legs of the oval coil switchback
-    for (const zOff of [-0.46, 0.46]) {
+    const xA = -0.72 * dir, xB = 0.72 * dir;
+    for (const zOff of [-0.40, 0.40]) {
       const wireXY = [
         [xA - 0.08, u0], [xA + 0.08, u0],
         [xB + 0.08, u1], [xB - 0.08, u1]
       ];
       magSpring.addExtrudedPolyXY(wireXY, zOff - 0.045, zOff + 0.045, C.springSteel);
     }
-    // End bend connecting front & rear legs
-    magSpring.addBox(xB - 0.09, Math.max(0, u1 - 0.025), -0.50, xB + 0.09, Math.min(1, u1 + 0.025), 0.50, C.springSteel);
+    magSpring.addBox(xB - 0.09, Math.max(0, u1 - 0.025), -0.44, xB + 0.09, Math.min(1, u1 + 0.025), 0.44, C.springSteel);
   }
-  // Baseplate anchor loop (u = 0) & follower top loop (u = 1)
-  magSpring.addBox(-0.84, 0.0, -0.50, 0.84, 0.03, 0.50, C.springSteel);
-  magSpring.addBox(-0.84, 0.97, -0.50, 0.84, 1.00, 0.50, C.springSteel);
+  magSpring.addBox(-0.78, 0.0, -0.44, 0.78, 0.03, 0.44, C.springSteel);
+  magSpring.addBox(-0.78, 0.97, -0.44, 0.78, 1.00, 0.44, C.springSteel);
 
-  // --- M. SINGLE .22 LR CARTRIDGE MESHES (Brass case + Bullet) ---
-  const brassCase = new MeshBuilder();
-  // Rim flange + cylindrical brass case along +X (total ~1.55u = 15.5mm)
-  brassCase.addCylinderX(-0.08, 0.04, 0, 0, 0.34, 0.34, 12, C.brass);
-  brassCase.addCylinderX(0.04, 1.52, 0, 0, 0.28, 0.28, 12, C.brass);
+  // --- M. LOAD-ACCURATE .22 LR CARTRIDGE CASES (BRASS, NICKEL STINGER & HOLLOW SPENT) + ALL 6 PROJECTILES ---
+  const C_NICKEL = [0.84, 0.86, 0.90];
+  const C_HEADSTAMP_BRASS = [0.58, 0.46, 0.16];
+  const C_HEADSTAMP_NICKEL = [0.54, 0.57, 0.62];
 
-  const bulletNose = new MeshBuilder();
-  bulletNose.addCylinderX(1.52, 2.08, 0, 0, 0.275, 0.23, 12, C.copper);
-  bulletNose.addCylinderX(2.08, 2.42, 0, 0, 0.23, 0.04, 12, C.copper);
+  // 1) Standard .22 LR Rimfire Brass Case (15.6mm: rim -0.10..+0.03, undercut +0.03..+0.12, wall +0.12..+1.50)
+  const caseBrass = new MeshBuilder();
+  caseBrass.addCylinderX(-0.10, 0.03, 0, 0, 0.345, 0.345, 16, C.brass);
+  caseBrass.addCylinderX(-0.105, -0.095, 0, 0, 0.21, 0.21, 14, C_HEADSTAMP_BRASS, true, false); // Recessed rear headstamp dish!
+  caseBrass.addCylinderX(0.03, 0.13, 0, 0, 0.268, 0.278, 14, C_HEADSTAMP_BRASS, false, false);  // Extractor groove!
+  caseBrass.addCylinderX(0.13, 1.50, 0, 0, 0.280, 0.278, 16, C.brass, false, true);
+
+  // 2) Longer Nickel-Plated Hyper-Velocity Case for CCI Stinger (18.0mm: -0.10..+1.72)
+  const caseNickel = new MeshBuilder();
+  caseNickel.addCylinderX(-0.10, 0.03, 0, 0, 0.345, 0.345, 16, C_NICKEL);
+  caseNickel.addCylinderX(-0.105, -0.095, 0, 0, 0.21, 0.21, 14, C_HEADSTAMP_NICKEL, true, false);
+  caseNickel.addCylinderX(0.03, 0.13, 0, 0, 0.268, 0.278, 14, C_HEADSTAMP_NICKEL, false, false);
+  caseNickel.addCylinderX(0.13, 1.72, 0, 0, 0.280, 0.278, 16, C_NICKEL, false, true);
+
+  // 3) True Open-Mouthed Hollow Spent Brass & Spent Nickel Casings (with 12-o'clock rimfire firing-pin crush mark!)
+  const caseSpentBrass = new MeshBuilder();
+  caseSpentBrass.addCylinderX(-0.10, 0.03, 0, 0, 0.345, 0.345, 16, C.brass);
+  caseSpentBrass.addCylinderX(-0.105, -0.095, 0, 0, 0.21, 0.21, 14, C_HEADSTAMP_BRASS, true, false);
+  caseSpentBrass.addBox(-0.11, 0.23, -0.035, -0.02, 0.35, 0.035, [0.22, 0.18, 0.08]); // 12-o'clock firing-pin dent!
+  caseSpentBrass.addCylinderX(0.03, 1.15, 0, 0, 0.280, 0.281, 16, C.brass, false, false);
+  caseSpentBrass.addTubeX(1.15, 1.50, 0, 0, 0.281, 0.242, 16, C.brass);
+  caseSpentBrass.addCylinderX(0.95, 1.46, 0, 0, 0.240, 0.240, 12, C_VOID);
+
+  const caseSpentNickel = new MeshBuilder();
+  caseSpentNickel.addCylinderX(-0.10, 0.03, 0, 0, 0.345, 0.345, 16, C_NICKEL);
+  caseSpentNickel.addCylinderX(-0.105, -0.095, 0, 0, 0.21, 0.21, 14, C_HEADSTAMP_NICKEL, true, false);
+  caseSpentNickel.addBox(-0.11, 0.23, -0.035, -0.02, 0.35, 0.035, [0.20, 0.22, 0.25]);
+  caseSpentNickel.addCylinderX(0.03, 1.35, 0, 0, 0.280, 0.281, 16, C_NICKEL, false, false);
+  caseSpentNickel.addTubeX(1.35, 1.72, 0, 0, 0.281, 0.242, 16, C_NICKEL);
+  caseSpentNickel.addCylinderX(1.15, 1.68, 0, 0, 0.240, 0.240, 12, C_VOID);
+
+  // 4) Six Distinct, Load-Accurate .22 LR Projectiles!
+  // (a) CCI Mini-Mag 40gr CPRN — Bright electrolytic copper-plated solid round nose + cannelure
+  const projMinimag = new MeshBuilder();
+  projMinimag.addCylinderX(1.50, 1.62, 0, 0, 0.276, 0.268, 16, [0.68, 0.38, 0.18], false, false);
+  projMinimag.addCylinderX(1.62, 1.98, 0, 0, 0.275, 0.248, 16, [0.82, 0.47, 0.23], false, false);
+  projMinimag.addCylinderX(1.98, 2.28, 0, 0, 0.248, 0.155, 16, [0.82, 0.47, 0.23], false, false);
+  projMinimag.addCylinderX(2.28, 2.44, 0, 0, 0.155, 0.045, 16, [0.84, 0.50, 0.25], false, true);
+
+  // (b) CCI Stinger 32gr CPHP — Starts at +1.72 (longer nickel case!), bright copper-plated HOLLOW POINT!
+  const projStinger = new MeshBuilder();
+  projStinger.addCylinderX(1.72, 2.02, 0, 0, 0.275, 0.242, 16, [0.84, 0.50, 0.25], false, false);
+  projStinger.addCylinderX(2.02, 2.26, 0, 0, 0.242, 0.175, 16, [0.86, 0.52, 0.26], false, false);
+  projStinger.addTubeX(2.26, 2.43, 0, 0, 0.175, 0.088, 16, [0.86, 0.52, 0.26]); // Open copper hollow-point cup!
+  projStinger.addCylinderX(2.22, 2.39, 0, 0, 0.086, 0.086, 12, C_VOID);
+
+  // (c) CCI Standard Velocity 40gr LRN — Matte waxed dark-slate unplated lead round nose w/ 2 grease grooves!
+  const projSv = new MeshBuilder();
+  const cLeadDark = [0.33, 0.35, 0.38], cWaxGroove = [0.22, 0.23, 0.25];
+  projSv.addCylinderX(1.50, 1.62, 0, 0, 0.276, 0.276, 16, cLeadDark, false, false);
+  projSv.addCylinderX(1.62, 1.69, 0, 0, 0.255, 0.255, 16, cWaxGroove, false, false); // Lube groove 1
+  projSv.addCylinderX(1.69, 1.80, 0, 0, 0.276, 0.274, 16, cLeadDark, false, false);
+  projSv.addCylinderX(1.80, 1.87, 0, 0, 0.254, 0.254, 16, cWaxGroove, false, false); // Lube groove 2
+  projSv.addCylinderX(1.87, 2.12, 0, 0, 0.272, 0.225, 16, cLeadDark, false, false);
+  projSv.addCylinderX(2.12, 2.34, 0, 0, 0.225, 0.125, 16, cLeadDark, false, false);
+  projSv.addCylinderX(2.34, 2.44, 0, 0, 0.125, 0.045, 16, cLeadDark, false, true);
+
+  // (d) CCI Suppressor 45gr Subsonic HP — Heavy longer dark-lead bullet w/ wide segmented HOLLOW POINT!
+  const projSup = new MeshBuilder();
+  const cLeadHvy = [0.29, 0.31, 0.34];
+  projSup.addCylinderX(1.50, 1.65, 0, 0, 0.277, 0.277, 16, cLeadHvy, false, false);
+  projSup.addCylinderX(1.65, 1.72, 0, 0, 0.256, 0.256, 16, cWaxGroove, false, false);
+  projSup.addCylinderX(1.72, 1.86, 0, 0, 0.277, 0.275, 16, cLeadHvy, false, false);
+  projSup.addCylinderX(1.86, 1.93, 0, 0, 0.255, 0.255, 16, cWaxGroove, false, false);
+  projSup.addCylinderX(1.93, 2.26, 0, 0, 0.274, 0.212, 16, cLeadHvy, false, false);
+  projSup.addTubeX(2.26, 2.49, 0, 0, 0.212, 0.105, 16, cLeadHvy); // Wide 45gr subsonic hollow-point mouth!
+  projSup.addCylinderX(2.20, 2.45, 0, 0, 0.102, 0.102, 12, C_VOID);
+
+  // (e) CCI Quiet-22 40gr LRN — Satin pewter-gray unplated lead round nose w/ lube band
+  const projQuiet = new MeshBuilder();
+  const cLeadQuiet = [0.41, 0.43, 0.46];
+  projQuiet.addCylinderX(1.50, 1.66, 0, 0, 0.276, 0.276, 16, cLeadQuiet, false, false);
+  projQuiet.addCylinderX(1.66, 1.74, 0, 0, 0.256, 0.256, 16, [0.28, 0.30, 0.32], false, false);
+  projQuiet.addCylinderX(1.74, 2.08, 0, 0, 0.274, 0.228, 16, cLeadQuiet, false, false);
+  projQuiet.addCylinderX(2.08, 2.31, 0, 0, 0.228, 0.128, 16, cLeadQuiet, false, false);
+  projQuiet.addCylinderX(2.31, 2.42, 0, 0, 0.128, 0.048, 16, cLeadQuiet, false, true);
+
+  // (f) Bulk Soft Lead 36gr — Pale cast unplated truncated-cone flat-meplat hollow point!
+  const projBulk = new MeshBuilder();
+  const cLeadBulk = [0.49, 0.50, 0.52];
+  projBulk.addCylinderX(1.50, 1.68, 0, 0, 0.277, 0.277, 14, cLeadBulk, false, false);
+  projBulk.addCylinderX(1.68, 1.75, 0, 0, 0.258, 0.258, 14, [0.34, 0.35, 0.37], false, false);
+  projBulk.addCylinderX(1.75, 2.24, 0, 0, 0.275, 0.168, 14, cLeadBulk, false, false); // Straight truncated cone!
+  projBulk.addTubeX(2.24, 2.38, 0, 0, 0.168, 0.068, 14, cLeadBulk);
+  projBulk.addCylinderX(2.20, 2.35, 0, 0, 0.066, 0.066, 10, C_VOID);
+
+  const brassCase = caseBrass;
+  const bulletNose = projMinimag;
 
   // --- N. ORANGE CHAMBER SAFETY FLAG (SIG Factory Dry-Fire Cushion!) ---
   const chamberFlag = new MeshBuilder();
@@ -5056,6 +5301,13 @@ function buildSIGP322Meshes() {
     frame: frame.toData(),
     chassis: chassis.toData(),
     slide: slide.toData(),
+    breechBlock: breechBlock.toData(),
+    stripperLug: stripperLug.toData(),
+    extractorClaw: extractorClaw.toData(),
+    extractorSpring: extractorSpring.toData(),
+    firingPin: firingPin.toData(),
+    firingPinSpring: firingPinSpring.toData(),
+    ejectorBlade: ejectorBlade.toData(),
     fiberSights: fiberSights.toData(),
     sightShell_factory: sightShells.factory.toData(),
     sightGlow_factory: sightGlows.factory.toData(),
@@ -5076,12 +5328,19 @@ function buildSIGP322Meshes() {
     railLight: railLight.toData(),
     railLightCore: railLightCore.toData(),
     railLens: railLens.toData(),
+    barrelTrunnion: barrelTrunnion.toData(),
     barrel: barrel.toData(),
+    barrelRifling: barrelRifling.toData(),
+    barrelShadowPlug: barrelShadowPlug.toData(),
     guideRod: guideRod.toData(),
     boreFoulingMesh: boreFoulingMesh.toData(),
     boreGasCore: boreGasCore.toData(),
     recoilSpring: recoilSpring.toData(),
     hammer: hammer.toData(),
+    sear: sear.toData(),
+    triggerBar: triggerBar.toData(),
+    hammerStrut: hammerStrut.toData(),
+    hammerMainspring: hammerMainspring.toData(),
     triggerFlat: triggerFlat.toData(),
     triggerCurved: triggerCurved.toData(),
     safety: safety.toData(),
@@ -5094,6 +5353,16 @@ function buildSIGP322Meshes() {
     magFollowerTabs: magFollowerTabs.toData(),
     brassCase: brassCase.toData(),
     bulletNose: bulletNose.toData(),
+    case_brass: caseBrass.toData(),
+    case_nickel: caseNickel.toData(),
+    case_spent_brass: caseSpentBrass.toData(),
+    case_spent_nickel: caseSpentNickel.toData(),
+    proj_cci_minimag: projMinimag.toData(),
+    proj_cci_stinger: projStinger.toData(),
+    proj_cci_sv: projSv.toData(),
+    proj_cci_sup: projSup.toData(),
+    proj_cci_quiet: projQuiet.toData(),
+    proj_bulk_lead: projBulk.toData(),
     chamberFlag: chamberFlag.toData(),
     muzzleCap: muzzleCap.toData(),
     supOuter: supOuter.toData(),
@@ -5154,9 +5423,27 @@ class P322Mechanics {
     this.slideVel = 0.0;
     this.slideMaxTravel = 4.2;   // 42 mm in world units
     this.slideDragged = false;
+    this.lastDragSpeed = 0.0;
+    this.autoRackBack = false;   // Smooth kinematic rearward stroke when RACK button is tapped
     this.wasPastCock = false;
     this.wasPastStrip = false;
     this.pressCheckLogged = false;
+    this.ejectorPivotLogged = false;
+    this.stripperReadyLogged = false;
+    this.stripperPushLogged = false;
+
+    // Slow-motion continuous stripper-lug feeding state
+    this.feedingActive = false;  // True while steel breechblock stripper lug pushes a round up ramp into chamber
+    this.feedingParity = 0;      // Preserves left/right staggered lip parity during feed
+    this.feedMinSlideT = 1.0;
+
+    // Internal firing-pin throw & cantilevered fixed-barrel free-float / harmonic micro-flex
+    this.firingPinPulse = 0.0;
+    this.barrelFloatPitch = 0.0;
+    this.barrelVibPitch = 0.0;
+    this.barrelVibPitchVel = 0.0;
+    this.barrelVibYaw = 0.0;
+    this.barrelVibYawVel = 0.0;
 
     this.triggerT = 0.0;
     this.triggerStyle = 'flat';  // 'flat' | 'curved'
@@ -5304,18 +5591,168 @@ class P322Mechanics {
     this.onStateChange(this);
   }
 
-  /* --- SLIDE DIRECT DRAG API --- */
+  /* --- SLIDE DIRECT DRAG API (FULL SLOW-MOTION EXTRACTION, EJECTOR PIVOT & STRIPPER-LUG FEED) --- */
   beginSlideDrag() {
     if (this.fieldStripped) {
       this.log('PISTOL IS FIELD STRIPPED. REASSEMBLE SLIDE BEFORE RACKING.', 'warn');
       return false;
     }
     this.slideDragged = true;
+    this.autoRackBack = false;
     this.slideVel = 0;
+    this.lastDragSpeed = 0;
     this.wasPastCock = this.hammerCocked;
-    this.wasPastStrip = this.slideT >= 0.72;
+    this.wasPastStrip = this.slideT >= 0.81 || this.feedingActive;
     this.pressCheckLogged = false;
+    this.ejectorPivotLogged = false;
+    this.stripperReadyLogged = this.slideT >= 0.81;
+    this.stripperPushLogged = false;
     return true;
+  }
+
+  seatFromOutOfBattery() {
+    this.outOfBattery = false;
+    this.slideT = 0.0;
+    this.slideVel = 0.0;
+    this.slideDragged = false;
+    if (this.feedingActive) {
+      this.feedingActive = false;
+      this.chambered = true;
+      this.chamberedSpent = false;
+      this.wasPastStrip = false;
+    }
+    this.nudgeBarrelHarmonic(0.010, 0.0);
+    if (this.audio) this.audio.playSlideSlam(true, 0.55);
+    this.log('TAPPED REAR OF SLIDE — EXTRACTOR SNAPPED OVER RIM & SEATED FULLY INTO BATTERY!', 'info');
+    this.notify();
+  }
+
+  nudgeBarrelHarmonic(pitchImp, yawImp = 0.0) {
+    const massMult = this.muzzleMode === 'oilcan' ? 2.45
+      : (this.muzzleMode === 'commercial' ? 1.85
+        : (this.muzzleMode === 'comp' ? 1.25 : 1.0));
+    this.barrelVibPitchVel = Math.max(-0.55, Math.min(0.55, this.barrelVibPitchVel + pitchImp * massMult));
+    this.barrelVibYawVel = Math.max(-0.45, Math.min(0.45, this.barrelVibYawVel + yawImp * massMult));
+  }
+
+  _updateSlideKinematics(prevT, speed, isManualDrag) {
+    // 1) Press-Check / Extractor Rim-Pull zone (0.18 .. 0.58)
+    if (isManualDrag && !this.pressCheckLogged && this.slideT >= 0.18 && this.slideT < 0.58 && prevT < 0.18) {
+      this.pressCheckLogged = true;
+      if (this.chambered) {
+        this.log(this.chamberedSpent
+          ? 'EXTRACTOR CLAW GRIPPING SPENT .22 LR RIM — SLIDING CASING BACKWARD OUT OF CHAMBER...'
+          : 'PRESS-CHECK: RIGHT-SIDE EXTRACTOR CLAW GRIPPING LIVE .22 LR RIM & PULLING IT WITH SLIDE.', 'warn');
+      } else if (this.chamberFlag) {
+        this.log('PRESS-CHECK: ORANGE CHAMBER SAFETY FLAG SEATED.', 'info');
+      } else {
+        this.log('PRESS-CHECK: CHAMBER VISUALLY CLEAR (EMPTY).', 'info');
+      }
+    }
+
+    // 2) Hammer cocking detent (~0.45 travel compresses rear hammer mainspring!)
+    if (this.slideT >= 0.45 && !this.hammerCocked) {
+      this.hammerCocked = true;
+      if (this.audio) this.audio.playHammerCock();
+      this.log('ENCLOSED SAO HAMMER COCKED BY SLIDE TRAVEL (MAINSPRING COMPRESSED ON SEAR).', 'info');
+      this.notify();
+    }
+
+    // 3A) Fixed Left-Side Chisel Ejector Rim-Contact & Lever-Pivot Zone (0.65 .. 0.78)
+    if (isManualDrag && this.chambered && !this.ejectorPivotLogged && this.slideT >= 0.65 && this.slideT < 0.78 && prevT < 0.65) {
+      this.ejectorPivotLogged = true;
+      this.log('FIXED CHISEL EJECTOR CONTACTING LEFT RIM — PIVOTING CARTRIDGE AROUND EXTRACTOR HOOK TOWARD PORT...', 'info');
+    }
+
+    // 3B) Full Ejection Flick Point (~0.78 travel: rim snaps free of extractor hook!)
+    if (this.slideT >= 0.78 && this.chambered) {
+      const wasSpent = this.chamberedSpent;
+      this.chambered = false;
+      this.chamberedSpent = false;
+      const ejectPower = Math.max(0.42, Math.min(0.95, 0.38 + speed * 0.14));
+      this._spawnCasing(!wasSpent, ejectPower, this.ammoId, true);
+      if (this.audio) this.audio.playBrassTinkle(!wasSpent, 0.34);
+      this.log(wasSpent
+        ? 'CHISEL EJECTOR FLICKED SPENT .22 LR CASING CLEAR OF EXTRACTOR CLAW!'
+        : 'CHISEL EJECTOR FLICKED LIVE .22 LR CARTRIDGE OUT RIGHT EJECTION PORT!', 'info');
+      this.notify();
+    }
+
+    // 4) Breechblock Lower Stripper Lug clears rear of magazine stack (>= 0.81 -> top round pops up into feed lips!)
+    if (this.slideT >= 0.81) {
+      if (!this.wasPastStrip) {
+        this.wasPastStrip = true;
+        if (!this.chambered && !this.feedingActive && this.isMagSeated() && this.magRounds > 0 && !this.stripperReadyLogged) {
+          this.stripperReadyLogged = true;
+          if (this.audio) this.audio.playSafetyToggle(true);
+          this.log('STEEL BREECHBLOCK STRIPPER LUG BEHIND RIM — TOP .22 LR POPPED UP INTO FEED LIPS READY TO PUSH FORWARD!', 'info');
+          this.notify();
+        }
+      }
+    }
+
+    // 5) Begin continuous forward Stripper-Lug Ramp Feed as slide moves forward from >= 0.81!
+    if (this.slideT < 0.81 && prevT > this.slideT && this.wasPastStrip && !this.chambered && !this.chamberFlag && !this.feedingActive) {
+      if (this.isMagSeated() && this.magRounds > 0) {
+        this.feedingActive = true;
+        this.feedingParity = (this.maxMag - this.magRounds) % 2;
+        this.feedMinSlideT = this.slideT;
+        this.magRounds--;
+        if (isManualDrag && !this.stripperPushLogged) {
+          this.stripperPushLogged = true;
+          this.log('STEEL STRIPPER LUG PUSHING NEW .22 LR FORWARD OUT OF FEED LIPS UP BARREL FEED RAMP...', 'info');
+        }
+        this.notify();
+      }
+    }
+
+    if (this.feedingActive) {
+      this.feedMinSlideT = Math.min(this.feedMinSlideT, this.slideT);
+    }
+
+    // 6) Slingshot unlock if slide was locked open & user pulls past 0.94 (not empty mag!)
+    if (this.slideLocked && this.slideT >= 0.94 && !(this.isMagSeated() && (this.magRounds === 0 && !this.feedingActive))) {
+      this.slideLocked = false;
+      this.slideCatchManual = false;
+      if (this.audio) this.audio.playSlideLock();
+      this.log('SLINGSHOT RELEASE: SLIDE CATCH DROPPED CLEAR. MOVE FORWARD OR RELEASE TO FEED INTO BATTERY.', 'info');
+      this.notify();
+    }
+
+    // 7) Empty magazine automatic slide-catch engagement at 0.86 (orange follower shelf lifts internal catch tab!)
+    if (this.slideT >= 0.86 && this.isMagSeated() && this.magRounds === 0 && !this.feedingActive && !this.chambered && !this.slideLocked) {
+      this.slideLocked = true;
+      if (this.audio) this.audio.playSlideLock();
+      this.log('EMPTY MAGAZINE FOLLOWER LIFTED INTERNAL SLIDE-CATCH TAB — LOCKED OPEN.', 'info');
+      this.notify();
+    }
+
+    // 8) Completing forward feed all the way into full battery (slideT <= 0.015)!
+    if (!this.slideLocked && !this.chamberFlag && this.slideT <= 0.015) {
+      if (this.feedingActive) {
+        this.feedingActive = false;
+        this.chambered = true;
+        this.chamberedSpent = false;
+        this.wasPastStrip = false;
+        this.outOfBattery = false;
+        this.nudgeBarrelHarmonic(0.012, 0.0);
+        if (isManualDrag) {
+          if (this.audio) this.audio.playSlideSlam(true, 0.50);
+          this.log(`EXTRACTOR CLAW SNAPPED OVER .22 LR RIM — ROUND FULLY SEATED IN BATTERY (${this.magRounds}/${this.maxMag} IN MAG +1 CHBR).`, 'info');
+        } else {
+          this.log(`SLIDE SNAPPED FORWARD — .22 LR ROUND CHAMBERED (${this.magRounds}/${this.maxMag} IN MAG +1 CHBR).`, 'info');
+        }
+        this.notify();
+      } else if (this.wasPastStrip) {
+        this._attemptChamberOnClose(false);
+      } else if (this.outOfBattery) {
+        this.outOfBattery = false;
+        this.nudgeBarrelHarmonic(0.009, 0.0);
+        if (this.audio) this.audio.playSlideSlam(false, 0.45);
+        this.log('SLIDE PUSHED FULLY FORWARD — SEATED IN BATTERY!', 'info');
+        this.notify();
+      }
+    }
   }
 
   updateSlideDrag(newT, deltaT) {
@@ -5330,76 +5767,11 @@ class P322Mechanics {
     const minT = this.slideLocked ? 0.86 : (this.chamberFlag ? 0.28 : 0.0);
     this.slideT = Math.max(minT, Math.min(1.0, newT));
 
-    // Pushing an out-of-battery slide manually all the way forward seats it cleanly!
-    if (this.outOfBattery && this.slideT <= 0.015) {
-      this.outOfBattery = false;
-      if (this.audio) this.audio.playSlideSlam(false, 0.45);
-      this.log('SLIDE PUSHED FULLY FORWARD — SEATED IN BATTERY!', 'info');
-      this.notify();
-    }
-
     const speed = Math.abs(this.slideT - prevT) / Math.max(0.008, deltaT || 0.016);
+    this.lastDragSpeed = speed;
     if (this.audio) this.audio.updateSlideDrag(speed * 0.16);
 
-    // 1) Press-Check zone (0.18 .. 0.55)
-    if (!this.pressCheckLogged && this.slideT >= 0.20 && this.slideT < 0.55 && prevT < 0.20) {
-      this.pressCheckLogged = true;
-      if (this.chambered) {
-        this.log(this.chamberedSpent
-          ? 'PRESS-CHECK: SPENT BRASS CASING IN CHAMBER (SHORT-STROKE). RACK FULLY TO EJECT.'
-          : 'PRESS-CHECK: BRASS RIM VISIBLE IN EJECTION PORT — CHAMBER HOT.', 'warn');
-      } else if (this.chamberFlag) {
-        this.log('PRESS-CHECK: ORANGE CHAMBER SAFETY FLAG SEATED.', 'info');
-      } else {
-        this.log('PRESS-CHECK: CHAMBER VISUALLY CLEAR (EMPTY).', 'info');
-      }
-    }
-
-    // 2) Hammer cocking detent (~0.45 travel)
-    if (this.slideT >= 0.45 && !this.hammerCocked) {
-      this.hammerCocked = true;
-      if (this.audio) this.audio.playHammerCock();
-      this.log('ENCLOSED SAO HAMMER COCKED BY SLIDE TRAVEL.', 'info');
-      this.notify();
-    }
-
-    // 3) Extraction & Ejection (~0.72 travel)
-    if (this.slideT >= 0.72) {
-      this.wasPastStrip = true;
-      if (this.chambered) {
-        const wasSpent = this.chamberedSpent;
-        this.chambered = false;
-        this.chamberedSpent = false;
-        this._spawnCasing(!wasSpent, 0.55);
-        if (this.audio) this.audio.playBrassTinkle(!wasSpent, 0.32);
-        this.log(wasSpent
-          ? 'SPENT CASING EXTRACTED & EJECTED CLEAR.'
-          : 'EXTRACTOR EJECTED LIVE .22 LR CARTRIDGE FROM CHAMBER.', 'info');
-        this.notify();
-      }
-    }
-
-    // 4) Slingshot unlock if slide was locked open & user pulls past 0.94 (not empty mag!)
-    if (this.slideLocked && this.slideT >= 0.94 && !(this.isMagSeated() && this.magRounds === 0)) {
-      this.slideLocked = false;
-      this.slideCatchManual = false;
-      if (this.audio) this.audio.playSlideLock();
-      this.log('SLINGSHOT RELEASE: SLIDE CATCH DROPPED CLEAR. RELEASE TO SNAP INTO BATTERY.', 'info');
-      this.notify();
-    }
-
-    // 5) Empty magazine automatic slide-catch engagement at 0.86
-    if (this.slideT >= 0.86 && this.isMagSeated() && this.magRounds === 0 && !this.slideLocked) {
-      this.slideLocked = true;
-      if (this.audio) this.audio.playSlideLock();
-      this.log('EMPTY MAGAZINE FOLLOWER ENGAGED SLIDE CATCH — LOCKED OPEN.', 'info');
-      this.notify();
-    }
-
-    // 6) Riding slide all the way forward manually by hand (only when NOT locked open or flagged!)
-    if (!this.slideLocked && !this.chamberFlag && this.slideT <= 0.03 && prevT > 0.08 && this.wasPastStrip) {
-      this._attemptChamberOnClose(true);
-    }
+    this._updateSlideKinematics(prevT, speed, true);
   }
 
   endSlideDrag() {
@@ -5408,7 +5780,7 @@ class P322Mechanics {
     if (this.audio) this.audio.stopSlideDrag();
 
     // Check if manual catch or empty mag holds slide open
-    if (this.slideT >= 0.84 && (this.slideCatchManual || (this.isMagSeated() && this.magRounds === 0))) {
+    if (this.slideT >= 0.84 && (this.slideCatchManual || (this.isMagSeated() && this.magRounds === 0 && !this.feedingActive && !this.chambered))) {
       this.slideLocked = true;
       this.slideT = 0.86;
       if (this.audio) this.audio.playSlideLock();
@@ -5419,8 +5791,17 @@ class P322Mechanics {
       return;
     }
 
-    // Otherwise recoil spring tension drives slide swiftly forward!
-    if (this.slideT > 0.06) {
+    // If user crept gently forward and let go right at extractor snap-over (0.016 .. 0.12), rest slightly out-of-battery!
+    if (this.feedingActive && this.slideT > 0.015 && this.slideT < 0.12 && this.lastDragSpeed < 0.75) {
+      this.outOfBattery = true;
+      this.log('CAUTION: SLIDE RELEASED GENTLY RIGHT AT EXTRACTOR SNAP — SLIGHTLY OUT OF BATTERY! PUSH/TAP SLIDE FORWARD.', 'warn');
+      this.notify();
+      return;
+    }
+
+    // Otherwise concentric recoil spring tension drives slide smoothly forward along the feed trajectory!
+    this.outOfBattery = false;
+    if (this.slideT > 0.015) {
       this.slideVel = -(4.8 + this.slideT * 5.2);
     }
     this.notify();
@@ -5428,19 +5809,28 @@ class P322Mechanics {
 
   _attemptChamberOnClose(wasRiddenSlowly = false) {
     this.wasPastStrip = false;
-    if (this.chamberFlag || this.chambered) return false;
+    if (this.chamberFlag) return false;
+    if (this.feedingActive) {
+      this.feedingActive = false;
+      this.chambered = true;
+      this.chamberedSpent = false;
+      this.outOfBattery = false;
+      this.log(`SLIDE SNAPPED FORWARD — .22 LR ROUND CHAMBERED (${this.magRounds}/${this.maxMag} IN MAG +1 CHBR).`, 'info');
+      this.notify();
+      return true;
+    }
+    if (this.chambered) return false;
     if (this.isMagSeated() && this.magRounds > 0) {
       this.magRounds--;
       this.chambered = true;
       this.chamberedSpent = false;
       if (wasRiddenSlowly) {
-        // Real SIG P322 Manual Section 3.4 caution: riding the slide gently can leave it slightly out of battery!
         this.outOfBattery = true;
         this.slideT = 0.085;
         this.log('CAUTION: SLIDE RIDDEN SLOWLY FORWARD — SLIGHTLY OUT OF BATTERY! TAP/PUSH SLIDE FORWARD OR SNAP CLEANLY.', 'warn');
       } else {
         this.outOfBattery = false;
-        this.log(`SLIDE SNAPPED FORWARD — .22 LR ROUND CHAMBERED (${this.magRounds}/${this.maxMag} IN MAG).`, 'info');
+        this.log(`SLIDE SNAPPED FORWARD — .22 LR ROUND CHAMBERED (${this.magRounds}/${this.maxMag} IN MAG +1 CHBR).`, 'info');
       }
       this.notify();
       return true;
@@ -5462,27 +5852,10 @@ class P322Mechanics {
       this.releaseSlideCatch();
       return;
     }
-    // Smooth kinematic auto-rack
-    this.hammerCocked = true;
+    // Drive smooth kinematic rearward + forward rack in step(dt) so extractor, ejector & stripper lug are all visible!
     this.outOfBattery = false;
-    if (this.chambered) {
-      const wasSpent = this.chamberedSpent;
-      this.chambered = false;
-      this.chamberedSpent = false;
-      this._spawnCasing(!wasSpent, 0.85);
-      if (this.audio) this.audio.playBrassTinkle(!wasSpent, 0.36);
-    }
-    this.slideT = 0.96;
-    this.wasPastStrip = true;
-    if (this.isMagSeated() && this.magRounds === 0) {
-      this.slideLocked = true;
-      this.slideT = 0.86;
-      if (this.audio) this.audio.playSlideLock();
-      this.log('RACKED SLIDE ON EMPTY MAGAZINE — LOCKED TO REAR.', 'info');
-    } else {
-      this.slideVel = -9.2;
-      if (this.audio) this.audio.playHammerCock();
-    }
+    this.autoRackBack = true;
+    this.slideVel = 0;
     this.notify();
   }
 
@@ -5495,17 +5868,19 @@ class P322Mechanics {
       this.releaseSlideCatch();
     } else {
       // Engage slide catch: pulls slide to rear and pushes ambidextrous lever UP to lock
-      if (this.chambered && this.slideT < 0.72) {
+      if (this.chambered && this.slideT < 0.78) {
         const wasSpent = this.chamberedSpent;
         this.chambered = false;
         this.chamberedSpent = false;
-        this._spawnCasing(!wasSpent, 0.6);
+        this._spawnCasing(!wasSpent, 0.6, this.ammoId, true);
         if (this.audio) this.audio.playBrassTinkle(!wasSpent, 0.34);
       }
       this.hammerCocked = true;
       this.slideLocked = true;
       this.slideCatchManual = true;
+      this.autoRackBack = false;
       this.outOfBattery = false;
+      this.wasPastStrip = true;
       this.slideT = 0.86;
       this.slideVel = 0;
       if (this.audio) this.audio.playSlideLock();
@@ -5579,6 +5954,7 @@ class P322Mechanics {
     // Dry fire onto installed orange chamber safety flag (SIG Manual p.69 recommended)
     if (this.chamberFlag) {
       this.hammerCocked = false;
+      this.firingPinPulse = 1.0;
       if (this.audio) this.audio.playTriggerDry(true);
       this.log('CUSHIONED DRY FIRE ONTO ORANGE CHAMBER FLAG (ZERO FIRING PIN WEAR). PULL SLIDE SLIGHTLY TO RESET.', 'info');
       this.notify();
@@ -5588,6 +5964,7 @@ class P322Mechanics {
     // Dry fire on empty chamber or spent casing
     if (!this.chambered || this.chamberedSpent) {
       this.hammerCocked = false;
+      this.firingPinPulse = 1.0;
       if (this.audio) this.audio.playTriggerDry(false);
       this.log(this.chamberedSpent
         ? 'CLICK ON SPENT RIM! SHORT-STROKE STOPPAGE — RACK SLIDE TO EJECT SPENT BRASS.'
@@ -5597,6 +5974,7 @@ class P322Mechanics {
     }
 
     // ==================== LIVE .22 LR DISCHARGE! ====================
+    this.firingPinPulse = 1.0;
     const ammo = this.getAmmo();
     const peakDb = this.getPeakDb();
     const isFrp = this.muzzleMode === 'commercial' && !this.suppressorPurged;
@@ -5702,11 +6080,13 @@ class P322Mechanics {
       return;
     }
 
-    // Full blowback cycle
+    // Full blowback cycle + cantilevered fixed-barrel harmonic whip impulse
+    this.nudgeBarrelHarmonic(0.022 * (ammo.energyFtlbs / 100), (Math.random() - 0.5) * 0.008);
     this.chambered = false;
     this.chamberedSpent = false;
+    this.feedingActive = false;
     this.hammerCocked = true; // Slide recoiling re-cocks internal SAO hammer!
-    this._spawnCasing(false, 1.0);
+    this._spawnCasing(false, 1.0, ammo.id, true);
     if (this._simAutoShot) {
       // Conceptual cyclic demo only: simplified feed timing so a 1,050-RPM
       // burst can be visualized without waiting on bench slide spring physics.
@@ -5755,6 +6135,11 @@ class P322Mechanics {
       return;
     }
     if (this.magInserted) {
+      // If a round was only just beginning to strip inside the feed lips, keep it in the magazine!
+      if (this.feedingActive && this.slideT > 0.54) {
+        this.feedingActive = false;
+        this.magRounds = Math.min(this.maxMag, this.magRounds + 1);
+      }
       this.magInserted = false;
       this.magTargetT = 1.0;
       if (this.audio) this.audio.playMagDrop();
@@ -5777,6 +6162,10 @@ class P322Mechanics {
 
   finishMagazineDrag() {
     if (this.magPullT > 0.38) {
+      if (this.feedingActive && this.slideT > 0.54) {
+        this.feedingActive = false;
+        this.magRounds = Math.min(this.maxMag, this.magRounds + 1);
+      }
       this.magInserted = false;
       this.magTargetT = 1.0;
       if (this.audio) this.audio.playMagDrop();
@@ -5862,9 +6251,9 @@ class P322Mechanics {
       this.log('TAKEDOWN INTERLOCK: REMOVE MAGAZINE BEFORE ROTATING TAKEDOWN LEVER!', 'warn');
       return;
     }
-    if (this.chambered || this.chamberFlag) {
+    if (this.chambered || this.feedingActive || this.chamberFlag) {
       if (this.audio) this.audio.playBlockedClick();
-      this.log('SAFETY INTERLOCK: CLEAR CHAMBER (RACK SLIDE) BEFORE FIELD STRIPPING!', 'warn');
+      this.log('SAFETY INTERLOCK: CLEAR CHAMBER & FEED RAMP (RACK SLIDE) BEFORE FIELD STRIPPING!', 'warn');
       return;
     }
     if (this.muzzleMode !== 'none') {
@@ -5897,6 +6286,7 @@ class P322Mechanics {
     this.gas.compFlame = 0;
     this.baffleGas = 0;
     this.muzzleMode = mode;
+    this.nudgeBarrelHarmonic(mode === 'oilcan' ? -0.018 : (mode === 'none' ? 0.012 : -0.012), 0.0);
     if (mode === 'comp') {
       if (this.audio) this.audio.playThreadMount();
       this.log('1/2x28 PORTED COMPENSATOR INSTALLED: UPWARD JET PORTS CUT MUZZLE FLIP BY ~38% WITH VISIBLE PORT FLAMES & ZERO SIGHT OBSTRUCTION.', 'info');
@@ -5963,6 +6353,8 @@ class P322Mechanics {
     if (!this.chamberFlag && !this.slideLocked) {
       this.chambered = true;
       this.chamberedSpent = false;
+      this.feedingActive = false;
+      this.autoRackBack = false;
       this.hammerCocked = true;
     }
     if (this.audio) this.audio.playMagInsert();
@@ -6025,21 +6417,26 @@ class P322Mechanics {
     this.notify();
   }
 
-  _spawnCasing(isLive, power = 1.0) {
+  _spawnCasing(isLive, power = 1.0, ammoId = null, fromEjector = false) {
+    const aid = ammoId || this.ammoId;
+    const prof = AMMO_PROFILES[aid] || AMMO_PROFILES.cci_minimag;
+    const ejX = -0.94 - 0.78 * this.slideMaxTravel + 0.42;
     this.casings.push({
-      x: 0.1,
-      y: 2.85,
-      z: 0.75,
-      vx: (-2.5 - Math.random() * 2.2) * power,
-      vy: (5.8 + Math.random() * 2.8) * power,
-      vz: (6.5 + Math.random() * 3.0) * power,
-      rx: Math.random() * 6,
-      ry: Math.random() * 6,
-      rz: Math.random() * 6,
-      vrx: (Math.random() - 0.5) * 20,
-      vry: (Math.random() - 0.5) * 20,
-      vrz: (Math.random() - 0.5) * 20,
+      x: fromEjector ? ejX : 0.1,
+      y: fromEjector ? 2.58 : 2.85,
+      z: fromEjector ? 0.56 : 0.75,
+      vx: (-2.2 - Math.random() * 2.0) * power,
+      vy: (5.4 + Math.random() * 2.6) * power,
+      vz: (6.6 + Math.random() * 3.0) * power,
+      rx: fromEjector ? 0.15 : Math.random() * 6,
+      ry: fromEjector ? -0.68 : Math.random() * 6,
+      rz: fromEjector ? 0.22 : Math.random() * 6,
+      vrx: (Math.random() - 0.5) * 18,
+      vry: -12 - Math.random() * 10,
+      vrz: (Math.random() - 0.5) * 18,
       live: isLive,
+      ammoId: aid,
+      caseType: prof.caseType || 'brass',
       age: 0
     });
     if (this.casings.length > 36) this.casings.splice(0, this.casings.length - 36);
@@ -6048,21 +6445,36 @@ class P322Mechanics {
   step(dt) {
     const cdt = Math.min(0.05, Math.max(0.001, dt));
 
-    // Slide spring physics when not dragged
-    if (!this.slideDragged && !this.fieldStripped) {
-      const targetT = this.slideLocked ? 0.86 : (this.chamberFlag ? 0.28 : (this.outOfBattery ? 0.085 : 0.0));
+    // Smooth kinematic auto-rack rearward stroke (when RACK button is tapped!)
+    if (this.autoRackBack && !this.slideDragged && !this.fieldStripped) {
+      const prevT = this.slideT;
+      const rackSpeed = this.xray ? 1.95 : 5.8;
+      this.slideT = Math.min(0.96, this.slideT + rackSpeed * cdt);
+      this._updateSlideKinematics(prevT, rackSpeed, false);
+      if (this.slideT >= 0.955) {
+        this.autoRackBack = false;
+        if (!this.slideLocked) {
+          this.slideVel = this.xray ? -3.4 : -9.2;
+        }
+        this.notify();
+      }
+    } else if (!this.slideDragged && !this.fieldStripped) {
+      // Slide concentric recoil spring return physics when not dragged
+      const targetT = this.slideLocked ? 0.86 : (this.chamberFlag ? 0.28 : (this.outOfBattery ? Math.max(0.04, this.slideT) : 0.0));
       if (Math.abs(this.slideT - targetT) > 0.002 || Math.abs(this.slideVel) > 0.01) {
+        const prevT = this.slideT;
         if (this.slideT > targetT) {
-          // Concentric recoil spring acceleration forward!
-          this.slideVel -= 46.0 * cdt;
-          this.slideT += this.slideVel * cdt;
-          if (this.slideT <= targetT) {
+          const springAccel = (this.xray && this.feedingActive && Math.abs(this.slideVel) < 4.5) ? 14.0 : 46.0;
+          this.slideVel -= springAccel * cdt;
+          this.slideT = Math.max(targetT, this.slideT + this.slideVel * cdt);
+          this._updateSlideKinematics(prevT, Math.abs(this.slideVel), false);
+          if (this.slideT <= targetT + 0.0005) {
             const impactSpeed = Math.abs(this.slideVel);
             this.slideT = targetT;
             this.slideVel = 0;
-            const didChamber = this.wasPastStrip && targetT === 0.0 ? this._attemptChamberOnClose(false) : false;
+            this._updateSlideKinematics(prevT, impactSpeed, false);
             if (impactSpeed > 1.2 && this.audio) {
-              this.audio.playSlideSlam(didChamber, Math.min(1.1, impactSpeed / 10));
+              this.audio.playSlideSlam(this.chambered, Math.min(1.1, impactSpeed / 10));
             }
           }
         } else {
@@ -6070,6 +6482,38 @@ class P322Mechanics {
           this.slideVel = 0;
         }
       }
+    }
+
+    // 12-o'clock rimfire firing-pin rebound spring decay
+    if (this.firingPinPulse > 0) {
+      this.firingPinPulse = Math.max(0, this.firingPinPulse - cdt * 14.0);
+    }
+
+    // Cantilevered fixed-barrel free-float centering settle + 44 Hz elastic harmonic whip!
+    const unseated = Math.max(
+      this.stripAnimT,
+      this.slideT > 0.04 ? Math.min(1.0, (this.slideT - 0.04) * 5.0) : 0.0
+    );
+    const floatDroop = this.muzzleMode === 'oilcan' ? -0.0130
+      : (this.muzzleMode === 'commercial' ? -0.0085
+        : (this.muzzleMode === 'comp' ? -0.0052 : -0.0040));
+    const targetFloat = unseated * floatDroop;
+    this.barrelFloatPitch += (targetFloat - this.barrelFloatPitch) * Math.min(1, cdt * 18.0);
+
+    // Sub-stepped 44 Hz steel cantilever barrel harmonic (pinned on rear 3x16mm coiled FCU retaining pin)
+    const bSub = cdt * 0.5;
+    for (let bs = 0; bs < 2; bs++) {
+      const kB = 1850.0, dB = 26.0;
+      this.barrelVibPitchVel += (-kB * this.barrelVibPitch - dB * this.barrelVibPitchVel) * bSub;
+      this.barrelVibPitch += this.barrelVibPitchVel * bSub;
+      this.barrelVibYawVel += (-kB * this.barrelVibYaw - dB * this.barrelVibYawVel) * bSub;
+      this.barrelVibYaw += this.barrelVibYawVel * bSub;
+    }
+    if (Math.abs(this.barrelVibPitch) < 1e-5 && Math.abs(this.barrelVibPitchVel) < 1e-4) {
+      this.barrelVibPitch = 0; this.barrelVibPitchVel = 0;
+    }
+    if (Math.abs(this.barrelVibYaw) < 1e-5 && Math.abs(this.barrelVibYawVel) < 1e-4) {
+      this.barrelVibYaw = 0; this.barrelVibYawVel = 0;
     }
 
     // Magazine smooth seating animation
@@ -6660,7 +7104,10 @@ class P322Renderer3D {
       : 'AMBIENT 0 PSI';
 
     const chDisp = Math.max(g.chamberPsi, g.chamberPeak);
-    const chTag = g.chamberPsi > 50 ? 'LIVE COMBUSTION' : (g.chamberPeak > 5 ? 'PEAK HOLD DECAY' : (m.chambered ? 'CHAMBERED READY' : 'CHAMBER CLEAR'));
+    const chTag = g.chamberPsi > 50 ? 'LIVE COMBUSTION'
+      : (g.chamberPeak > 5 ? 'PEAK HOLD DECAY'
+        : (m.feedingActive ? 'STRIPPER FEEDING'
+          : (m.chambered ? (m.slideT > 0.65 ? 'EJECTOR PIVOT' : (m.slideT > 0.04 ? 'EXTRACTOR PULL' : 'CHAMBERED READY')) : 'CHAMBER CLEAR')));
 
     const fmtCompactNum = (v, decimals) => {
       if (v >= 10000) return (v / 1000).toFixed(1) + 'k';
@@ -6684,7 +7131,7 @@ class P322Renderer3D {
       {
         id: 'chamber',
         label: ultraCompact ? 'CHAMBER' : 'CHAMBER (.22 LR)',
-        world: M3D.transformPoint(P.root, [-0.25, 2.46, 0]),
+        world: M3D.transformPoint(P.barrel || P.root, [-0.25, 2.46, 0]),
         psi: chDisp,
         maxPsi: 24000,
         valTxt: Math.round(chDisp).toLocaleString() + ' PSI',
@@ -6696,7 +7143,7 @@ class P322Renderer3D {
       {
         id: 'barrel',
         label: ultraCompact ? '4" BORE' : 'BARREL BORE (4")',
-        world: M3D.transformPoint(P.root, [5.35, 2.46, 0]),
+        world: M3D.transformPoint(P.barrel || P.root, [5.35, 2.46, 0]),
         psi: g.barrelPsi,
         maxPsi: 7500,
         valTxt: (g.barrelPsi >= 10 ? Math.round(g.barrelPsi).toLocaleString() : g.barrelPsi.toFixed(1)) + ' PSI',
@@ -6713,14 +7160,14 @@ class P322Renderer3D {
         maxPsi: 42,
         valTxt: g.magPsi.toFixed(1) + ' PSI',
         numOnly: fmtCompactNum(g.magPsi, 1) + ' PSI',
-        subTxt: m.magRounds + '/' + m.maxMag + (m.chambered && !m.chamberedSpent ? ' (+1 CHBR)' : ' RDS'),
+        subTxt: m.magRounds + '/' + m.maxMag + (m.chambered && !m.chamberedSpent ? ' (+1 CHBR)' : (m.feedingActive ? ' (+1 RAMP)' : ' RDS')),
         row: 'bot',
         colIdx: 0
       },
       {
         id: 'muzzle',
         label: ultraCompact ? muzShort : muzTitle,
-        world: M3D.transformPoint(P.root, muzAnchor),
+        world: M3D.transformPoint(P.barrel || P.root, muzAnchor),
         psi: g.canPsi,
         maxPsi: canMax,
         valTxt: g.canPsi.toFixed(1) + ' PSI',
@@ -7176,23 +7623,83 @@ class P322Renderer3D {
     const sy = m.stripAnimT * 5.05;
     const slideMat = M3D.mul(rootMat, M3D.translate(sx, sy, 0));
 
+    // Fixed cantilevered P322 barrel pinned into stainless FCU trunnion at (0.45, 1.52, 0):
+    // ZERO Browning cam tilt, with physically grounded cantilevered muzzle-device settle + 44 Hz elastic whip!
+    const bPitch = (m.barrelFloatPitch || 0) + (m.barrelVibPitch || 0);
+    const bYaw = m.barrelVibYaw || 0;
+    const barrelMat = M3D.mul(
+      rootMat,
+      M3D.mul(
+        M3D.translate(0.45, 1.52, 0),
+        M3D.mul(M3D.rotZ(bPitch), M3D.mul(M3D.rotY(bYaw), M3D.translate(-0.45, -1.52, 0)))
+      )
+    );
+
     // Unthreaded muzzle thread-protector cap rests on bench beside pistol when field-stripped!
     const muzzleCapMat = m.stripAnimT > 0.02
       ? M3D.mul(rootMat, M3D.translate(m.stripAnimT * 2.2, -m.stripAnimT * 10.8, m.stripAnimT * 2.6))
-      : rootMat;
+      : barrelMat;
 
-    // Recoil spring concentric around fixed barrel (x=2.2 to x=8.55 - slideTravel)
-    const springLen = Math.max(1.6, (8.55 - m.slideT * m.slideMaxTravel) - 2.15);
+    // Captive concentric recoil spring around fixed cantilevered barrel (stays captured on barrel in STRP!)
+    const springFrontX = m.stripAnimT > 0.02
+      ? (8.55 * (1 - m.stripAnimT) + 8.56 * m.stripAnimT)
+      : (8.55 - m.slideT * m.slideMaxTravel);
+    const springLen = Math.max(1.55, springFrontX - 2.12);
     const springMat = M3D.mul(
-      rootMat,
-      M3D.mul(M3D.translate(2.15, 2.46, 0), M3D.scaleMat(springLen, 1, 1))
+      barrelMat,
+      M3D.mul(M3D.translate(2.12, 2.46, 0), M3D.scaleMat(springLen, 1, 1))
     );
 
-    // Enclosed hammer (-58° cocked vs +18° down)
+    // Spring-loaded internal right-side extractor claw (pivots at (-2.32, 2.46, +0.44) inside slide breechblock!)
+    let extYaw = 0.0;
+    if (m.feedingActive && m.slideT < 0.44 && m.slideT > 0.04) {
+      // Cams outward (+Z -> negative rotY) as stripped rim glides up breechface under beveled extractor hook!
+      const camU = (0.44 - m.slideT) / 0.40;
+      extYaw = -0.082 * Math.sin(camU * Math.PI);
+    } else if (m.chambered && m.outOfBattery && m.slideT > 0.005 && m.slideT < 0.08) {
+      extYaw = -0.075 * Math.sin((m.slideT / 0.08) * Math.PI);
+    } else if (m.chambered && m.slideT > 0.65 && m.slideT < 0.79) {
+      // Flexes outward right as fixed left-side ejector levers the rim free of the hook!
+      extYaw = -0.070 * Math.min(1.0, (m.slideT - 0.65) / 0.13);
+    } else if (m.chambered) {
+      extYaw = 0.012; // Biting inward onto .22 LR rim undercut
+    }
+    const extractorMat = M3D.mul(
+      slideMat,
+      M3D.mul(M3D.translate(-2.32, 2.46, 0.44), M3D.mul(M3D.rotY(extYaw), M3D.translate(2.32, -2.46, -0.44)))
+    );
+
+    // Enclosed 12-o'clock rimfire firing pin inside steel breechblock (darts forward on hammer strike!)
+    const fpShift = (m.firingPinPulse || 0) * 0.17;
+    const firingPinMat = M3D.mul(slideMat, M3D.translate(fpShift, 0, 0));
+
+    // Enclosed hammer (-58° cocked vs +18° down) + dynamic hammer strut & helical mainspring
     const hamAngle = m.hammerCocked ? 0.96 : -0.32;
     const hammerMat = M3D.mul(
       rootMat,
       M3D.mul(M3D.translate(-6.15, 0.85, 0), M3D.rotZ(hamAngle))
+    );
+    const hc = Math.cos(hamAngle), hs = Math.sin(hamAngle);
+    const strutTopX = -6.15 + (-0.28 * hc - (-0.22) * hs);
+    const strutTopY =  0.85 + (-0.28 * hs + (-0.22) * hc);
+    const strutBotX = -6.86, strutBotY = -1.55;
+    const strutLen = Math.hypot(strutTopX - strutBotX, strutTopY - strutBotY);
+    const strutAng = Math.atan2(strutTopY - strutBotY, strutTopX - strutBotX);
+    const hammerStrutMat = M3D.mul(
+      rootMat,
+      M3D.mul(M3D.translate(strutBotX, strutBotY, 0), M3D.mul(M3D.rotZ(strutAng), M3D.scaleMat(strutLen, 1, 1)))
+    );
+
+    // Sear pivoting at (-5.68, 0.56, 0) + right-side stainless trigger bar with out-of-battery disconnector drop!
+    const searAngle = -m.triggerT * 0.24;
+    const searMat = M3D.mul(
+      rootMat,
+      M3D.mul(M3D.translate(-5.68, 0.56, 0), M3D.rotZ(searAngle))
+    );
+    const tbDisconnDrop = (m.slideT > 0.03 && !m.fieldStripped) ? -0.22 * Math.min(1.0, (m.slideT - 0.03) / 0.08) : 0.0;
+    const triggerBarMat = M3D.mul(
+      rootMat,
+      M3D.translate(m.triggerT * 0.26, tbDisconnDrop, 0)
     );
 
     // Trigger pivot (-0.25, 0.20, 0)
@@ -7227,34 +7734,59 @@ class P322Renderer3D {
     const magDist = m.magPullT * 7.8;
     const magMat = M3D.mul(rootMat, M3D.translate(-0.34 * magDist, -0.94 * magDist, 0));
 
-    // Exact follower + thumb-assist tab + compressing zig-zag spring for 0..20 and 0..25 rounds!
-    const nRds = m.magRounds;
-    const follX = -5.24 - nRds * 0.0965;
-    const follY =  0.22 - nRds * 0.312;
-    const magFollowerMat = M3D.mul(magMat, M3D.mul(M3D.translate(follX, follY, 0), M3D.rotZ(0.14)));
-    const magTabMat = M3D.mul(magMat, M3D.translate(follX + 0.35, follY - 0.10, 0));
+    // Magazine stack pop-up kinematics:
+    // Held down slightly beneath breechblock rail when slideT < 0.81 (or while feedingActive round rides above stack);
+    // pops smoothly up against feed lips (+0.24 Y along magazine axis) once stripper lug clears behind rim (slideT >= 0.81) or mag is pulled!
+    let magPopFrac = 1.0;
+    if (!m.fieldStripped && m.magPullT < 0.18) {
+      if (m.feedingActive) {
+        magPopFrac = 0.0;
+      } else if (m.slideT < 0.76) {
+        magPopFrac = 0.0;
+      } else if (m.slideT < 0.81) {
+        magPopFrac = (m.slideT - 0.76) / 0.05;
+      } else {
+        magPopFrac = 1.0;
+      }
+    }
+    this.magPopFrac = magPopFrac;
 
-    // Floorplate anchor (flush 20-rd at -6.82 vs extended 25-rd at -9.02) up to follower underside
-    const bx = m.mag25 ? -7.68 : -7.02;
-    const by = m.mag25 ? -9.02 : -6.82;
-    const tx = follX + 0.54;
-    const ty = follY - 0.24;
+    // Exact follower + thumb-assist tab + compressing zig-zag spring for 0..20 and 0..25 rounds along magazine spine!
+    const nRds = m.magRounds;
+    const popDX = (magPopFrac - 1.0) * 0.116;
+    const popDY = (magPopFrac - 1.0) * 0.24;
+    const follX = -4.28 + popDX - nRds * 0.162;
+    const follY =  1.30 + popDY - nRds * 0.335;
+    const magFollowerMat = M3D.mul(magMat, M3D.mul(M3D.translate(follX, follY, 0), M3D.rotZ(0.18)));
+    const magTabMat = M3D.mul(magMat, M3D.translate(follX + 0.65, follY - 0.10, 0));
+
+    // Floorplate anchor (flush 20-rd at (-7.00, -6.78) vs extended 25-rd at (-8.04, -8.94)) up to follower underside
+    const bx = m.mag25 ? -8.04 : -7.00;
+    const by = m.mag25 ? -8.94 : -6.78;
+    const tx = follX + 0.95;
+    const ty = follY - 0.14;
     const sdx = tx - bx;
     const sdy = Math.max(0.35, ty - by);
     const springLocal = new Float32Array([
-      1.109, 0.156, 0, 0,
-      sdx,   sdy,   0, 0,
-      0,     0,     1, 0,
-      bx,    by,    0, 1
+      1.08,  0.18, 0, 0,
+      sdx,   sdy,  0, 0,
+      0,     0,    1, 0,
+      bx,    by,   0, 1
     ]);
     const magSpringMat = M3D.mul(magMat, springLocal);
 
     this.partMatrices = {
       root: rootMat,
       slide: slideMat,
+      barrel: barrelMat,
+      extractor: extractorMat,
+      firingPin: firingPinMat,
       muzzleCap: muzzleCapMat,
       spring: springMat,
       hammer: hammerMat,
+      hammerStrut: hammerStrutMat,
+      sear: searMat,
+      triggerBar: triggerBarMat,
       trigger: triggerMat,
       safety: safetyMat,
       slideCatch: slideCatchMat,
@@ -7495,6 +8027,12 @@ class P322Renderer3D {
         d.lastY = e.clientY;
         this.cam.tYaw -= dx * 0.0085;
         this.cam.tPitch = Math.max(-1.35, Math.min(1.42, this.cam.tPitch + dy * 0.0085));
+        if (Math.hypot(dx, dy) > 6) {
+          this.mech.nudgeBarrelHarmonic(
+            Math.max(-0.006, Math.min(0.006, -dy * 0.00025)),
+            Math.max(-0.006, Math.min(0.006, dx * 0.00025))
+          );
+        }
       } else if (d.mode === 'slide') {
         const dx = e.clientX - d.startX;
         const dy = e.clientY - d.startY;
@@ -7531,14 +8069,9 @@ class P322Renderer3D {
       if (!d) return;
 
       if (d.mode === 'slide') {
-        // Quick tap on slightly out-of-battery slide seats it forward!
+        // Quick tap on slightly out-of-battery slide seats the feeding/chambered round fully forward!
         if (!d.moved && this.mech.outOfBattery) {
-          this.mech.outOfBattery = false;
-          this.mech.slideT = 0;
-          this.mech.slideDragged = false;
-          if (this.mech.audio) this.mech.audio.playSlideSlam(false, 0.55);
-          this.mech.log('TAPPED REAR OF SLIDE — SEATED FULLY INTO BATTERY!', 'info');
-          this.mech.notify();
+          this.mech.seatFromOutOfBattery();
         } else {
           this.mech.endSlideDrag();
         }
@@ -7709,17 +8242,57 @@ class P322Renderer3D {
     const m = this.mech;
     const P = this.partMatrices;
     const hp = this.hoveredPart;
-    const ammoCol = m.getAmmo().bulletColor;
     const xr = m.xray;
+    const bMat = P.barrel || P.root;
+
+    const drawCartridge = (cMat, ammoId, isSpent) => {
+      const id = AMMO_PROFILES[ammoId] ? ammoId : m.ammoId;
+      const prof = AMMO_PROFILES[id] || AMMO_PROFILES.cci_minimag;
+      const isNickel = prof.caseType === 'nickel';
+      if (isSpent) {
+        this._draw(isNickel ? 'case_spent_nickel' : 'case_spent_brass', cMat, {
+          metal: isNickel ? 0.90 : 0.85
+        });
+        return;
+      }
+      this._draw(isNickel ? 'case_nickel' : 'case_brass', cMat, {
+        metal: isNickel ? 0.90 : 0.86
+      });
+      this._draw('proj_' + id, cMat, {
+        metal: prof.projMetal !== undefined ? prof.projMetal : 0.65
+      });
+    };
 
     const drawPistol = (this.viewMode === 'bench' || this.viewMode === 'range');
     if (drawPistol) {
-    // 2. OPAQUE PASS — Always solid internals, springs, follower, cartridges & controls
-    this._draw('chassis', P.root, { metal: 0.78 });
-    this._draw('barrel', P.root, { metal: 0.68 });
+    // 2. OPAQUE CORE PASS (Layer 0) — High-contrast solid action internals, cartridges, rifling, springs & linkage!
+    if (!xr) {
+      this._draw('chassis', P.root, { metal: 0.78 });
+      this._draw('barrel', bMat, { metal: 0.68 });
+      this._draw('barrelShadowPlug', bMat, { metal: 0.05 });
+      this._draw('breechBlock', P.slide, { metal: 0.74 });
+    }
+    // Fixed barrel trunnion + 3x16mm serrated coiled retaining pin & 6-groove helical bore rifling!
+    this._draw('barrelTrunnion', P.root, { metal: 0.84 });
+    this._draw('barrelRifling', bMat, { metal: 0.88 });
+    this._draw('ejectorBlade', P.root, { metal: 0.88 });
+
+    // Pinned steel breechblock internal mechanisms (stripper lug, spring-loaded extractor claw & enclosed firing pin!)
+    this._draw('stripperLug', P.slide, { metal: 0.88 });
+    this._draw('extractorClaw', P.extractor || P.slide, { metal: 0.88 });
+    this._draw('extractorSpring', P.slide, { metal: 0.82 });
+    this._draw('firingPin', P.firingPin || P.slide, { metal: 0.90 });
+    this._draw('firingPinSpring', P.slide, { metal: 0.82 });
+
     this._draw('guideRod', P.root, { metal: 0.84 });
     this._draw('recoilSpring', P.spring, { metal: 0.85 });
+
+    // Complete SAO Fire-Control Unit linkage (enclosed hammer, strut, mainspring, sear, trigger bar + ALL 3 trigger mods!)
     this._draw('hammer', P.hammer, { metal: 0.80 });
+    this._draw('hammerStrut', P.hammerStrut, { metal: 0.82 });
+    this._draw('hammerMainspring', P.hammerStrut, { metal: 0.86 });
+    this._draw('sear', P.sear, { metal: 0.86 });
+    this._draw('triggerBar', P.triggerBar, { metal: 0.86 });
     this._draw(m.triggerRed ? 'triggerRed'
       : (m.triggerStyle === 'flat' ? 'triggerFlat' : 'triggerCurved'),
       P.trigger, { metal: m.triggerRed ? 0.72 : 0.28, highlight: hp === 'trigger' });
@@ -7742,62 +8315,109 @@ class P322Renderer3D {
       this._draw('railLightCore', P.root, { metal: 0.74 });
     }
 
-    // Chambered cartridge (visible during press-check, X-Ray, or open ejection port!)
+    // A) CONTINUOUS CHAMBERED / SLOW-MOTION EXTRACTOR GRIP & CHISEL-EJECTOR LEVER-PIVOT!
     if (m.chambered) {
-      const extractPull = m.slideT > 0.08 ? Math.min(1.5, (m.slideT - 0.08) * 2.1) : 0.0;
-      const chMat = M3D.mul(P.root, M3D.translate(-0.78 - extractPull, 2.46, 0.0));
-      this._draw('brassCase', chMat, { metal: 0.85 });
-      if (!m.chamberedSpent) {
-        this._draw('bulletNose', chMat, { metal: 0.65, tint: [ammoCol[0] / 0.78, ammoCol[1] / 0.45, ammoCol[2] / 0.22] });
+      // Extractor claw pulls rim 1:1 rearward with slide from x = -0.94 (slideT=0) out of chamber!
+      const pullX = -0.94 - m.slideT * m.slideMaxTravel;
+      let chMat;
+      if (m.slideT > 0.65) {
+        // Rear left rim strikes fixed stainless ejector point (x = -3.76) while right rim pivots in extractor hook!
+        const pFrac = Math.min(1.0, (m.slideT - 0.65) / 0.13);
+        const pEase = pFrac * pFrac * (3.0 - 2.0 * pFrac);
+        const ejYaw = -0.74 * pEase;   // Negative rotY swings nose +42° RIGHT (+Z) out ejection port!
+        const ejPitch = 0.24 * pEase;  // Positive rotZ pitches nose +13.7° UPWARD through port!
+        // Pivot about right-side extractor hook contact point (local [0.05, 0.0, +0.28])
+        chMat = M3D.mul(
+          P.root,
+          M3D.mul(
+            M3D.translate(pullX + 0.05, 2.46 + 0.06 * pEase, 0.28),
+            M3D.mul(M3D.rotY(ejYaw), M3D.mul(M3D.rotZ(ejPitch), M3D.translate(-0.05, 0.0, -0.28)))
+          )
+        );
+      } else {
+        chMat = M3D.mul(P.root, M3D.translate(pullX, 2.46, 0.0));
       }
+      drawCartridge(chMat, m.ammoId, m.chamberedSpent);
+    }
+
+    // B) CONTINUOUS SLOW-MOTION BREECHBLOCK STRIPPER-LUG FEEDING TRAJECTORY (slideT: 0.81 -> 0.00)!
+    if (m.feedingActive) {
+      const u = Math.max(0.0, Math.min(1.0, 1.0 - m.slideT / 0.81));
+      const sm = (a, b, x) => {
+        const t = Math.max(0.0, Math.min(1.0, (x - a) / (b - a)));
+        return t * t * (3.0 - 2.0 * t);
+      };
+      // Rear rim (fx - 0.10) stays locked in zero-gap 1:1 contact with breechblock stripperLug (-1.04 - slideT*4.20)!
+      const fx = -0.94 - m.slideT * m.slideMaxTravel;
+      let fy, fPitch;
+      if (u < 0.32) {
+        const k = sm(0.0, 0.32, u);
+        fy = 1.50 + (1.82 - 1.50) * k;
+        fPitch = 0.18 + (0.26 - 0.18) * k; // Nose climbs 32° polished barrel feed ramp toward chamber throat!
+      } else if (u < 0.68) {
+        const k = sm(0.32, 0.68, u);
+        fy = 1.82 + (2.35 - 1.82) * k;
+        fPitch = 0.26 + (0.06 - 0.26) * k; // Rim glides up breechface under camming extractor claw as case levels!
+      } else {
+        const k = sm(0.68, 0.92, u);
+        fy = 2.35 + (2.46 - 2.35) * k;
+        fPitch = 0.06 * (1.0 - k);         // Coaxial final seating into hollow rifled chamber!
+      }
+      const staggerZ = ((m.feedingParity || 0) % 2 === 0 ? -0.13 : 0.13) * (1.0 - sm(0.0, 0.42, u));
+      const feedMat = M3D.mul(
+        P.root,
+        M3D.mul(M3D.translate(fx, fy, staggerZ), M3D.rotZ(fPitch))
+      );
+      drawCartridge(feedMat, m.ammoId, false);
     }
 
     // Orange chamber safety flag
     if (m.chamberFlag) {
-      this._draw('chamberFlag', P.root, { metal: 0.12 });
+      this._draw('chamberFlag', bMat, { metal: 0.12 });
     }
 
-    // Exact .22 LR cartridge stack for EVERY round count (0..20 flush, 0..25 extended!)
+    // C) LOAD-ACCURATE .22 LR CARTRIDGE STACK IN 20-RD FLUSH & 25-RD EXTENDED MAGAZINES!
     const showRounds = m.magRounds;
+    const popFrac = this.magPopFrac !== undefined ? this.magPopFrac : 1.0;
+    const popDX = (popFrac - 1.0) * 0.116;
+    const popDY = (popFrac - 1.0) * 0.24;
+    // Keep stagger parity consistent when top round is stripped!
+    const baseParity = m.feedingActive ? ((m.feedingParity || 0) + 1) : (m.magRounds % 2);
     for (let i = 0; i < showRounds; i++) {
-      const rx = -5.78 - i * 0.0965;
-      const ry =  0.34 - i * 0.312;
-      const rz = (i % 2 === 0 ? -0.16 : 0.16);
-      const rMat = M3D.mul(P.magazine, M3D.mul(M3D.translate(rx, ry, rz), M3D.rotZ(0.14)));
-      this._draw('brassCase', rMat, { metal: 0.82 });
-      this._draw('bulletNose', rMat, { metal: 0.62, tint: [ammoCol[0] / 0.78, ammoCol[1] / 0.45, ammoCol[2] / 0.22] });
+      const rx = -4.28 + popDX - i * 0.162;
+      const ry =  1.46 + popDY - i * 0.335;
+      const rz = ((i + baseParity) % 2 === 0 ? -0.14 : 0.14);
+      const rMat = M3D.mul(P.magazine, M3D.mul(M3D.translate(rx, ry, rz), M3D.rotZ(0.18)));
+      drawCartridge(rMat, m.ammoId, false);
     }
 
-    // Internal muzzle structures (always visible solid inside X-Ray & Field Strip!)
+    // Internal muzzle structures (mounted coaxially on cantilevered P.barrel!)
     if (m.muzzleMode === 'none') {
-      this._draw('muzzleCap', P.muzzleCap || P.root, { metal: 0.65, highlight: hp === 'muzzle' });
+      this._draw('muzzleCap', P.muzzleCap || bMat, { metal: 0.65, highlight: hp === 'muzzle' });
     } else if (m.muzzleMode === 'comp') {
-      this._draw('compPorts', P.root, { metal: 0.10 });
+      this._draw('compPorts', bMat, { metal: 0.10 });
     } else if (m.muzzleMode === 'commercial') {
-      this._draw('supBaffles', P.root, { metal: 0.82 });
+      this._draw('supBaffles', bMat, { metal: 0.82 });
     } else if (m.muzzleMode === 'oilcan') {
       const scorch = 0.30 + 0.70 * m.oilCanIntegrity;
-      this._draw('oilCanCore', P.root, { metal: 0.10, tint: [scorch, scorch * 0.92, scorch * 0.82] });
+      this._draw('oilCanCore', bMat, { metal: 0.10, tint: [scorch, scorch * 0.92, scorch * 0.82] });
     }
 
     // 3D Bore Cleaning Rod & Bronze Brush during cleaning animation
     if (m.brushAnimT >= 0) {
       const cycle = Math.sin(m.brushAnimT * Math.PI * 3.0);
       const bx = -1.5 + (1.0 - Math.abs(cycle)) * 6.5;
-      const brushMat = M3D.mul(P.root, M3D.translate(bx, 0, 0));
+      const brushMat = M3D.mul(bMat, M3D.translate(bx, 0, 0));
       this._draw('boreBrush', brushMat, { metal: 0.78 });
     }
 
-    // Flying ejected 3D brass casings / live cartridges
+    // Flying ejected 3D brass/nickel casings & unfired live cartridges
     for (const c of m.casings) {
       const cm = M3D.mul(
         M3D.translate(c.x, c.y, c.z),
         M3D.mul(M3D.rotX(c.rx), M3D.mul(M3D.rotY(c.ry), M3D.rotZ(c.rz)))
       );
-      this._draw('brassCase', cm, { metal: 0.88 });
-      if (c.live) {
-        this._draw('bulletNose', cm, { metal: 0.65 });
-      }
+      drawCartridge(cm, c.ammoId || m.ammoId, !c.live);
     }
 
     // Solid outer shells when NOT in X-Ray mode
@@ -7811,22 +8431,30 @@ class P322Renderer3D {
       this._draw('magBody', P.magazine, { metal: 0.14, highlight: hp === 'magazine' });
       this._draw('slide', P.slide, { metal: 0.56, highlight: hp === 'slide' });
       if (m.muzzleMode === 'comp') {
-        this._draw('compOuter', P.root, { metal: 0.62, highlight: hp === 'muzzle' });
+        this._draw('compOuter', bMat, { metal: 0.62, highlight: hp === 'muzzle' });
       } else if (m.muzzleMode === 'commercial') {
-        this._draw('supOuter', P.root, { metal: 0.58, highlight: hp === 'muzzle' });
+        this._draw('supOuter', bMat, { metal: 0.58, highlight: hp === 'muzzle' });
       } else if (m.muzzleMode === 'oilcan') {
-        this._draw('oilCanOuter', P.root, { metal: 0.42, highlight: hp === 'muzzle' });
+        this._draw('oilCanOuter', bMat, { metal: 0.42, highlight: hp === 'muzzle' });
       }
     }
 
-    // 3. TRANSLUCENT PASS (X-Ray cutaway shells, ROMEOZero lens, volumetric swirling gas, port flames & flash!)
+    // 3. MULTI-LAYER TRANSLUCENT PASS (Graded X-Ray Layer 1 inner barrel/breech/FCU -> Gas/Fouling -> Layer 2 outer shells!)
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
     gl.depthMask(false);
 
+    // X-Ray Layer 1 (Inner Structural Cutaway: translucent hollow chamber/barrel, breechblock & stainless FCU shroud)
+    // Drawn BEFORE outer slide/frame shells so chambered cartridge + rear rim + bullet + helical rifling stay razor-clear!
+    if (xr) {
+      this._draw('chassis', P.root, { alpha: 0.30, metal: 0.78 });
+      this._draw('barrel', bMat, { alpha: 0.29, metal: 0.72 });
+      this._draw('breechBlock', P.slide, { alpha: 0.26, metal: 0.76 });
+    }
+
     // Visible lead fouling inside bore (in X-Ray or Field Strip!)
     if ((xr || m.fieldStripped) && m.boreFouling > 6) {
-      this._draw('boreFoulingMesh', P.root, {
+      this._draw('boreFoulingMesh', bMat, {
         alpha: Math.min(0.88, m.boreFouling / 100),
         metal: 0.55,
         emissive: 0.15
@@ -7839,7 +8467,7 @@ class P322Renderer3D {
     if ((xr || m.fieldStripped || m.slideT > 0.12) && g.barrelHeat > 0.02) {
       const bh = g.barrelHeat;
       const bTint = [1.0, 0.55 + 0.38 * bh, 0.22 + 0.40 * bh];
-      this._draw('boreGasCore', P.root, {
+      this._draw('boreGasCore', bMat, {
         alpha: Math.min(0.86, 0.14 + bh * 0.72),
         tint: bTint,
         emissive: 0.92
@@ -7865,7 +8493,7 @@ class P322Renderer3D {
     if (xr && g.magPsi > 0.25) {
       const mFrac = Math.min(1.0, g.magPsi / 36);
       const mm = M3D.mul(P.magazine, M3D.mul(
-        M3D.translate(-4.85, 0.15, 0),
+        M3D.translate(-3.65, 1.35, 0),
         M3D.mul(M3D.rotY(g.swirlPhase * 0.7), M3D.scaleMat(1.25, 0.72, 0.68))
       ));
       this._draw('toroidVortex', mm, {
@@ -7885,11 +8513,11 @@ class P322Renderer3D {
         const bx = 10.95 + i * 1.62;
         const hot = Math.min(1.0, bp / 340);
         const cTint = [0.68 + 0.32 * hot, 0.78 + 0.08 * hot, 0.88 - 0.56 * hot];
-        const gm = M3D.mul(P.root, M3D.mul(M3D.translate(bx, 2.46, 0), M3D.scaleMat(1.48, 1.35 * (0.75 + 0.25 * pNorm), 1.35 * (0.75 + 0.25 * pNorm))));
+        const gm = M3D.mul(bMat, M3D.mul(M3D.translate(bx, 2.46, 0), M3D.scaleMat(1.48, 1.35 * (0.75 + 0.25 * pNorm), 1.35 * (0.75 + 0.25 * pNorm))));
         this._draw('gasPuff', gm, { alpha: 0.08 + pNorm * 0.34, tint: cTint, emissive: 0.55 + 0.40 * hot });
 
         const spinDir = (i % 2 === 0) ? 1.0 : -0.88;
-        const vm = M3D.mul(P.root, M3D.mul(
+        const vm = M3D.mul(bMat, M3D.mul(
           M3D.translate(bx, 2.46, 0),
           M3D.mul(M3D.rotX(g.swirlPhase * spinDir + i * 0.95), M3D.scaleMat(1.38, 1.15, 1.15))
         ));
@@ -7904,10 +8532,10 @@ class P322Renderer3D {
         const ox = 11.75 + j * 2.35;
         const hot = Math.min(1.0, bp / 280);
         const oTint = [0.72 + 0.28 * hot, 0.76 + 0.06 * hot, 0.80 - 0.46 * hot];
-        const gm = M3D.mul(P.root, M3D.mul(M3D.translate(ox, 2.46, 0), M3D.scaleMat(2.25, 4.35 * (0.78 + 0.22 * pNorm), 4.35 * (0.78 + 0.22 * pNorm))));
+        const gm = M3D.mul(bMat, M3D.mul(M3D.translate(ox, 2.46, 0), M3D.scaleMat(2.25, 4.35 * (0.78 + 0.22 * pNorm), 4.35 * (0.78 + 0.22 * pNorm))));
         this._draw('gasPuff', gm, { alpha: 0.07 + pNorm * 0.28, tint: oTint, emissive: 0.48 + 0.38 * hot });
 
-        const tm = M3D.mul(P.root, M3D.mul(
+        const tm = M3D.mul(bMat, M3D.mul(
           M3D.translate(ox, 2.46, 0),
           M3D.mul(M3D.rotX(g.swirlPhase * (j % 2 === 0 ? 0.68 : -0.68) + j * 1.2), M3D.scaleMat(2.1, 3.35, 3.35))
         ));
@@ -7915,34 +8543,34 @@ class P322Renderer3D {
       }
     } else if (xr && m.muzzleMode === 'comp' && g.canPsi > 1.0) {
       const cNorm = Math.min(1.0, g.canPsi / 360);
-      const cm = M3D.mul(P.root, M3D.mul(
+      const cm = M3D.mul(bMat, M3D.mul(
         M3D.translate(11.15, 2.46, 0),
         M3D.mul(M3D.rotX(g.swirlPhase * 1.4), M3D.scaleMat(2.4, 0.85, 0.85))
       ));
       this._draw('vortexRibbon', cm, { alpha: 0.20 + cNorm * 0.55, tint: [1.0, 0.76, 0.30], emissive: 0.88 });
     }
 
-    // X-Ray Ghost Shells (complete audit: frame, magBody, magExt, slide, red-dot housing, railLight & muzzle!)
+    // X-Ray Layer 2 (Outer Ghost Shells: frame, magBody, magExt, slide, red-dot housing, railLight & muzzle!)
     if (xr) {
       if (m.sightSet === 'red_dot') {
-        this._draw('sightShell_red_dot', P.slide, { alpha: 0.38, metal: 0.45 });
+        this._draw('sightShell_red_dot', P.slide, { alpha: 0.34, metal: 0.45 });
       }
-      this._draw('frame', P.root, { alpha: 0.22, metal: 0.18 });
+      this._draw('frame', P.root, { alpha: 0.18, metal: 0.18 });
       if (m.railLight) {
-        this._draw('railLight', P.root, { alpha: 0.24, metal: 0.52 });
+        this._draw('railLight', P.root, { alpha: 0.22, metal: 0.52 });
         this._draw('railLens', P.root, { alpha: 0.55, emissive: 0.85, metal: 0.10 });
       }
       if (m.mag25) {
-        this._draw('magExt', P.magazine, { alpha: 0.24, metal: 0.18, highlight: hp === 'magazine' });
+        this._draw('magExt', P.magazine, { alpha: 0.20, metal: 0.18, highlight: hp === 'magazine' });
       }
-      this._draw('magBody', P.magazine, { alpha: 0.24, metal: 0.18, highlight: hp === 'magazine' });
-      this._draw('slide', P.slide, { alpha: 0.25, metal: 0.55, highlight: hp === 'slide' });
+      this._draw('magBody', P.magazine, { alpha: 0.20, metal: 0.18, highlight: hp === 'magazine' });
+      this._draw('slide', P.slide, { alpha: 0.19, metal: 0.55, highlight: hp === 'slide' });
       if (m.muzzleMode === 'comp') {
-        this._draw('compOuter', P.root, { alpha: 0.24, metal: 0.62, highlight: hp === 'muzzle' });
+        this._draw('compOuter', bMat, { alpha: 0.21, metal: 0.62, highlight: hp === 'muzzle' });
       } else if (m.muzzleMode === 'commercial') {
-        this._draw('supOuter', P.root, { alpha: 0.22, metal: 0.55, highlight: hp === 'muzzle' });
+        this._draw('supOuter', bMat, { alpha: 0.20, metal: 0.55, highlight: hp === 'muzzle' });
       } else if (m.muzzleMode === 'oilcan') {
-        this._draw('oilCanOuter', P.root, { alpha: 0.22, metal: 0.42, highlight: hp === 'muzzle' });
+        this._draw('oilCanOuter', bMat, { alpha: 0.20, metal: 0.42, highlight: hp === 'muzzle' });
       }
     }
 
@@ -7954,7 +8582,7 @@ class P322Renderer3D {
     // Compensator Upward & 45°-Angled Port Flame Jets!
     if (m.muzzleMode === 'comp' && g.compFlame > 0.03) {
       const jf = 0.62 + 0.55 * g.compFlame;
-      const jMat = M3D.mul(P.root, M3D.mul(
+      const jMat = M3D.mul(bMat, M3D.mul(
         M3D.translate(0, 3.16 * (1 - jf), 0),
         M3D.scaleMat(1.0, jf, 0.75 + 0.40 * g.compFlame)
       ));
@@ -7967,7 +8595,7 @@ class P322Renderer3D {
         : (m.muzzleMode === 'comp' ? 12.78
           : (m.muzzleMode === 'commercial' ? 23.4 : 21.5));
       const fScale = (m.muzzleMode === 'comp' ? 0.52 : 0.62) + m.muzzleFlash * (m.muzzleMode === 'comp' ? 0.68 : 1.10);
-      const fm = M3D.mul(P.root, M3D.mul(M3D.translate(fx, 2.46, 0), M3D.scaleMat(fScale, fScale, fScale)));
+      const fm = M3D.mul(bMat, M3D.mul(M3D.translate(fx, 2.46, 0), M3D.scaleMat(fScale, fScale, fScale)));
       this._draw('flashCone', fm, { alpha: m.muzzleFlash * 0.9, emissive: 1.0 });
     }
 
@@ -9074,6 +9702,15 @@ function syncUI(m) {
     } else if (m.chamberFlag) {
       chamberEl.textContent = 'CHAMBER FLAG';
       chamberEl.className = 'tele-val safe';
+    } else if (m.feedingActive) {
+      chamberEl.textContent = 'FEEDING UP RAMP';
+      chamberEl.className = 'tele-val warn';
+    } else if (m.chambered && m.slideT > 0.65) {
+      chamberEl.textContent = 'EJECTOR PIVOTING';
+      chamberEl.className = 'tele-val warn';
+    } else if (m.chambered && m.slideT > 0.04) {
+      chamberEl.textContent = 'EXTRACTOR PULLING';
+      chamberEl.className = 'tele-val warn';
     } else if (m.chambered && m.chamberedSpent) {
       chamberEl.textContent = 'SPENT CASE (JAM)';
       chamberEl.className = 'tele-val hot';
@@ -9087,7 +9724,7 @@ function syncUI(m) {
   }
 
   const magEl = document.getElementById('teleMag');
-  const plusOne = (m.chambered && !m.chamberedSpent) ? ' +1' : '';
+  const plusOne = (m.chambered && !m.chamberedSpent) ? ' +1' : (m.feedingActive ? ' +1 RAMP' : '');
   if (magEl) {
     magEl.textContent = m.isMagSeated()
       ? `SEATED (${m.magRounds}/${m.maxMag}${plusOne})`
@@ -9100,6 +9737,7 @@ function syncUI(m) {
     if (m.fieldStripped) { actionEl.textContent = 'DISASSEMBLED'; actionEl.className = 'tele-val warn'; }
     else if (m.safetyOn) { actionEl.textContent = 'SAFE (LOCKED)'; actionEl.className = 'tele-val safe'; }
     else if (m.slideLocked) { actionEl.textContent = 'SLIDE LOCKED OPEN'; actionEl.className = 'tele-val warn'; }
+    else if (m.feedingActive && m.slideDragged) { actionEl.textContent = 'STRIPPING ROUND'; actionEl.className = 'tele-val warn'; }
     else if (m.outOfBattery) { actionEl.textContent = 'OUT OF BATTERY'; actionEl.className = 'tele-val hot'; }
     else if (!m.hammerCocked) { actionEl.textContent = 'HAMMER DOWN'; actionEl.className = 'tele-val'; }
     else { actionEl.textContent = 'COCKED / BATTERY'; actionEl.className = 'tele-val hot'; }
@@ -9176,6 +9814,22 @@ function syncUI(m) {
     } else if (m.slideLocked) {
       fullTxt = 'SLIDE: LOCKED REAR';
       shortTxt = '● LOCKED ▾';
+      cls = 'hud-pill hud-dockable status-warn';
+    } else if (m.outOfBattery && !m.slideDragged) {
+      fullTxt = 'OUT OF BATTERY — TAP SLIDE';
+      shortTxt = '● OOB ▾';
+      cls = 'hud-pill hud-dockable status-warn';
+    } else if (m.feedingActive && m.slideDragged) {
+      fullTxt = 'ACTION: FEEDING ROUND';
+      shortTxt = '● FEEDING ▾';
+      cls = 'hud-pill hud-dockable status-warn';
+    } else if (m.chambered && m.slideDragged && m.slideT > 0.65) {
+      fullTxt = 'ACTION: EJECTOR PIVOT';
+      shortTxt = '● EJECT ▾';
+      cls = 'hud-pill hud-dockable status-warn';
+    } else if (m.chambered && m.slideDragged && m.slideT > 0.04) {
+      fullTxt = 'ACTION: EXTRACTING';
+      shortTxt = '● EXTRACT ▾';
       cls = 'hud-pill hud-dockable status-warn';
     } else if (m.chambered && !m.chamberedSpent) {
       fullTxt = 'CONDITION: HOT / READY';
@@ -10323,5 +10977,5 @@ window.addEventListener('DOMContentLoaded', initDossierApp);
 
   
   </script>
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a5c00ff39d10258c',t:'MTc5NDkzMjQyMQ=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a5c00ff39d10258c',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a5c0f34a8e92e417',t:'MTc5NDk0MTczMw=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a5c0f34a8e92e417',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
